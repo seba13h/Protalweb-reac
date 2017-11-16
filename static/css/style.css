@@ -1,0 +1,248 @@
+*{
+	margin: 0px;
+	padding: 0px;
+}
+
+body{
+	width: 100%;
+	margin: 0px auto;
+}
+
+header{
+	background-color: green;
+	width: 100%;
+	height: 5em;
+	text-align: right;
+	border-radius: 1px 1px 15px 15px;
+}
+
+
+.navigation > ul > li > .button > a{
+	text-decoration: none;
+	color: #EAEAEA;
+	font-size: 1.5em;
+	font-family: sans-serif;
+	cursor: pointer;
+	border-radius: 8px;
+}
+
+.button {
+	width: 100%;
+	background-color: #6BBFCE;
+	border: 2px solid black;
+	padding: 1px;
+	border-radius: 1px 1px 15px 15px;
+	text-align: center;
+}
+
+.navigation > ul > li > .button:hover{
+	background-color: #4ABBCE;
+	box-shadow: 1px 1px 10px white;
+	border: 2px solid white;
+	cursor: pointer;
+}
+
+.navigation > ul > li{
+	list-style: none;
+	display: inline-block;
+	width: 50px;
+	margin-top: 20px;
+	margin-right: 60px;
+}
+
+footer{
+	background-color: rgba(21, 165, 11, 0.73);
+	padding-top: 1em;
+	height: 3em;
+	color: white;
+	border-radius: 1px 1px 15px 15px;
+}
+
+.item{
+	height: 100%;
+}
+
+.titulo{
+
+
+	margin-left: 1em;
+	display: inline;
+	text-align: center;
+	color: rgb(32, 32, 32);
+}
+.div_titulo{
+
+	background-color: rgba(21, 165, 11, 0.73);
+	text-align: center;
+}
+
+
+
+
+
+#parrafo-acordeon{
+	color:white;
+}
+.form--hidden{
+	display: none;
+}
+#contenedor-login{
+	margin-top:200px;
+}
+.cerrar-sesion{
+    right: 100px;
+    position: absolute;
+}
+.alumnos{
+	background-color: rgba(0, 0, 0, 0.09);
+	border-radius: 5px;
+	text-align: center;
+}
+
+.accordion{
+	background-color: #1D7906;
+}
+body {
+	background: #2f313d;
+	color: #46485c;
+	font-family: sans-serif;
+  }
+
+  h2 {
+	color: #46485c;
+	font-size: 15px;
+	font-weight: 600;
+	text-align: center;
+	margin-bottom: 10px;
+  }
+
+  a {
+	color: #46485c;
+	text-decoration: none;
+  }
+
+  .login {
+	width: 250px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -184px 0px 0px -155px;
+	background: rgba(0,0,0,0.2);
+	padding: 20px 30px;
+	border-radius: 5px;
+	box-shadow: 0px 1px 0px rgba(0,0,0,0.3),inset 0px 1px 0px rgba(255,255,255,0.07)
+  }
+
+  input[type="text"], input[type="password"] {
+	width: 250px;
+	padding: 25px 0px;
+	background: transparent;
+	border: 0;
+	border-bottom: 1px solid rgba(255,255,255,0.04);
+	outline: none;
+	color: #46485c;
+	font-size: 12px;
+  }
+  input[type=checkbox] {
+	display: none;
+  }
+
+  label {
+	display: block;
+
+	margin-right: 10px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: transparent;
+	content: "";
+	transition: all 0.3s ease-in-out;
+	cursor: pointer;
+	border: 3px solid #46485c;
+  }
+
+  #remember:checked ~ label[htmlFor=remember] {
+	background: #b5cd60;
+  }
+
+  input[type="submit"] {
+	background: #b5cd60;
+	border: 0;
+	width: 200px;
+	height: 40px;
+	border-radius: 3px;
+	color: white;
+	cursor: pointer;
+	transition: background 0.3s ease-in-out;
+  }
+  input[type="submit"]:hover {
+	background: #16aa56;
+  }
+
+  .forgot {
+	margin-top: 30px;
+	display: block;
+	font-size: 11px;
+	text-align: center;
+	font-weight: bold;
+  }
+  .forgot:hover {
+	margin-top: 30px;
+	display: block;
+	font-size: 11px;
+	text-align: center;
+	font-weight: bold;
+	color: #6d7781;
+  }
+
+  .remember {
+	padding: 30px 0px;
+	font-size: 12px;
+	text-indent: 25px;
+	line-height: 15px;
+  }
+
+  ::-webkit-input-placeholder {
+	color: #46485c;
+  }
+
+  [placeholder]:focus::-webkit-input-placeholder {
+	transition: all 0.2s linear;
+	transform: translate(10px, 0);
+	opacity: 0;
+	}
+footer{
+background-color: rgb(15, 199, 27);
+	bottom: 0;
+	width: 100%;
+	height: max-content;
+}
+	.footer{
+		text-align: center;
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+		height: 100px;
+
+	}
+	.informacion{
+		color: black;
+		text-align: center;
+	}
+	.HeadImg{
+		height: max-content;
+		text-align: center;
+     background-color: rgb(15, 199, 27);
+		margin:auto;
+	}
+	tr{	padding: 3px;	}
+	td:hover{background-color:red;opacity: 0.5; }
+	td:nth-child(2):hover{background-color: green;opacity: 0.5;}
+	td:nth-child(3):hover{background-color: blue;opacity: 0.5;}
+	td:nth-child(4):hover{background-color: purple;opacity: 0.5;}
+	td:nth-child(5):hover{background-color: green;opacity: 0.5;}
+	.head{width: 1350px;}
+	.menu-admin{    text-align: center;
+    BACKGROUND-COLOR: #00a4ff;
+		margin-top: 1em;}
+		.return{float: left;}
