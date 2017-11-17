@@ -17,18 +17,18 @@ app.use(bodyParser.urlencoded({
 var mysql      = require('mysql');
 var connection = mysql.createConnection({
   host     : 'localhost',
-  user     : 'root ',
-  password : '',
+  user     : 'root',
+  password : '12345',
   database : 'portalweb'
 });
 
 connection.connect();
 
-connection.query('SELECT * from < table name >', function(err, rows, fields) {
-  if (!err)
-    console.log('The solution is: ', rows);
-  else
-    console.log('Error while performing Query.');
+connection.query('SELECT * from curso', function(err, rows, fields) {
+  if (!err){ console.log('The solution is: ', rows); }
+
+  else{console.log("err" , err);}
+
 });
 
 connection.end();
