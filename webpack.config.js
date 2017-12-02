@@ -4,6 +4,11 @@ const WebpackBuildNotifier = require('webpack-build-notifier');
 const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
+  node: {
+      fs: "empty",
+    net:"empty",
+    tls: "empty"
+   },
   devtool: isProduction ? 'hidden-source-map' : 'inline-source-map',
   entry: {
     main: './static/js/apps/main.jsx'

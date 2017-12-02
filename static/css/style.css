@@ -64,14 +64,14 @@ footer{
 
 .titulo{
 
-
-	margin-left: 1em;
+	margin-right: 50%;
+	position: relative;
 	display: inline;
 	text-align: center;
 	color: rgb(32, 32, 32);
 }
 .div_titulo{
-
+	height: 3em;
 	background-color: rgba(21, 165, 11, 0.73);
 	text-align: center;
 }
@@ -209,7 +209,7 @@ body {
   [placeholder]:focus::-webkit-input-placeholder {
 	transition: all 0.2s linear;
 	transform: translate(10px, 0);
-	opacity: 0;
+	opacity: 0
 	}
 footer{
 background-color: rgb(15, 199, 27);
@@ -246,3 +246,44 @@ background-color: rgb(15, 199, 27);
     BACKGROUND-COLOR: #00a4ff;
 		margin-top: 1em;}
 		.return{float: left;}
+
+
+
+#tc1{
+	padding: 0.5em;
+	margin-left: 1em;
+}
+
+.tc2{
+	margin-left: 1em;
+	margin-right: 1em;
+}
+
+.tc3 td,th{
+	 border: 1px solid #999;
+  padding: 0.5rem;
+}
+.tc3 td:hover,th:hover{
+	background-color: white;
+}
+.tc7{
+	margin-left: 0.5em;
+}
+.tc4{
+
+	padding: 0.2em;
+	padding-left:0.6em;
+	padding-right:0.6em; 
+}
+.tc5{
+	text-align: center;
+}
+.tc6 button{
+	padding: 0.1em;
+}
+
+
+@media screen and (min-width: 600px) {
+  .content {width: 50%;
+  	margin:auto;}
+}

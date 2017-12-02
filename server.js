@@ -1,3 +1,4 @@
+
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -14,24 +15,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }))
-var mysql      = require('mysql');
-var connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : '12345',
-  database : 'portalweb'
-});
-
-connection.connect();
-
-connection.query('SELECT * from curso', function(err, rows, fields) {
-  if (!err){ console.log('The solution is: ', rows); }
-
-  else{console.log("err" , err);}
-
-});
-
-connection.end();
 
 
 app.get('/', (req, res) => res.render('sesion'));
@@ -44,6 +27,8 @@ app.get('/', (req, res) => res.render('sesion'));
     app.get('/sesion/perfil',(req,res)=> res.render('login'));
  app.get('/Admin',(req,res)=> res.render('login'));
     app.get('/Admin/mAlumno',(req,res)=> res.render('login'));
+    app.get('/Admin/mProfesor',(req,res)=> res.render('login'));
+    app.get('/Admin/mRamos',(req,res)=> res.render('login'));
 
 const listener = app.listen(3000, () =>
   console.log(`Running app on ${listener.address().address}${listener.address().port}`)

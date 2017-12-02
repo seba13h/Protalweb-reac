@@ -10,8 +10,9 @@ import Notas from './components/Users/Student/Notas';
 
 import MenuAdmin from './components/Users/admin/MenuAdmin';
 import Malumno from './components/Users/admin/mAlumno';
+import Mprofesor from './components/Users/admin/mProfesor';
+import Mramos from './components/Users/admin/mRamos';
 
-import Login from './components/Login/Login';
 import Login2 from './components/Login/Login2';
 
 import ReactDOM from 'react-dom';
@@ -35,7 +36,8 @@ ReactDOM.render(
 
         <Route path="/Admin" component={ MenuAdmin } />
         <Route path="/Admin/mAlumno" component={ Malumno } />
-
+        <Route path="/Admin/mProfesor" component={ Mprofesor } />
+        <Route path="/Admin/mRamos" component={ Mramos } />
     </Router>,
 
     document.getElementById('app')

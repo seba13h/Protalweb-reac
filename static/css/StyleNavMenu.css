@@ -10,11 +10,24 @@
     transition: 0.5s;
     padding-top: 60px;
 }
-.openNav {
+.openNave {
     font-size:30px;
     cursor:pointer;display: inline;
 
 }
+.openNave:hover {
+
+    background-color:  rgba(41, 249, 27, 0.73);
+-moz-transform:rotate(90deg);
+
+-webkit-transform:rotate(90deg);
+
+-o-transform:rotate(90deg);
+
+transform:rotate(90deg);
+}
+
+
 .display{
     display: inline;
     float: left; 
@@ -36,6 +49,8 @@
 .sidenav a:hover {
     color: #f1f1f1;
     background-color: rgba(21, 165, 11, 0.73);
+    cursor: pointer;
+    text-decoration: none;
 }
 
 .sidenav .closebtn {
@@ -50,4 +65,9 @@
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
+
+}
+
+@media screen and (min-width: 600px) {
+  .display {margin-left:25%;}
 }

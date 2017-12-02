@@ -25,11 +25,11 @@ class NavMenu extends React.Component {
                     <a href="/sesion/notas">Notas</a>
                     <a href="/sesion/horario">Horario</a>
                     <a href="/sesion/eventos">Eventos</a>
-                    <a href="/sesion/ajustes">Ajustes</a>
                     <a href="/sesion/curso">Cursos</a>
                 </div>
+                <div className="openNave">
                 <span className="openNav" onClick={()=>openNav()}>&#9776;</span>
-	            <span className="MenuNav" ></span>
+	            </div>
             </div>
             )
         }
