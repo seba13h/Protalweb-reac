@@ -4,6 +4,14 @@ const app = express();
 const path = require('path');
 const consolidate = require('consolidate');
 const bodyParser = require('body-parser');
+const mysql = require('mysql');
+
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: '12345',
+  database: 'portalweb'
+});
 
 app.engine('hbs', consolidate.handlebars);
 app.set('view engine', 'hbs');
@@ -16,6 +24,11 @@ app.use(bodyParser.urlencoded({
   extended: true
 }))
 
+app.get('/data-get-all-rut', function(req, res){
+  connection.query('SELECT rut_alu FROM alumno', (error, results, fields) => {
+    res.json(results);
+  });
+})
 
 app.get('/', (req, res) => res.render('sesion'));
  app.get('/sesion',(req,res)=> res.render('login'));

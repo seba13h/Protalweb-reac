@@ -1,27 +1,40 @@
 import React from 'react';
 import Footer from './../Footer';
-import connectio} from './../';
 
-console.log(connection);
 class Login2 extends React.Component {
   constructor(props){
     super(props);
     this.state= {
       rut: {newClass : "none"},
-      pass:{newClass : "none"}
+      pass:{newClass : "none"},
+      availableRut: []
     }
-    this.validarLogin= this.validarLogin.bind(this);
-    this.buscarRut = this.buscarRut.bind(this);
+    this.validarLogin = this.validarLogin.bind(this);
+    this.validarRut = this.validarRut.bind(this);
   }
 
-buscarRut(rut){
-  console.log('hola');
-         connection.connect();
-              connection.query('SELECT rut_alu from alumno where rut_alu ='+{rut}+' '),function(err, rows, fields) {
-                if (!err){ console.log('The solution is: ', rows); }
-                else{console.log("error no hay coincidensia" , err)}}
-             connection.end();
-            };
+  componentWillMount() {
+    const ruts = $.getJSON('/data-get-all-rut')
+      .then(data => this.setState({ availableRut: data}));
+  }
+
+  validarRut(evt){
+    const rut = evt.target.value;
+    const validateRut = /^(\d{1,2}(\.?\d{3}){2})\-([\dkK])$/;
+    let newClass = 'none';
+
+    if(rut.length) {
+      if(validateRut.test(rut)){
+        newClass = 'correct';
+      } else {
+        newClass = 'incorrect';
+      }
+    }
+
+    this.setState({
+      rut: { newClass }
+    });
+  };
 
 validarLogin(){
   const rut = this.refs.inputRut.value;
@@ -56,7 +69,7 @@ validarLogin(){
         </div>
         <div className="login">
           <h2>Iniciar sesion</h2>
-          <input name="rut" placeholder="Rut Usuario" ref="inputRut" type="text" />
+          <input className={this.state.rut.newClass} name="rut" placeholder="Rut Usuario" ref="inputRut" type="text" onChange={(evt) => this.validarRut(evt)}/>
           <input id="pw"  ref="inputpw"  name="password" placeholder="Contraseña" type="password" />
 
           <input type="submit"  value="Iniciar sesion"  onClick={this.validarLogin}/>

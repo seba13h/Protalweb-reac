@@ -273,7 +273,7 @@ background-color: rgb(15, 199, 27);
 
 	padding: 0.2em;
 	padding-left:0.6em;
-	padding-right:0.6em; 
+	padding-right:0.6em;
 }
 .tc5{
 	text-align: center;
@@ -286,4 +286,12 @@ background-color: rgb(15, 199, 27);
 @media screen and (min-width: 600px) {
   .content {width: 50%;
   	margin:auto;}
+}
+
+.correct {
+	color: green !important;
+}
+
+.incorrect {
+	color: red !important;
 }
