@@ -24,8 +24,15 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-app.get('/data-get-all-rut', function(req, res){
-  connection.query('SELECT rut_alu, contraseña FROM alumno', (error, results, fields) => {
+app.get('/data-get-all-rut-user', function(req, res){
+  connection.query('SELECT rut_alu as rut, contraseña, tipo_usuario FROM alumno', (error, results, fields) => {
+    res.json(results);
+  });
+});
+
+
+app.get('/data-get-all-rut-admin', function(req, res){
+  connection.query('SELECT rut_admin as rut, contraseña, tipo_usuario FROM administrador', (error, results, fields) => {
     res.json(results);
   });
 });

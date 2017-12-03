@@ -9,14 +9,14 @@ const NONE_CLASS = 'none';
 function isExistRut(rut, availableRut) {
   let newRut = rut.split('.').join("");
 
-  const match = availableRut.filter(data => data.rut_alu === newRut);
+  const match = availableRut.filter(data => data.rut === newRut);
   return match.length;
 }
 
 function isCorrectPassword(password, pws, rut) {
   return pws
     .filter(data => data.contraseña === password)
-    .filter(data => data.rut_alu === rut).length;
+    .filter(data => data.rut === rut);
 }
 
 class Login2 extends Component {
@@ -32,8 +32,11 @@ class Login2 extends Component {
   }
 
   componentWillMount() {
-    const ruts = $.getJSON('/data-get-all-rut')
-      .then(data => this.setState({ availableRut: data}));
+    $.getJSON('/data-get-all-rut-user', (rutUser) => {
+      $.getJSON('/data-get-all-rut-admin', (rutAdmin) => {
+        this.setState({ availableRut: [ ...rutUser, ...rutAdmin ]});
+      })
+    });
   }
 
   validarRut(evt){
@@ -64,8 +67,17 @@ class Login2 extends Component {
     const pws = this.state.availableRut;
 
     if (this.state.rut.newClass === CORRECT_CLASS) {
-      if (isCorrectPassword(pw, pws, rut)) {
-        window.location.href = '/sesion';
+      if (isCorrectPassword(pw, pws, rut).length) {
+        if(isCorrectPassword(pw, pws, rut)[0].tipo_usuario === 0){
+          window.location.href = '/Admin';
+        }
+
+        // PROFESOR
+
+
+        if(isCorrectPassword(pw, pws, rut)[0].tipo_usuario === 2){
+          window.location.href = '/sesion';
+        }
       }
     }
 
