@@ -1,7 +1,25 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Footer from './../Footer';
 
-class Login2 extends React.Component {
+const EXREG_RUT = /^(\d{1,2}(\.?\d{3}){2})\-([\dkK])$/;
+const CORRECT_CLASS = 'correct';
+const INCORRECT_CLASS = 'incorrect';
+const NONE_CLASS = 'none';
+
+function isExistRut(rut, availableRut) {
+  let newRut = rut.split('.').join("");
+
+  const match = availableRut.filter(data => data.rut_alu === newRut);
+  return match.length;
+}
+
+function isCorrectPassword(password, pws, rut) {
+  return pws
+    .filter(data => data.contraseña === password)
+    .filter(data => data.rut_alu === rut).length;
+}
+
+class Login2 extends Component {
   constructor(props){
     super(props);
     this.state= {
@@ -20,14 +38,18 @@ class Login2 extends React.Component {
 
   validarRut(evt){
     const rut = evt.target.value;
-    const validateRut = /^(\d{1,2}(\.?\d{3}){2})\-([\dkK])$/;
-    let newClass = 'none';
+    const { availableRut } = this.state;
+    let newClass = NONE_CLASS;
 
-    if(rut.length) {
-      if(validateRut.test(rut)){
-        newClass = 'correct';
-      } else {
-        newClass = 'incorrect';
+    if (rut.length && isExistRut(rut, availableRut)) {
+      if (EXREG_RUT.test(rut)){
+        newClass = CORRECT_CLASS
+      };
+    };
+
+    if (rut.length) {
+      if(!EXREG_RUT.test(rut)){
+        newClass = INCORRECT_CLASS;
       }
     }
 
@@ -36,31 +58,18 @@ class Login2 extends React.Component {
     });
   };
 
-validarLogin(){
-  const rut = this.refs.inputRut.value;
-  const pw = this.refs.inputpw.value;
-  const validateRut = /^(\d{1,2}(\.?\d{3}){2})\-([\dkK])$/;
+  validarLogin(){
+    const pw = this.refs.inputpw.value;
+    const rut = this.refs.inputRut.value;
+    const pws = this.state.availableRut;
 
-  if(rut != ""){
-    if(validateRut.test(rut)){
-     var newRut = rut.split('.').join("");
-     this.setState({ rut : {newClass : "dataCorrect"} });
-    this.buscarRut(rut);
-    }else{
-     this.setState({ rut : {newClass : "dataIncorrect"} });
-     alert("Rut Incorrecto");
+    if (this.state.rut.newClass === CORRECT_CLASS) {
+      if (isCorrectPassword(pw, pws, rut)) {
+        window.location.href = '/sesion';
+      }
     }
-   }else{
-    this.setState({ rut : {newClass : "none"} });
-    alert("Rut vacio");
-   }
-   if(pw != ""){
-     this.setState({ pass : {newClass : "dataCorrect"} });
-   }else{
-    this.setState({ pass : {newClass : "none"} });
-    alert('pw vacia');
-   }
-}
+
+  }
   render() {
     return (
       <div>

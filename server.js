@@ -22,13 +22,13 @@ app.use('/static', express.static('static'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
-}))
+}));
 
 app.get('/data-get-all-rut', function(req, res){
-  connection.query('SELECT rut_alu FROM alumno', (error, results, fields) => {
+  connection.query('SELECT rut_alu, contraseña FROM alumno', (error, results, fields) => {
     res.json(results);
   });
-})
+});
 
 app.get('/', (req, res) => res.render('sesion'));
  app.get('/sesion',(req,res)=> res.render('login'));
