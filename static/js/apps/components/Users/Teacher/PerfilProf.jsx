@@ -1,8 +1,8 @@
 import React from 'react';
-import NavMenu from './NavMenu';
-import Footer from './Footer';
+import NavMenu from './../../NavMenuProf';
+import Footer from './../../Footer';
 
- class  Perfil extends React.Component {
+ class  PerfilProf extends React.Component {
 	ChangeName () {
 		this.setState({
 			nombre : 'mario',
@@ -57,4 +57,4 @@ import Footer from './Footer';
 		)
 	}
 };
-export default Perfil;
+export default PerfilProf;

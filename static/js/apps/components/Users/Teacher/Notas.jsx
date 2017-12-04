@@ -1,9 +1,9 @@
 import React from 'react';
-import NavMenu from './../../NavMenu';
+import NavMenu from './../../NavMenuProf';
 import Footer from './../../Footer';
 class Notas extends React.Component {
-	
-	
+
+
 	render() {
 		return (
 			<div>
@@ -26,7 +26,7 @@ class Notas extends React.Component {
 											<tbody>
 										  <tr>
 										    <th>Nombre Alumno</th>
-										    <th>Nota 1</th> 
+										    <th>Nota 1</th>
 										    <th>Nota 2</th>
 										    <th>Nota 3</th>
 										    <th>Agregar Nota</th>
@@ -69,7 +69,7 @@ class Notas extends React.Component {
 											<tbody>
 										  <tr>
 										    <th>Nombre Alumno</th>
-										    <th>Nota 1</th> 
+										    <th>Nota 1</th>
 										    <th>Nota 2</th>
 										    <th>Nota 3</th>
 										    <th>Agregar Nota</th>

@@ -34,7 +34,9 @@ class Login2 extends Component {
   componentWillMount() {
     $.getJSON('/data-get-all-rut-user', (rutUser) => {
       $.getJSON('/data-get-all-rut-admin', (rutAdmin) => {
-        this.setState({ availableRut: [ ...rutUser, ...rutAdmin ]});
+        $.getJSON('/data-get-all-rut-teacher', (rutTeacher) => {
+        this.setState({ availableRut: [ ...rutTeacher,...rutUser, ...rutAdmin ]});
+        })
       })
     });
   }
@@ -73,7 +75,11 @@ class Login2 extends Component {
         }
 
         // PROFESOR
-
+        if(isCorrectPassword(pw, pws, rut)[0].tipo_usuario === 1){
+          console.log('hola');
+          console.log(isCorrectPassword(pw, pws, rut)[0]);
+          window.location.href = `/Profesor ${isCorrectPassword(pw, pws, rut)[0].rut_prof}`;
+        }
 
         if(isCorrectPassword(pw, pws, rut)[0].tipo_usuario === 2){
           window.location.href = '/sesion';

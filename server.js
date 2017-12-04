@@ -29,10 +29,20 @@ app.get('/data-get-all-rut-user', function(req, res){
     res.json(results);
   });
 });
-
+app.get('/data-get-all-rut-teacher', function(req, res){
+  connection.query('SELECT rut_prof as rut, contraseña, tipo_usuario FROM profesor', (error, results, fields) => {
+    res.json(results);
+  });
+});
 
 app.get('/data-get-all-rut-admin', function(req, res){
   connection.query('SELECT rut_admin as rut, contraseña, tipo_usuario FROM administrador', (error, results, fields) => {
+    res.json(results);
+  });
+});
+
+app.get('/data-get-all-user', function(req, res){
+  connection.query('SELECT * FROM alumno', (error, results, fields) => {
     res.json(results);
   });
 });
@@ -49,6 +59,11 @@ app.get('/', (req, res) => res.render('sesion'));
     app.get('/Admin/mAlumno',(req,res)=> res.render('login'));
     app.get('/Admin/mProfesor',(req,res)=> res.render('login'));
     app.get('/Admin/mRamos',(req,res)=> res.render('login'));
+
+ app.get('/Profesor',(req,res)=> res.render('login'));
+    app.get('/Profesor/Eventos',(req,res)=> res.render('login'));
+    app.get('/Profesor/Notas',(req,res)=> res.render('login'));
+    app.get('/Profesor/Perfil',(req,res)=> res.render('login'));
 
 const listener = app.listen(3000, () =>
   console.log(`Running app on ${listener.address().address}${listener.address().port}`)

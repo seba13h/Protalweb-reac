@@ -1,6 +1,6 @@
 import React from 'react';
-import Perfil from './components/Perfil';
 
+import Perfil from './components/Users/Student/Perfil';
 import Pam from './components/Users/Student/Pam';
 import Ajustes from './components/Users/Student/Ajustes';
 import Curso from './components/Users/Student/Curso';
@@ -12,6 +12,11 @@ import MenuAdmin from './components/Users/admin/MenuAdmin';
 import Malumno from './components/Users/admin/mAlumno';
 import Mprofesor from './components/Users/admin/mProfesor';
 import Mramos from './components/Users/admin/mRamos';
+
+import MenuProfesor from './components/Users/Teacher/menuProf';
+import EventosP from './components/Users/Teacher/Eventos';
+import NotasP from './components/Users/Teacher/Notas';
+import PerfilP from './components/Users/Teacher/PerfilProf';
 
 import Login2 from './components/Login/Login2';
 
@@ -38,6 +43,11 @@ ReactDOM.render(
         <Route path="/Admin/mAlumno" component={ Malumno } />
         <Route path="/Admin/mProfesor" component={ Mprofesor } />
         <Route path="/Admin/mRamos" component={ Mramos } />
+
+        <Route path="/Profesor" component={ MenuProfesor } />
+        <Route path="/Profesor/Eventos" component={ EventosP } />
+        <Route path="/Profesor/Notas" component={ NotasP } />
+        <Route path="/Profesor/perfil" component={ PerfilP } />
     </Router>,
 
     document.getElementById('app')
