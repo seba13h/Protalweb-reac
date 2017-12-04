@@ -26,9 +26,9 @@ class Mprofesor extends React.Component {
 			if (infProf.length){
 				console.log(infProf);
 				this.setState({NomRamo:	infProf[1].nom_ramo, Hora:   infProf[1].hora,  SalaClases: infProf[1].sala_clases});
-
 			}
 		})
+	///
 	};
 
 	render() {
