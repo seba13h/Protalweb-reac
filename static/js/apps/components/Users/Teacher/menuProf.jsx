@@ -3,19 +3,36 @@ import NavMenu from './../../NavMenuProf';
 import Footer from './../../Footer';
 
 function getRut() {
-	console.log(window.location.search.split('?rut=')[1])
-	// const rut = $_GET("rut");
-
-	// console.log(rut);
+	const rut= (window.location.search.split('?rut=')[1]);
+	return rut;
 }
 
 class Mprofesor extends React.Component {
+		constructor(props){
+		  super(props);
+		  this.state= {
+			teacherData: [],
+			NomRamo: '',
+			Hora: '',
+			SalaClases: ''
+		  }
+
+		}
 
 	componentWillMount() {
-		getRut();
-	}
+		$.getJSON('/data-get-all-menu-teacher', (Teacher) => {
+			this.setState({ teacherData: [ ...Teacher ] }  );
+			const infProf= this.state.teacherData.filter(data => data.rut === getRut());
+			if (infProf.length){
+				console.log(infProf);
+				this.setState({NomRamo:	infProf[1].nom_ramo, Hora:   infProf[1].hora,  SalaClases: infProf[1].sala_clases});
+
+			}
+		})
+	};
 
 	render() {
+		const listClases = this.state.teacherData.map((data,index)=> <li className="list-group-item">  { this.state.NomRamo } ......... {this.state.Hora}...... {this.state.SalaClases}</li> );
 
 		return (
 			<div>
@@ -34,9 +51,8 @@ class Mprofesor extends React.Component {
 							<div id="collapse1" className="panel-collapse collapse in">
 								<div className="panel-body">
 									<ul className="nav nav-pills nav-stacked">
-										<li className="list-group-item">Gestion Empresarial		09:40 -11:20	G202</li>
-										<li className="list-group-item">Matemáticas II			09:40 -11:20	U101</li>
-										<li className="list-group-item">Sistemas de Inf I		09:40 -11:20	U202</li>
+										{listClases}
+
 									</ul>
 								</div>
 							</div>

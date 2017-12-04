@@ -47,6 +47,14 @@ app.get('/data-get-all-user', function(req, res){
   });
 });
 
+app.get('/data-get-all-menu-teacher', function(req, res){
+  connection.query
+  ('SELECT profesor.rut_prof as rut, ramo.cod_ramo, ramo.nom_ramo, horario.cod_curso ,horario.num_dia ,horario.num_bloque,horario.sala_clases ,horario.hora  FROM profesor  inner join  ramo on profesor.rut_prof  = ramo.rut_prof  inner join horario on horario.cod_ramo=ramo.cod_ramo ',
+  (error, results, fields) => {
+    res.json(results);
+  });
+});
+//,
 app.get('/', (req, res) => res.render('sesion'));
  app.get('/sesion',(req,res)=> res.render('login'));
     app.get('/sesion/ajustes',(req,res)=> res.render('login'));
