@@ -76,9 +76,8 @@ class Login2 extends Component {
 
         // PROFESOR
         if(isCorrectPassword(pw, pws, rut)[0].tipo_usuario === 1){
-          console.log('hola');
           console.log(isCorrectPassword(pw, pws, rut)[0]);
-          window.location.href = `/Profesor ${isCorrectPassword(pw, pws, rut)[0].rut_prof}`;
+          window.location.href = `/Profesor?rut=${isCorrectPassword(pw, pws, rut)[0].rut}`;
         }
 
         if(isCorrectPassword(pw, pws, rut)[0].tipo_usuario === 2){

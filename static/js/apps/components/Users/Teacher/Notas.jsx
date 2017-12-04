@@ -1,9 +1,8 @@
-import React from 'react';
+import React, {Component} from 'react';
 import NavMenu from './../../NavMenuProf';
 import Footer from './../../Footer';
-class Notas extends React.Component {
 
-
+class Notas extends Component {
 	render() {
 		return (
 			<div>

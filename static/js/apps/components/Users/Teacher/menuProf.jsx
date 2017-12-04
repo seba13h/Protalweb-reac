@@ -1,9 +1,22 @@
 import React from 'react';
 import NavMenu from './../../NavMenuProf';
 import Footer from './../../Footer';
+
+function getRut() {
+	console.log(window.location.search.split('?rut=')[1])
+	// const rut = $_GET("rut");
+
+	// console.log(rut);
+}
+
 class Mprofesor extends React.Component {
 
+	componentWillMount() {
+		getRut();
+	}
+
 	render() {
+
 		return (
 			<div>
 				<div className="div_titulo">
