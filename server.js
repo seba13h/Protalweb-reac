@@ -49,7 +49,15 @@ app.get('/data-get-all-user', function(req, res){
 
 app.get('/data-get-all-menu-teacher', function(req, res){
   connection.query
-  ('SELECT profesor.rut_prof as rut, ramo.cod_ramo, ramo.nom_ramo, horario.cod_curso ,horario.num_dia ,horario.num_bloque,horario.sala_clases ,horario.hora  FROM profesor  inner join  ramo on profesor.rut_prof  = ramo.rut_prof  inner join horario on horario.cod_ramo=ramo.cod_ramo ',
+  ('SELECT profesor.rut_prof as rut,profesor.nom_prof, ramo.cod_ramo, ramo.nom_ramo, horario.cod_curso ,horario.num_dia ,horario.num_bloque,horario.sala_clases ,horario.hora  FROM profesor  inner join  ramo on profesor.rut_prof  = ramo.rut_prof  inner join horario on horario.cod_ramo=ramo.cod_ramo ',
+  (error, results, fields) => {
+    res.json(results);
+  });
+});
+
+app.get('/data-get-all-menu-teacher2', function(req, res){
+  connection.query
+  ('SELECT profesor.rut_prof as rut, prueba.fecha, prueba.bloque, prueba.sala_clases ,ramo.nom_ramo ,prueba.cod_curso FROM profesor inner join ramo on profesor.rut_prof = ramo.rut_prof inner join prueba on prueba.rut_prof= ramo.rut_prof AND prueba.cod_ramo = ramo.cod_ramo',
   (error, results, fields) => {
     res.json(results);
   });
