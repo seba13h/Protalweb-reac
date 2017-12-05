@@ -1,5 +1,9 @@
 import React from 'react';
 
+function getRut() {
+    return window.location.search.split('?rut=')[1];
+}
+
 class mProfesor extends React.Component {
 constructor(props){
 super(props);
@@ -9,10 +13,15 @@ rut: {newClass : "none"},
 pass:{newClass : "none"},
 email: {newClass : "none"},
 telefono: {newClass : "none"},
-contraseña: {newClass : "none"}
+contraseña: {newClass : "none"},
+teacherClass: [],
 }
 this.validarAlumno= this.validarAlumno.bind(this);
 }
+
+componentWillMount() {
+    $.getJSON('/data-get-all-teacher').then(data => this.setState({ teacherClass: data}));
+  };
 
 validarAlumno(){
 const rut = this.refs.inputRut.value;
@@ -77,11 +86,22 @@ alert("telefono vacio");
 }
 }
 render() {
+  const rutaMenu=`/Admin?rut=${getRut()}`;
+  const lista = this.state.teacherClass.map((data,index)=>
+    <tr>
+      <td>{data.rut_prof}</td>
+      <td>{data.nom_prof}</td>
+      <td className="zelect_rut">
+        <button className="glyphicon glyphicon-pencil" data-toggle="modal" data-target="#myModal2"></button>
+        <button className="glyphicon glyphicon-trash"  data-toggle="modal" data-target="#myModal3"></button>
+      </td>
+    </tr> );
+
 return (
 <div>
 
     <div className="div_titulo">
-      <a href="/Admin"> <button id="tc1" className="glyphicon glyphicon-menu-left return"></button></a>
+      <a href={rutaMenu}> <button id="tc1" className="glyphicon glyphicon-menu-left return"></button></a>
       <h2 className="titulo">MANTENEDOR PROFESOR</h2>
     </div>
   <div className="content">
@@ -109,12 +129,7 @@ return (
           <th>Nombres</th>
           <th>Acciones</th>
         </tr>
-        <td> ..</td>
-        <td >..</td>
-        <td className="zelect_rut">
-          <button className="glyphicon glyphicon-pencil" data-toggle="modal" data-target="#myModal2"></button>
-          <button className="glyphicon glyphicon-trash"  data-toggle="modal" data-target="#myModal3"></button>
-        </td>
+        {lista}
       </thead>
     </table>
 

@@ -1,4 +1,7 @@
 import React from 'react';
+function getRut() {
+    return window.location.search.split('?rut=')[1];
+}
 
 class mCursos extends React.Component {
 constructor(props){
@@ -9,10 +12,15 @@ rut: {newClass : "none"},
 pass:{newClass : "none"},
 email: {newClass : "none"},
 telefono: {newClass : "none"},
-contraseña: {newClass : "none"}
+contraseña: {newClass : "none"},
+cursoClass: [],
 }
 this.validarAlumno= this.validarAlumno.bind(this);
 }
+
+componentWillMount() {
+    $.getJSON('/data-get-all-curso').then(data => this.setState({ cursoClass: data}));
+  };
 
 validarAlumno(){
 const rut = this.refs.inputRut.value;
@@ -76,16 +84,39 @@ this.setState({ phone : {newClass : "none"} });
 alert("telefono vacio");
 }
 }
+
+indice(){
+$("tr").each(function() {
+ $(this).children().each(function() {
+ var n = $(this).parent().index();
+ $(this).attr('id','person'+n);
+ });
+});
+}
+
+
 render() {
+
+const rutaMenu=`/Admin?rut=${getRut()}`;
+const lista = this.state.cursoClass.map((data,index)=>
+    <tr className="indicex">
+      <td>{data.cod_curso}</td>
+      <td>{data.carrera}</td>
+      <td className="zelect_rut">
+        <button className="glyphicon glyphicon-pencil" data-toggle="modal" data-target="#myModal2"></button>
+        <button className="glyphicon glyphicon-trash"  data-toggle="modal" data-target="#myModal3"></button>
+      </td>
+    </tr> );
+
 return (
 <div>
   
     <div className="div_titulo">
-      <a href="/Admin"> <button id="tc1" className="glyphicon glyphicon-menu-left return"></button></a>
+      <a href={rutaMenu}> <button id="tc1" className="glyphicon glyphicon-menu-left return"></button></a>
       <h2 className="titulo">MANTENEDOR CURSOS</h2>
     </div>
   <div className="content">
-    
+    <button type="submit" className="btn btn-primary" onClick={this.indice()}>Aceptar</button>
     <h1>Listado de cursos</h1>
     <div className="tc11">
       <button id ="tc12" className="btn btn-primary " data-toggle="modal" data-target="#myModal" >
@@ -109,12 +140,7 @@ return (
           <th>Carrera</th>
           <th>Acciones</th>
         </tr>
-        <td> ..</td>
-        <td >..</td>
-        <td className="zelect_rut">
-          <button className="glyphicon glyphicon-pencil" data-toggle="modal" data-target="#myModal2"></button>
-          <button className="glyphicon glyphicon-trash"  data-toggle="modal" data-target="#myModal3"></button>
-        </td>
+        {lista}
       </thead>
     </table>
   

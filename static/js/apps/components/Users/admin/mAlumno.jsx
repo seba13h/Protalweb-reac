@@ -1,13 +1,27 @@
 import React from 'react';
 
+function getRut() {
+    return window.location.search.split('?rut=')[1];
+}
+
 class mAlumno extends React.Component {
 constructor(props){
 super(props);
 this.state= {
-   dataAlumno:[]
+nombre:{newClass : "none"},
+rut: {newClass : "none"},
+pass:{newClass : "none"},
+email: {newClass : "none"},
+telefono: {newClass : "none"},
+contraseña: {newClass : "none"},
+studentClass: [],
 }
 this.validarAlumno= this.validarAlumno.bind(this);
 }
+
+componentWillMount() {
+    $.getJSON('/data-get-all-user').then(data => this.setState({ studentClass: data}));
+  };
 
 validarAlumno(){
 const rut = this.refs.inputRut.value;
@@ -72,11 +86,23 @@ alert("telefono vacio");
 }
 }
 render() {
+  const rutaMenu=`/Admin?rut=${getRut()}`;
+  const lista = this.state.studentClass.map((data,index)=>
+    <tr>
+      <td>{data.rut_alu}</td>
+      <td>{data.nom_alu}</td>
+      <td>{data.direccion}</td>
+      <td className="zelect_rut">
+        <button className="glyphicon glyphicon-pencil" data-toggle="modal" data-target="#myModal2"></button>
+        <button className="glyphicon glyphicon-trash"  data-toggle="modal" data-target="#myModal3"></button>
+      </td>
+    </tr> );
+
 return (
 <div>
-
+  
     <div className="div_titulo">
-      <a href="/Admin"> <button id="tc1" className="glyphicon glyphicon-menu-left return"></button></a>
+      <a href={rutaMenu}> <button id="tc1" className="glyphicon glyphicon-menu-left return"></button></a>
       <h2 className="titulo">MANTENEDOR ALUMNO</h2>
     </div>
   <div className="content">
@@ -100,21 +126,16 @@ return (
     <table id="agregar-alumno" className="table table-bordered">
       <thead>
         <tr>
-          <th>Nombres</th>
+          <th>Nombres</th> 
           <th>Curso</th>
           <th>Rut</th>
           <th>Acciones</th>
         </tr>
-        <td> ..</td>
-        <td> ..</td>
-        <td >..</td>
-        <td className="zelect_rut">
-          <button className="glyphicon glyphicon-pencil" data-toggle="modal" data-target="#myModal2"></button>
-          <button className="glyphicon glyphicon-trash"  data-toggle="modal" data-target="#myModal3"></button>
-        </td>
+
+        {lista}
       </thead>
     </table>
-
+  
   </div>
 
   <div className="modal fade" id="myModal" role="dialog">
@@ -227,7 +248,7 @@ return (
 
 
 
-
+  
 
 </div>
 )

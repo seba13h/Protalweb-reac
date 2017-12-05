@@ -1,5 +1,9 @@
 import React from 'react';
 
+function getRut() {
+    return window.location.search.split('?rut=')[1];
+}
+
 class mProfesor extends React.Component {
 constructor(props){
 super(props);
@@ -9,10 +13,15 @@ rut: {newClass : "none"},
 pass:{newClass : "none"},
 email: {newClass : "none"},
 telefono: {newClass : "none"},
-contraseña: {newClass : "none"}
+contraseña: {newClass : "none"},
+horarioClass: [],
 }
 this.validarAlumno= this.validarAlumno.bind(this);
 }
+
+componentWillMount() {
+    $.getJSON('/data-get-all-horario').then(data => this.setState({ horarioClass: data}));
+  };
 
 validarAlumno(){
 const rut = this.refs.inputRut.value;
@@ -77,15 +86,28 @@ alert("telefono vacio");
 }
 }
 render() {
+  const rutaMenu=`/Admin?rut=${getRut()}`;
+  const lista = this.state.horarioClass.map((data,index)=>
+    <tr>
+      <td>{data.cod_curso}</td>
+      <td>{data.cod_ramo}</td>
+      <td>{data.sala_clases}</td>
+      <td>{data.dia}</td>
+      <td>{data.num_bloque}</td>
+      <td>{data.hora}</td>
+      <td className="zelect_rut">
+        <button className="glyphicon glyphicon-pencil" data-toggle="modal" data-target="#myModal2"></button>
+        <button className="glyphicon glyphicon-trash"  data-toggle="modal" data-target="#myModal3"></button>
+      </td>
+    </tr> );
+
 return (
 <div>
-  
     <div className="div_titulo">
-      <a href="/Admin"> <button id="tc1" className="glyphicon glyphicon-menu-left return"></button></a>
+      <a href={rutaMenu}> <button id="tc1" className="glyphicon glyphicon-menu-left return"></button></a>
       <h2 className="titulo">MANTENEDOR HORARIO</h2>
     </div>
   <div className="content">
-    
     <h1>Listado de horarios</h1>
     <div className="tc11">
       <button id ="tc12" className="btn btn-primary " data-toggle="modal" data-target="#myModal" >
@@ -105,22 +127,19 @@ return (
     <table id="agregar-alumno" className="table table-bordered">
       <thead>
         <tr>
+          <th>Codigo Curso</th>
           <th>Codigo Ramo</th>
-          <th>Dia</th>
-          <th>Hora</th>
           <th>Sala</th>
+          <th>Dia </th>
+          <th>Bloque </th>
+          <th>Accion </th>
+          <th>Hora</th>
 
         </tr>
-        <td> ..</td>
-        <td> ..</td>
-        <td >..</td>
-        <td className="zelect_rut">
-          <button className="glyphicon glyphicon-pencil" data-toggle="modal" data-target="#myModal2"></button>
-          <button className="glyphicon glyphicon-trash"  data-toggle="modal" data-target="#myModal3"></button>
-        </td>
+        {lista}
       </thead>
     </table>
-  
+
   </div>
 
   <div className="modal fade" id="myModal" role="dialog">
@@ -237,7 +256,7 @@ return (
 
 
 
-  
+
 
 </div>
 )

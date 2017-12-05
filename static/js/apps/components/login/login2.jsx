@@ -72,7 +72,7 @@ class Login2 extends Component {
     if (this.state.rut.newClass === CORRECT_CLASS) {
       if (isCorrectPassword(pw, pws, rut).length) {
         if(isCorrectPassword(pw, pws, rut)[0].tipo_usuario === 0){
-          window.location.href = '/Admin';
+          window.location.href = `/Admin?rut=${isCorrectPassword(pw, pws, rut)[0].rut}`;
         }
 
         // PROFESOR
@@ -82,7 +82,7 @@ class Login2 extends Component {
         }
 
         if(isCorrectPassword(pw, pws, rut)[0].tipo_usuario === 2){
-          window.location.href = '/sesion';
+          window.location.href = `/Alumno?rut=${isCorrectPassword(pw, pws, rut)[0].rut}`;
         }
       }
     }
