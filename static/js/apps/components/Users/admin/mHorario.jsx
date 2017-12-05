@@ -1,6 +1,6 @@
 import React from 'react';
 
-class mAlumno extends React.Component {
+class mProfesor extends React.Component {
 constructor(props){
 super(props);
 this.state= {
@@ -82,14 +82,14 @@ return (
   
     <div className="div_titulo">
       <a href="/Admin"> <button id="tc1" className="glyphicon glyphicon-menu-left return"></button></a>
-      <h2 className="titulo">MANTENEDOR ALUMNO</h2>
+      <h2 className="titulo">MANTENEDOR HORARIO</h2>
     </div>
   <div className="content">
     
-    <h1>Listado de alumnos</h1>
+    <h1>Listado de horarios</h1>
     <div className="tc11">
       <button id ="tc12" className="btn btn-primary " data-toggle="modal" data-target="#myModal" >
-        Agregar Alumno
+        Agregar Horario
       </button>
       <form>
         <div className="input-group">
@@ -105,10 +105,11 @@ return (
     <table id="agregar-alumno" className="table table-bordered">
       <thead>
         <tr>
-          <th>Nombres</th> 
-          <th>Curso</th>
-          <th>Rut</th>
-          <th>Acciones</th>
+          <th>Codigo Ramo</th>
+          <th>Dia</th>
+          <th>Hora</th>
+          <th>Sala</th>
+
         </tr>
         <td> ..</td>
         <td> ..</td>
@@ -127,34 +128,34 @@ return (
       <div className="modal-content">
         <div className="modal-header">
           <button type="button" className="close" data-dismiss="modal">&times;</button>
-          <h4 className="modal-title">Agregar Alumno</h4>
+          <h4 className="modal-title">Agregar Horario</h4>
         </div>
         <div className="modal-body">
 
           <form>
             <div className="form-group">
-              Rut
-              <input ref="inputRut" className="form-control" id="rut" />
+              Codigo Curso
+              <input ref="inputRut" className="form-control" id="cod_curso" />
             </div>
             <div className="form-group">
-              Nombre
-              <input ref = "inputNombre" type="" className="form-control" id="nombre" />
+              Dia
+              <input ref = "inputNombre" type="" className="form-control" id="num_dia" />
             </div>
             <div className="form-group">
-              Email
-              <input ref = "inputemail" className="form-control" id="email" />
+              Num Bloque
+              <input ref = "inputemail" className="form-control" id="num_bloque" />
             </div>
             <div className="form-group">
-              Telefono
-              <input ref = "inputTel" className="form-control" id="telefono" />
+              Sala de Clases
+              <input ref = "inputTel" className="form-control" id="sala_clase" />
             </div>
             <div className="form-group">
-              Contraseña:
-              <input ref = "inputpw" className="form-control" id="pwd" />
+              Hora
+              <input ref = "inputpw" className="form-control" id="hora" />
             </div>
             <div className="form-group">
-              Repita Contraseña:
-              <input ref = "inputpw" className="form-control" id="pwd2" />
+              Codigo Ramo
+              <input ref = "inputpw" className="form-control" id="cod_ramo" />
             </div>
             <button type="submit" className="btn btn-primary" onClick={this.validarAlumno}>Aceptar</button>
           </form>
@@ -173,30 +174,34 @@ return (
       <div className="modal-content">
         <div className="modal-header">
           <button type="button" className="close" data-dismiss="modal">&times;</button>
-          <h4 className="modal-title">Modificar Alumno</h4>
+          <h4 className="modal-title">Modificar Horario</h4>
         </div>
         <div className="modal-body">
 
           <form>
             <div className="form-group">
-              Rut
-              <input ref="inputRut" className="form-control" id="rut" />
+              Codigo Curso
+              <input ref="inputRut" className="form-control" id="cod_curso" />
             </div>
             <div className="form-group">
-              Nombre
-              <input ref = "inputNombre" type="" className="form-control" id="nombre" />
+              Dia
+              <input ref = "inputNombre" type="" className="form-control" id="num_dia" />
             </div>
             <div className="form-group">
-              Email
-              <input ref = "inputemail" className="form-control" id="email" />
+              Num Bloque
+              <input ref = "inputemail" className="form-control" id="num_bloque" />
             </div>
             <div className="form-group">
-              Telefono
-              <input ref = "inputTel" className="form-control" id="telefono" />
+              Sala de Clases
+              <input ref = "inputTel" className="form-control" id="sala_clase" />
             </div>
             <div className="form-group">
-              Contraseña:
-              <input ref = "inputpw" className="form-control" id="pwd" />
+              Hora
+              <input ref = "inputpw" className="form-control" id="hora" />
+            </div>
+            <div className="form-group">
+              Codigo Ramo
+              <input ref = "inputpw" className="form-control" id="cod_ramo" />
             </div>
             <button type="submit" className="btn btn-primary" onClick={this.validarAlumno}>Aceptar</button>
           </form>
@@ -238,4 +243,4 @@ return (
 )
 }
 };
-export default mAlumno;
+export default mProfesor;

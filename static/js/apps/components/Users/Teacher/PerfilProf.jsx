@@ -6,12 +6,6 @@ function getRut() {
 	return rut;
 }
  class  PerfilProf extends React.Component {
-	ChangeName () {
-		this.setState({
-			nombre : 'mario',
-		    })
-		 };
-
 	constructor(props) {
 			super(props);
 			this.state = {
@@ -20,21 +14,21 @@ function getRut() {
 			correo: '',
 			telefono:''
 			}
-			this.ChangeName = this.ChangeName.bind(this);
+
 		  }
 
 	render() {
 		return (
 			<div>
 				<div className="div_titulo">
-		               <NavMenu/>
+				<NavMenu rut={getRut()}/>
 					   <h2 className="titulo">PERFIL</h2>
 	           </div>
 
 				<div  className ="content">
 					<div  className ="panel panel-success">
 						<div  className ="panel-heading">Información del Usuario</div>
-						<div  className ="panel-body" onClick ={this.ChangeName}>
+						<div  className ="panel-body">
 							<span>nombre: {this.state.nombre}		</span>
 						</div>
 						<div  className ="panel-footer">

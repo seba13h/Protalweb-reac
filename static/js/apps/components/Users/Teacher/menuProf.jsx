@@ -3,62 +3,50 @@ import NavMenu from './../../NavMenuProf';
 import Footer from './../../Footer';
 
 function getRut() {
-	const rut= (window.location.search.split('?rut=')[1]);
-	return rut;
+	return window.location.search.split('?rut=')[1];
 }
 
 class Mprofesor extends React.Component {
 		constructor(props){
 		  super(props);
 		  this.state= {
-			teacherData2: [],
-			teacherData: [],
-			NomRamo: '',
-			Hora: '',
-			SalaClases: '',
-			fecha:'',
-			NomPrueba:'',
-			bloquePrueba:'',
-			salaPrueba:'',
-			curso:'',
-			profesor:'',
-			rut:''
+			teacherQuest: [],
+			teacherClass: [],
 		  }
 		}
 
 	componentWillMount() {
-		$.getJSON('/data-get-all-menu-teacher', (Teacher) => {
-			this.setState({ teacherData: [ ...Teacher ] }  );
-			const infProf= this.state.teacherData.filter(data => data.rut === getRut());
-			if (infProf.length){
-				console.log(infProf);
-				this.setState({rut:getRut() ,NomRamo:	infProf[1].nom_ramo, Hora:   infProf[1].hora,  SalaClases: infProf[1].sala_clases, profesor: infProf[1].nom_prof});
-				console.log(this.state);
-				this.setState({NomRamo:	infProf[0].nom_ramo, Hora:   infProf[0].hora,  SalaClases: infProf[0].sala_clases, profesor: infProf[0].nom_prof});
-			}
-		})
-		$.getJSON('/data-get-all-menu-teacher2', (Teacher) => {
-			this.setState({ teacherData2: [ ...Teacher ] }  );
-			const infProf2= this.state.teacherData2.filter(data => data.rut === getRut());
-			if (infProf2.length){
-				console.log(infProf2);
-				this.setState({NomPrueba:	infProf2[0].nom_ramo, fecha:   infProf2[0].fecha, curso: infProf2[0].cod_curso,
-				salaPrueba: infProf2[0].sala_clases});
-			}
-		})
+
+		$.getJSON('/data-get-all-menu-teacher').then(data => this.setState({ teacherClass: data}));
+		$.getJSON('/data-get-all-menu-teacher2').then(data => this.setState({ teacherQuest: data}));
 
 	};
 
 	render() {
-		const listClases = this.state.teacherData.map((data,index)=> <li className="list-group-item">  { this.state.NomRamo } ......... {this.state.Hora}...... {this.state.SalaClases}</li> );
-        const listPrueba = this.state.teacherData2.map((data,index)=> <li className="list-group-item">{this.state.NomPrueba} => {this.state.fecha} : Sala: {this.state.salaPrueba} </li>);
+		const filtroProf=this.state.teacherClass.filter(data => data.rut === getRut());
+		 const listClases = filtroProf.map((data,index)=>
+		 <li className="list-group-item">
+				<div>{data.nom_ramo}</div>
+				<div>{data.sala_clases}</div>
+				<div>{data.hora}</div>
+		  </li> );
+
+const filtroQuest=this.state.teacherQuest.filter(data => data.rut === getRut());
+const listQuest = filtroQuest.map((data,index)=>
+<li className="list-group-item">
+	   <div>Asignatura: {data.nom_ramo}</div>
+	   <div>fecha: {data.fecha}</div>
+	   <div>hora: {data.bloque}</div>
+	   <div>sala de clases: {data.sala_clases}</div>
+ </li> );
+
 		return (
 			<div>
 				<div className="div_titulo">
-					<NavMenu/>
+					<NavMenu rut={getRut()}/>
 					<h2 className="titulo">INICIO</h2>
 				</div>
-				<h2 className="titulo">Bienvenido : {this.state.profesor}</h2>
+
 				<div className="content">
 					<div className="panel-group" id="accordion">
 						<div className="panel panel-info">
@@ -84,7 +72,7 @@ class Mprofesor extends React.Component {
 									<div id="collapse3" className="panel-collapse collapse">
 										<div className="panel-body">
 											<ul className="nav nav-pills nav-stacked">
-											  {listPrueba}
+											  { listQuest }
 											</ul>
 										</div>
 									</div>

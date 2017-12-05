@@ -1,13 +1,17 @@
 import React from 'react';
 import NavMenu from './../../NavMenuProf';
 import Footer from './../../Footer';
+function getRut() {
+	const rut= (window.location.search.split('?rut=')[1]);
+	return rut;
+}
 class Eventos extends React.Component {
 
 	render() {
 		return (
 			<div>
 				<div className="div_titulo">
-		               <NavMenu/>
+				            <NavMenu rut={getRut()}/>
 									 <h2 className="titulo">EVENTOS</h2>
 	           </div>
 			   <div className="content">

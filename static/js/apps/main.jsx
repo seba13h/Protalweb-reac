@@ -12,6 +12,9 @@ import MenuAdmin from './components/Users/admin/MenuAdmin';
 import Malumno from './components/Users/admin/mAlumno';
 import Mprofesor from './components/Users/admin/mProfesor';
 import Mramos from './components/Users/admin/mRamos';
+import Mhorario from './components/Users/admin/mHorario';
+import Mcursos from './components/Users/admin/mCursos';
+
 
 import MenuProfesor from './components/Users/Teacher/menuProf';
 import EventosP from './components/Users/Teacher/Eventos';
@@ -43,6 +46,8 @@ ReactDOM.render(
         <Route path="/Admin/mAlumno" component={ Malumno } />
         <Route path="/Admin/mProfesor" component={ Mprofesor } />
         <Route path="/Admin/mRamos" component={ Mramos } />
+        <Route path="/Admin/mHorario" component={ Mhorario } />
+        <Route path="/Admin/mCursos" component={ Mcursos } />
 
         <Route path="/Profesor" component={ MenuProfesor } />
         <Route path="/Profesor/Eventos" component={ EventosP } />

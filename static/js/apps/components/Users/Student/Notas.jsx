@@ -2,7 +2,8 @@ import React from 'react';
 import NavMenu from './../../NavMenu';
 import Footer from './../../Footer';
 class Notas extends React.Component {
-
+	
+	
 	render() {
 		return (
 			<div>
@@ -21,12 +22,81 @@ class Notas extends React.Component {
 								</div>
 								<div id="collapse1" className="panel-collapse collapse in">
 									<div className="panel-body">
-										<ul className="nav nav-pills nav-stacked">
-
-											<li>Nota 1: 68</li>
-											<li>Nota 2: --</li>
-											<li>Nota 3: --</li>
-										</ul>
+										<table className="tc3" >
+											<tbody>
+										  <tr>
+										    <th>Nombre Alumno</th>
+										    <th>Nota 1</th> 
+										    <th>Nota 2</th>
+										    <th>Nota 3</th>
+										    <th>Agregar Nota</th>
+										  </tr>
+										  <tr>
+										    <td>Pablo</td>
+										    <td>55</td>
+										    <td>77</td>
+										    <td>66</td>
+										    <td className="tc5"><button className="tc4">+</button></td>
+										  </tr>
+										  <tr>
+										    <td>Susan</td>
+										    <td>66</td>
+										    <td>11</td>
+										    <td>66</td>
+										    <td className="tc5"><button className="tc4">+</button></td>
+										  </tr>
+										  <tr>
+										    <td>Johny</td>
+										    <td>51</td>
+										    <td>10</td>
+										    <td>66</td>
+										    <td className="tc5"><button className="tc4">+</button></td>
+										  </tr>
+										  </tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div className="panel panel-default">
+								<div className="panel-heading">
+									<h4 className="panel-title">
+										<a data-toggle="collapse" data-parent="#accordion" href="#collapse2">Matemáticas</a>
+									</h4>
+								</div>
+								<div id="collapse2" className="panel-collapse collapse in">
+									<div className="panel-body">
+										<table className="tc3" >
+											<tbody>
+										  <tr>
+										    <th>Nombre Alumno</th>
+										    <th>Nota 1</th> 
+										    <th>Nota 2</th>
+										    <th>Nota 3</th>
+										    <th>Agregar Nota</th>
+										  </tr>
+										  <tr>
+										    <td>Pablo</td>
+										    <td>55</td>
+										    <td>55</td>
+										    <td>77</td>
+										    <td className="tc5"><button className="tc4">+</button></td>
+										  </tr>
+										  <tr>
+										    <td>Susan</td>
+										    <td>66</td>
+										    <td>55</td>
+										    <td>11</td>
+										    <td className="tc5"><button className="tc4">+</button></td>
+										  </tr>
+										  <tr>
+										    <td>Johny</td>
+										    <td>51</td>
+										    <td>55</td>
+										    <td>10</td>
+										    <td className="tc5"><button className="tc4">+</button></td>
+										  </tr>
+										  </tbody>
+										</table>
 									</div>
 								</div>
 							</div>

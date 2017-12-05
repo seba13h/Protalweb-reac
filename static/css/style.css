@@ -76,10 +76,6 @@ footer{
 	text-align: center;
 }
 
-
-
-
-
 #parrafo-acordeon{
 	color:white;
 }
@@ -282,12 +278,10 @@ background-color: rgb(15, 199, 27);
 	padding: 0.1em;
 }
 
-
 @media screen and (min-width: 600px) {
   .content {width: 50%;
   	margin:auto;}
 }
-
 .correct {
 	color: green !important;
 }

@@ -13,6 +13,7 @@ class Eventos extends React.Component {
 			   <div className="content">
 
 		<div className="content_2">
+		
 		<div className="panel panel-success">
 			    <div className="panel-heading">
 			      <h4 className="panel-title">
@@ -30,10 +31,62 @@ class Eventos extends React.Component {
 			      	</div>
 			    </div>
 			  </div>
+			  
+			<div className="panel panel-default">
+			  <div className="panel-heading"><h4>Cursos</h4></div>
+			  <div className="panel-body tc6">
 
+
+			  		<table className="tc3" >
+			  			<tbody>
+			  		  <tr>
+			  		    <th></th>
+			  		    <th>Agregar Evento</th>
+			  		    
+			  		  </tr>
+			  		  <tr>
+			  		  <td>
+			  		    Matemáticas
+			  		  	
+			  		  </td>
+			  		  <td>
+			  		  	
+					  	<button type="button" className="btn btn-primary tc7" data-dismiss="modal">Evento</button>  
+		                <button type="button" className="btn btn-danger tc7" data-dismiss="modal">Certamen</button>
+			  		  </td>
+			  		  </tr>
+			  		  <tr>
+			  		    <td>
+			  		    Matemáticas
+			  		  	
+			  		  </td>
+			  		  <td>
+			  		  	
+					  	<button type="button" className="btn btn-primary tc7" data-dismiss="modal">Evento</button>  
+		                <button type="button" className="btn btn-danger tc7" data-dismiss="modal">Certamen</button>
+			  		  </td>
+			  		  </tr>
+			  		  <tr>
+			  		    <td>
+			  		    Matemáticas
+			  		  	
+			  		  </td>
+			  		  <td>
+			  		  	
+					  	<button type="button" className="btn btn-primary tc7" data-dismiss="modal">Evento</button>  
+		                <button type="button" className="btn btn-danger tc7" data-dismiss="modal">Certamen</button>
+			  		  </td>
+			  		  </tr>
+			  		  </tbody>
+			  		</table>
+
+				  	
+			</div>
 		</div>
-	</div>
-	<div className="div_Footer">
+		</div>
+	
+  </div>
+			<div className="div_Footer">
 		               <Footer/>
 	           </div>
   </div>

@@ -6,6 +6,7 @@ function openNav() {
 function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
 }
+
 class NavMenuProf extends React.Component {
     openNav() {
 	    document.getElementById("mySidenav").style.width = "45%";
@@ -16,16 +17,23 @@ class NavMenuProf extends React.Component {
 	}
 
     render() {
+        const rutaPerfil=`/Profesor/perfil?rut=${this.props.rut}`;
+        const rutaInicio=`/Profesorl?rut=${this.props.rut}`;
+        const rutaNotas=`/Profesor/Notas?rut=${this.props.rut}`;
+        const rutaHorario=`/Profesor/horario?rut=${this.props.rut}`;
+        const rutaEventos=`/Profesor/Eventos?rut=${this.props.rut}`;
+        const rutaCursos=`/Profesor/Curso?rut=${this.props.rut}`;
+        console.log(this.props.rut);
         return (
             <div className="display">
                 <div id="mySidenav" className="sidenav">
                     <a className="closebtn" onClick={()=>closeNav()}>&times;</a>
-                    <a href="/Profesor" >Inicio </a>
-                    <a href="/Profesor/perfil">Perfil</a>
-                    <a href="/Profesor/Notas">Notas</a>
-                    <a href="/Profesor/horario">Horario</a>
-                    <a href="/Profesor/Eventos">Eventos</a>
-                    <a href="/Profesor/Curso">Cursos</a>
+                    <a href={rutaInicio} >Inicio </a>
+                    <a href={rutaPerfil} > Perfil </a>
+                    <a href={rutaNotas} >Notas</a>
+                    <a href={rutaHorario} >Horario</a>
+                    <a href={rutaEventos} >Eventos</a>
+                    <a href={rutaCursos} >Cursos</a>
                 </div>
                 <div className="openNave">
                 <span className="openNav" onClick={()=>openNav()}>&#9776;</span>
