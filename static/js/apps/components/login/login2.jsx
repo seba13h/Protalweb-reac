@@ -36,6 +36,7 @@ class Login2 extends Component {
       $.getJSON('/data-get-all-rut-admin', (rutAdmin) => {
         $.getJSON('/data-get-all-rut-teacher', (rutTeacher) => {
         this.setState({ availableRut: [ ...rutTeacher,...rutUser, ...rutAdmin ]});
+        console.log(this.state.availableRut)
         })
       })
     });

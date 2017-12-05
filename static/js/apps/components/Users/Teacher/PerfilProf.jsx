@@ -1,7 +1,10 @@
 import React from 'react';
 import NavMenu from './../../NavMenuProf';
 import Footer from './../../Footer';
-
+function getRut() {
+	const rut= (window.location.search.split('?rut=')[1]);
+	return rut;
+}
  class  PerfilProf extends React.Component {
 	ChangeName () {
 		this.setState({
@@ -12,11 +15,10 @@ import Footer from './../../Footer';
 	constructor(props) {
 			super(props);
 			this.state = {
-			nombre : 'sebastian',
+			nombre : '',
 			carrera:'informatica',
-			correo: 'xd',
-			telefono:'123',
-			direccion:'casa'
+			correo: '',
+			telefono:''
 			}
 			this.ChangeName = this.ChangeName.bind(this);
 		  }

@@ -21,9 +21,9 @@ class Mprofesor extends React.Component {
 			bloquePrueba:'',
 			salaPrueba:'',
 			curso:'',
-			profesor:''
+			profesor:'',
+			rut:''
 		  }
-
 		}
 
 	componentWillMount() {
@@ -32,7 +32,7 @@ class Mprofesor extends React.Component {
 			const infProf= this.state.teacherData.filter(data => data.rut === getRut());
 			if (infProf.length){
 				console.log(infProf);
-				this.setState({NomRamo:	infProf[1].nom_ramo, Hora:   infProf[1].hora,  SalaClases: infProf[1].sala_clases, profesor: infProf[1].nom_prof});
+				this.setState({rut:getRut() ,NomRamo:	infProf[1].nom_ramo, Hora:   infProf[1].hora,  SalaClases: infProf[1].sala_clases, profesor: infProf[1].nom_prof});
 				console.log(this.state);
 				this.setState({NomRamo:	infProf[0].nom_ramo, Hora:   infProf[0].hora,  SalaClases: infProf[0].sala_clases, profesor: infProf[0].nom_prof});
 			}
@@ -55,7 +55,7 @@ class Mprofesor extends React.Component {
 		return (
 			<div>
 				<div className="div_titulo">
-					<NavMenu />
+					<NavMenu/>
 					<h2 className="titulo">INICIO</h2>
 				</div>
 				<h2 className="titulo">Bienvenido : {this.state.profesor}</h2>

@@ -21,7 +21,7 @@ class NavMenuProf extends React.Component {
                 <div id="mySidenav" className="sidenav">
                     <a className="closebtn" onClick={()=>closeNav()}>&times;</a>
                     <a href="/Profesor" >Inicio </a>
-                    <a href="/Profesor/perfil" >Perfil</a>
+                    <a href="/Profesor/perfil">Perfil</a>
                     <a href="/Profesor/Notas">Notas</a>
                     <a href="/Profesor/horario">Horario</a>
                     <a href="/Profesor/Eventos">Eventos</a>
