@@ -4,12 +4,7 @@ class mAlumno extends React.Component {
 constructor(props){
 super(props);
 this.state= {
-nombre:{newClass : "none"},
-rut: {newClass : "none"},
-pass:{newClass : "none"},
-email: {newClass : "none"},
-telefono: {newClass : "none"},
-contraseña: {newClass : "none"}
+   dataAlumno:[]
 }
 this.validarAlumno= this.validarAlumno.bind(this);
 }
@@ -79,13 +74,13 @@ alert("telefono vacio");
 render() {
 return (
 <div>
-  
+
     <div className="div_titulo">
       <a href="/Admin"> <button id="tc1" className="glyphicon glyphicon-menu-left return"></button></a>
       <h2 className="titulo">MANTENEDOR ALUMNO</h2>
     </div>
   <div className="content">
-    
+
     <h1>Listado de alumnos</h1>
     <div className="tc11">
       <button id ="tc12" className="btn btn-primary " data-toggle="modal" data-target="#myModal" >
@@ -105,7 +100,7 @@ return (
     <table id="agregar-alumno" className="table table-bordered">
       <thead>
         <tr>
-          <th>Nombres</th> 
+          <th>Nombres</th>
           <th>Curso</th>
           <th>Rut</th>
           <th>Acciones</th>
@@ -119,7 +114,7 @@ return (
         </td>
       </thead>
     </table>
-  
+
   </div>
 
   <div className="modal fade" id="myModal" role="dialog">
@@ -232,7 +227,7 @@ return (
 
 
 
-  
+
 
 </div>
 )

@@ -3,13 +3,14 @@ import React from 'react';
 class MenuAdmin extends React.Component {
 
     render() {
+
         return (
             <div>
                 <div className="div_titulo">
                     <h2 className="titulo">MENU</h2>
 
                       <button type="button" className="btn btn-danger" data-dismiss="modal">Cerrar Sesión</button>
-                    
+
                 </div>
                 <div className="panel-heading menu-admin">
                     <h4 className="panel-title">
