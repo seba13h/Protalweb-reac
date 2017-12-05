@@ -218,7 +218,7 @@ footer{
 }
 .footer{
 	text-align: center;
-	position: absolute;
+
 	bottom: 0;
 	width: 100%;
 	height: 100px;
@@ -320,4 +320,7 @@ td:nth-child(5):hover{background-color: green;opacity: 0.5;}*/
 
 .titulo{
 	margin-right: 30%;
+}
+.event{
+	margin-left: 10em;
 }

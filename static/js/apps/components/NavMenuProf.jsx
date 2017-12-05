@@ -18,7 +18,7 @@ class NavMenuProf extends React.Component {
 
     render() {
         const rutaPerfil=`/Profesor/perfil?rut=${this.props.rut}`;
-        const rutaInicio=`/Profesorl?rut=${this.props.rut}`;
+        const rutaInicio=`/Profesor?rut=${this.props.rut}`;
         const rutaNotas=`/Profesor/Notas?rut=${this.props.rut}`;
         const rutaHorario=`/Profesor/horario?rut=${this.props.rut}`;
         const rutaEventos=`/Profesor/Eventos?rut=${this.props.rut}`;

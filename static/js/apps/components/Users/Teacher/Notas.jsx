@@ -6,7 +6,21 @@ function getRut() {
 	return rut;
 }
 class Notas extends Component {
+	 constructor(props){
+			super(props);
+			this.state= {
+				dataRamo: []
+			}
+		}
+			componentWillMount() {
+						$.getJSON('/data-get-all-menu-teacher').then(data => this.setState({ dataRamo: data}));
+	 }
 	render() {
+		const filtroProf= this.state.dataRamo.filter((data,index)=> data.rut === getRut());
+		const RamoN = filtroProf.map((data,index)=>
+		<h4 className="panel-title">
+		<a data-toggle="collapse" data-parent="#accordion" href="#collapse1">{data.nom_ramo}</a>
+	</h4>);
 		return (
 			<div>
 				<div className="div_titulo">
@@ -18,9 +32,7 @@ class Notas extends Component {
 						<div className="panel-group" id="accordion">
 							<div className="panel panel-default">
 								<div className="panel-heading">
-									<h4 className="panel-title">
-										<a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Gestion Empresarial</a>
-									</h4>
+										{RamoN}
 								</div>
 								<div id="collapse1" className="panel-collapse collapse in">
 									<div className="panel-body">
@@ -40,20 +52,7 @@ class Notas extends Component {
 										    <td>66</td>
 										    <td className="tc5"><button className="tc4">+</button></td>
 										  </tr>
-										  <tr>
-										    <td>Susan</td>
-										    <td>66</td>
-										    <td>11</td>
-										    <td>66</td>
-										    <td className="tc5"><button className="tc4">+</button></td>
-										  </tr>
-										  <tr>
-										    <td>Johny</td>
-										    <td>51</td>
-										    <td>10</td>
-										    <td>66</td>
-										    <td className="tc5"><button className="tc4">+</button></td>
-										  </tr>
+
 										  </tbody>
 										</table>
 									</div>
