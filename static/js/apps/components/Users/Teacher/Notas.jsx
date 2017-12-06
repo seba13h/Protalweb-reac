@@ -2,6 +2,10 @@ import React, {Component} from 'react';
 import NavMenu from './../../NavMenuProf';
 import Footer from './../../Footer';
 
+function appendNote(id, nota) {
+	document.getElementById(`'${id}'`)
+	console.log(document.getElementById(`'${id}'`));
+}
 function getRut() {
 	const rut= (window.location.search.split('?rut=')[1]);
 	return rut;
@@ -14,15 +18,48 @@ class Notas extends Component {
 				dataNota:[]
 			}
 		}
-			componentWillMount() {
+			componentDidMount() {
+
 						$.getJSON('/data-get-all-menu-teacher').then(data => this.setState({ dataRamo: data}));
-						$.getJSON('/data-get-all-notasUsersr').then(data => this.setState({ dataNota: data}));
-	 }
+						$.getJSON('/data-get-all-notasUsers').then(data => this.setState({ dataNota: data}));
+						const filtroNota= this.state.dataNota.filter((data,index)=> data.rut === getRut());
+						const NotaA = filtroNota.map((data,index) => {
+							console.log(data.numero_nota);
+							if (data.numero_nota > 1)  {
+								appendNote(`${data.rut_alu}`, data.nota);
+							}
+
+					 });
+					}
 	render() {
+		const filtroNota= this.state.dataNota.filter((data,index)=> data.rut === getRut());
+		const NotaA = filtroNota.map((data,index) => {
+				const note = data.numero_nota === 1 ? (
+						<tr>
+						<td>{data.nom_alu}</td>
+						<td>{data.nota}</td>
+						<td id={`${data.rut_alu}`}>{data.detalle_nota}</td>
+						<td className="tc5"><button
+							className="tc4">+</button></td>
+						</tr> ):null
+				return (
+					 note
+				 );
+		})
+
+	// 	 const NotaA= filtroNota.map((data,index)=>
+	// 	 (
+	// 	<tr>
+	//    <td>{data.nom_alu}</td>
+	// 	 <td>{data.nota}</td>
+	// 	 <td>{data.detalle_nota}</td>
+	// 	 <td className="tc5"><button className="tc4">+</button></td>
+	// 	 </tr>)
 
 
 		const filtroProf= this.state.dataRamo.filter((data,index)=> data.rut === getRut());
 		const RamoN = filtroProf.map((data,index)=>
+		(
 		<div className="panel panel-default">
 		<div className="panel-heading">
 		<h4 className="panel-title">
@@ -35,25 +72,16 @@ class Notas extends Component {
 					<tbody>
 					<tr>
 						<th>Nombre Alumno</th>
-						<th>Nota 1</th>
-						<th>Nota 2</th>
-						<th>Nota 3</th>
+						<th>Nota </th>
 						<th>Agregar Nota</th>
+						<th>Detalle Nota</th>
 					</tr>
-					<tr>
-
-						<td>Pablo</td>
-						<td>55</td>
-						<td>77</td>
-						<td>66</td>
-						<td className="tc5"><button className="tc4">+</button></td>
-						</tr>
-
+			 			{NotaA}
 					</tbody>
 				</table>
 			</div>
 		</div>
-	</div>
+	</div>)
 		);
 		return (
 			<div>

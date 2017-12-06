@@ -20,9 +20,9 @@ class NavMenuProf extends React.Component {
         const rutaPerfil=`/Profesor/perfil?rut=${this.props.rut}`;
         const rutaInicio=`/Profesor?rut=${this.props.rut}`;
         const rutaNotas=`/Profesor/Notas?rut=${this.props.rut}`;
-        const rutaHorario=`/Profesor/horario?rut=${this.props.rut}`;
+        const rutaHorario=`/Profesor/Horario?rut=${this.props.rut}`;
         const rutaEventos=`/Profesor/Eventos?rut=${this.props.rut}`;
-        const rutaCursos=`/Profesor/Curso?rut=${this.props.rut}`;
+
         console.log(this.props.rut);
         return (
             <div className="display">
@@ -33,7 +33,7 @@ class NavMenuProf extends React.Component {
                     <a href={rutaNotas} >Notas</a>
                     <a href={rutaHorario} >Horario</a>
                     <a href={rutaEventos} >Eventos</a>
-                    <a href={rutaCursos} >Cursos</a>
+
                 </div>
                 <div className="openNave">
                 <span className="openNav" onClick={()=>openNav()}>&#9776;</span>

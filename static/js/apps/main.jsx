@@ -20,6 +20,7 @@ import MenuProfesor from './components/Users/Teacher/menuProf';
 import EventosP from './components/Users/Teacher/Eventos';
 import NotasP from './components/Users/Teacher/Notas';
 import PerfilP from './components/Users/Teacher/PerfilProf';
+import HorarioP from './components/Users/Teacher/Horario';
 
 import Login2 from './components/Login/Login2';
 
@@ -53,6 +54,7 @@ ReactDOM.render(
         <Route path="/Profesor/Eventos" component={ EventosP } />
         <Route path="/Profesor/Notas" component={ NotasP } />
         <Route path="/Profesor/perfil" component={ PerfilP } />
+        <Route path="/Profesor/Horario" component={ HorarioP } />
     </Router>,
 
     document.getElementById('app')

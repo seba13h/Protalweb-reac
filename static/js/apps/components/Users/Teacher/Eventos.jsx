@@ -24,8 +24,8 @@ class Eventos extends React.Component {
 		<tr>
 		<td>{data.nom_ramo}</td>
 		<td>
-			<button type="button" className="btn btn-primary tc7" data-dismiss="modal">Trabajo</button>
-			<button type="button" className="btn btn-primary tc7" data-dismiss="modal">Certamen</button>
+			<button type="button" className="btn btn-primary tc7" data-dismiss="modal"> Agregar Evaluacion</button>
+
 		</td>
 	</tr>
 	);
@@ -70,8 +70,8 @@ class Eventos extends React.Component {
 								<table className="tc3" >
 									<tbody>
 										<tr>
-											<th></th>
-											<th>Agregar Evaluacion</th>
+											<th> Ramo </th>
+											<th> </th>
 										</tr>
                    				 {Evalua}
 									</tbody>

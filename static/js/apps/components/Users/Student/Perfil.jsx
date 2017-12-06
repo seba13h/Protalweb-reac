@@ -2,57 +2,54 @@ import React from 'react';
 import NavMenu from './../../NavMenu';
 import Footer from './../../Footer';
 
- class  Perfil extends React.Component {
-	ChangeName () {
-		this.setState({
-			nombre : 'mario',
-		    })
-		 };
-		 constructor(props) {
+function getRut() {
+	const rut= (window.location.search.split('?rut=')[1]);
+	return rut;
+}
+ class Perfil extends React.Component {
+ 	constructor(props) {
 			super(props);
 			this.state = {
-			nombre:{} ,
-			carrera:{},
-			correo:{},
-			telefono:{},
-			direccion:{},
-			AllUser:{}
+				Alumno: [],
+				NomProf:'',
+				email:'',
+				telefono:''
 			}
-			this.ChangeName = this.ChangeName.bind(this);
-		  }
-		 componentWillMount() {
-				$.getJSON('/data-get-all-user', (rutAlu) => {
-				this.setState({ AllUser: rutAlu});
-			});
-		  }
-
+	}
+	
+		componentWillMount() {
+		$.getJSON('/data-get-all-rut-user', (Student) => {
+					this.setState({ Alumno: [ ...Student ]});
+					const filtroProf=this.state.Alumno.filter(data => data.rut === getRut());
+				   this.setState({NomProf: filtroProf[0].nom_alu, email:filtroProf[0].email, telefono: filtroProf[0].telefono })
+				   console.log(filtroProf[0].nom_alu);
+			})
+		}
 
 	render() {
 		return (
 			<div>
 				<div className="div_titulo">
-		               <NavMenu/>
+		               <NavMenu rut={getRut()}/>
 					   <h2 className="titulo">PERFIL</h2>
 	           </div>
 
 				<div  className ="content">
 					<div  className ="panel panel-success">
 						<div  className ="panel-heading">Información del Usuario</div>
-						<div  className ="panel-body" onClick ={this.ChangeName}>
-							<span>nombre: {this.state.nombre}		</span>
+						<div  className ="panel-body" >
+							<span>nombre: {this.state.NomProf}</span>
 						</div>
 						<div  className ="panel-footer">
-							<span>carrera {this.state.carrera}			</span>
+							<span>Tipo usuario: Alumno.			</span>
 						</div>
 						<div  className ="panel-body">
-							<span>correo: {this.state.correo}		</span>
+							<span>correo:{this.state.email}		</span>
 						</div>
 						<div  className ="panel-footer">
-							<span>		</span>
+							<span>Telefono: {this.state.telefono}	</span>
 						</div>
-						<div  className ="panel-body">
-							<span>Direccion: {this.state.direccion}	</span>
-						</div>
+							
 					</div>
 
 				</div>

@@ -36,7 +36,6 @@ class Login2 extends Component {
       $.getJSON('/data-get-all-rut-admin', (rutAdmin) => {
         $.getJSON('/data-get-all-rut-teacher', (rutTeacher) => {
         this.setState({ availableRut: [ ...rutTeacher,...rutUser, ...rutAdmin ]});
-        console.log(this.state.availableRut);
         })
       })
     });
@@ -77,12 +76,12 @@ class Login2 extends Component {
 
         // PROFESOR
         if(isCorrectPassword(pw, pws, rut)[0].tipo_usuario === 1){
-          console.log(isCorrectPassword(pw, pws, rut)[0]);
+
           window.location.href = `/Profesor?rut=${isCorrectPassword(pw, pws, rut)[0].rut}`;
         }
 
         if(isCorrectPassword(pw, pws, rut)[0].tipo_usuario === 2){
-          window.location.href = `/Alumno?rut=${isCorrectPassword(pw, pws, rut)[0].rut}`;
+          window.location.href = `/sesion?rut=${isCorrectPassword(pw, pws, rut)[0].rut}`;
         }
       }
     }
