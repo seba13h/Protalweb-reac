@@ -33,7 +33,7 @@ class NavMenuProf extends React.Component {
                     <a href={rutaNotas} >Notas</a>
                     <a href={rutaHorario} >Horario</a>
                     <a href={rutaEventos} >Eventos</a>
-
+                    <a href='/' >Cerrar Sesion</a>
                 </div>
                 <div className="openNave">
                 <span className="openNav" onClick={()=>openNav()}>&#9776;</span>

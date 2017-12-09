@@ -16,16 +16,29 @@ class mAlumno extends React.Component {
       email: { newClass: "none" },
       telefono: { newClass: "none" },
       contraseña: { newClass: "none" },
+      curso: { newClass: "none" },
       studentClass: [],
     }
     this.validarAlumno = this.validarAlumno.bind(this);
     this.insertarData = this.insertarData.bind(this);
+    this.actualizarData = this.actualizarData.bind(this);
   }
 
   componentWillMount() {
     $.getJSON('/data-get-all-user').then(data => this.setState({ studentClass: data }));
   };
 
+  actualizarData() {
+    const rut = this.refs.inputRut2.value;
+    const name = this.refs.inputNombre2.value;
+    const pw = this.refs.inputpw4.value;
+    const email = this.refs.inputemail2.value;
+    const phone = this.refs.inputTel2.value;
+    const cod_curso = this.refs.inputCurso2.value;
+    const tipo_usuario = 2;
+    const dataAlumno = { rut, name, email, phone, pw, cod_curso, tipo_usuario };
+    axios.post("/data-update-user", dataAlumno);
+  }
 
   insertarData() {
     const rut = this.refs.inputRut2.value;
@@ -36,23 +49,21 @@ class mAlumno extends React.Component {
     const cod_curso = this.refs.inputCurso2.value;
     const tipo_usuario = 2;
     const dataAlumno = { rut, name, email, phone, pw, cod_curso, tipo_usuario };
-    if (this.validarAlumno){
-      console.log('aca paso yo' );
-      axios.post("/data-insert-user",dataAlumno);
-    }
+    axios.post("/data-insert-user", dataAlumno);
   }
 
   validarAlumno() {
-    const rut = this.refs.inputRut.value;
-    const name = this.refs.inputNombre.value;
-    const pw = this.refs.inputpw.value;
-    const email = this.refs.inputemail.value;
-    const phone = this.refs.inputTel.value;
-    const pw2 = this.refs.inputpw2.value;
+    const rut = this.refs.inputRut2.value;
+    const name = this.refs.inputNombre2.value;
+    const pw = this.refs.inputpw4.value;
+    const email = this.refs.inputemail2.value;
+    const phone = this.refs.inputTel2.value;
+    const pw2 = this.refs.inputpw5.value;
+    const curso = this.refs.inputCurso2.value;
 
     const validateRut = /^(\d{1,2}(\.?\d{3}){2})\-([\dkK])$/;
     const validateEmail = /(^[0-9a-zA-Z]+(?:[._][0-9a-zA-Z]+)*)@([0-9a-zA-Z]+(?:[._-][0-9a-zA-Z]+)*\.[0-9a-zA-Z]{2,3})$/;
-    const validateName = /^[a-zA-Z\-]{2,30}$/;
+    //const validateName = /^[a-zA-Z\-]{2,30}$/;
 
     if (rut != "") {
       if (validateRut.test(rut)) {
@@ -61,22 +72,21 @@ class mAlumno extends React.Component {
       } else {
         this.setState({ rut: { newClass: "dataIncorrect" } });
         alert("rut incorrecto");
+        return false;
       }
     } else {
       this.setState({ rut: { newClass: "none" } });
       alert("rut vacio");
+      return false;
     }
 
     if (name != "") {
-      if (validateName.test(name)) {
-        this.setState({ name: { newClass: "dataCorrect" } });
-      } else {
-        this.setState({ name: { newClass: "dataIncorrect" } });
-        alert("nombre incorrecto")
-      }
-    } else {
+      this.setState({ name: { newClass: "dataCorrect" } });
+    }
+    else {
       this.setState({ name: { newClass: "none" } });
       alert("nombre vacio");
+      return false;
     }
     if (email != "") {
       if (validateEmail.test(email)) {
@@ -89,23 +99,38 @@ class mAlumno extends React.Component {
     } else {
       this.setState({ email: { newClass: "none" } });
       alert("email vacio");
-    }
-
-    if (pw != "") {
-      this.setState({ pass: { newClass: "dataCorrect" } });
-    } else {
-      this.setState({ pass: { newClass: "none" } });
-      alert("pw vacia");
+      return false;
     }
     if (phone != "") {
       this.setState({ phone: { newClass: "dataCorrect" } });
     } else {
       this.setState({ phone: { newClass: "none" } });
       alert("telefono vacio");
-
+      return false;
     }
-    return true;
+    if (pw != "" && pw2 != "") {
+      if (pw === pw2) {
+        this.setState({ pasword: { newClass: "dataCorrect" } });
+      } else {
+        this.setState({ pasword: { newClass: "dataIncorrect" } });
+        alert('No coinciden las claves');
+        return false;
+      }
+     } else {
+      this.setState({ pasword: { newClass: "none" } });
+      alert('Ingrese ambas contraseñas');
+      return false;
+    }
+    if (curso != "") {
+      this.setState({ curso: { newClass: "dataCorrect" } })
+    } else {
+      return false;
+    }
+
+    alert('Insertando alumno');
+    this.insertarData();
   }
+
   render() {
     const rutaMenu = `/Admin?rut=${getRut()}`;
     const lista = this.state.studentClass.map((data, index) =>
@@ -116,7 +141,7 @@ class mAlumno extends React.Component {
         <td>{data.cod_curso}</td>
         <td>{data.telefono}</td>
         <td className="zelect_rut">
-          <button className="glyphicon glyphicon-pencil" data-toggle="modal" data-target="#myModal2"></button>
+          <button className="glyphicon glyphicon-pencil" data-toggle="modal" data-target="#myModal2" ></button>
           <button className="glyphicon glyphicon-trash" data-toggle="modal" data-target="#myModal3"></button>
         </td>
       </tr>);
@@ -156,7 +181,6 @@ class mAlumno extends React.Component {
                 <th>Telefono</th>
                 <th>Acciones</th>
               </tr>
-
               {lista}
             </thead>
           </table>
@@ -179,7 +203,7 @@ class mAlumno extends React.Component {
                   </div>
                   <div className="form-group">
                     Nombre
-              <input ref="inputNombre2" type="" className="form-control" id="nombre" />
+              <input ref="inputNombre2" className="form-control" id="nombre" />
                   </div>
                   <div className="form-group">
                     Email
@@ -191,19 +215,25 @@ class mAlumno extends React.Component {
                   </div>
                   <div className="form-group">
                     Curso
-              <input ref="inputCurso2" className="form-control" id="curso" />
+                    <select className="form-control" ref="inputCurso2">
+                      <option>192-A</option>
+                      <option>192-B</option>
+                      <option>292-A</option>
+                      <option>292-B</option>
+                      <option>329-A</option>
+                      <option>329-B</option>
+                    </select>
                   </div>
                   <div className="form-group">
                     Contraseña:
-              <input ref="inputpw4" className="form-control" id="pwd" />
+              <input ref="inputpw4" type="password" className="form-control" id="pwd" />
                   </div>
                   <div className="form-group">
                     Repita Contraseña:
-              <input ref="inputpw5" className="form-control" id="pwd2" />
+              <input ref="inputpw5" type="password" className="form-control" id="pwd2" />
                   </div>
-                  <button type="button" className="btn btn-primary" onClick={this.insertarData}>Aceptar</button>
+                  <button type="button" className="btn btn-primary" onClick={this.validarAlumno}>Aceptar</button>
                 </form>
-
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-danger" data-dismiss="modal">Cerrar</button>
@@ -225,7 +255,7 @@ class mAlumno extends React.Component {
                 <form>
                   <div className="form-group">
                     Rut
-              <input ref="inputRut" className="form-control" id="rut" />
+              <input ref="inputRut" className="form-control" id="rut" disabled />
                   </div>
                   <div className="form-group">
                     Nombre
@@ -240,8 +270,23 @@ class mAlumno extends React.Component {
               <input ref="inputTel" className="form-control" id="telefono" />
                   </div>
                   <div className="form-group">
+                    Curso
+                    <select className="form-control" ref="inputCurso2">
+                      <option>192-A</option>
+                      <option>192-B</option>
+                      <option>292-A</option>
+                      <option>292-B</option>
+                      <option>329-A</option>
+                      <option>329-B</option>
+                    </select>
+                  </div>
+                  <div className="form-group">
                     Contraseña:
-              <input ref="inputpw" className="form-control" id="pwd" />
+              <input ref="inputpw" type="password" className="form-control" id="pwd" />
+                  </div>
+                  <div className="form-group">
+                    Repita Contraseña:
+              <input ref="inputpw2" type="password" className="form-control" id="pwd2" />
                   </div>
                   <button type="submit" className="btn btn-primary" onClick={this.insertarData}>Aceptar</button>
                 </form>
@@ -254,7 +299,7 @@ class mAlumno extends React.Component {
 
           </div>
         </div>
-
+        {/* // {////////////////////////////////////////////////////77 */}
         <div className="modal fade" id="myModal3" role="dialog">
           <div className="modal-dialog">
             <div className="modal-content">
@@ -265,20 +310,14 @@ class mAlumno extends React.Component {
               <div className="modal-body">
 
                 <p>Seguro que desea eliminar el registro?</p>
-                <button type="submit" className="btn btn-primary" onClick={this.validarAlumno}>Aceptar</button>
+                <button type="submit" className="btn btn-primary" >Aceptar</button>
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-danger" data-dismiss="modal">Cerrar</button>
               </div>
-            </div> {/* Modal Modificar */}
-
+            </div>
           </div>
         </div>
-
-
-
-
-
       </div>
     )
   }

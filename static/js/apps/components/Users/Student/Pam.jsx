@@ -1,13 +1,43 @@
 import React from 'react';
 import NavMenu from './../../NavMenu';
 import Footer from './../../Footer';
+function getRut() {
+	return window.location.search.split('?rut=')[1];
+}
+function getDate(){
+	console.log(new Date().toJSON().slice(0,10).replace(/-/g,'/'));
+return new Date().toJSON().slice(0,10).replace(/-/g,'/');
+}
+
+
 class Pam extends React.Component {
+	constructor(props){
+		super(props);
+		this.state= {
+		  userQuest: [],
+		  userClass: [],
+		  userEvent:[]
+		}
+	  }
+
+	  componentWillMount() {
+				$.getJSON('/data-get-all-menu-User').then(data => this.setState({ userClass: data}));
+				$.getJSON('/data-get-all-menu-User2').then(data => this.setState({ userQuest: data}));
+			};
 
 	render() {
+		const listClases = this.state.userClass.map((data,index)=>
+		<li className="list-group-item">{data.cod_ramo}		{data.hora}	{data.sala_clases}</li>
+		  );
+		  const filtroQuest=this.state.userQuest.filter(data => data.fecha == getDate());
+		  const listQuest = filtroQuest.map((data,index)=>(
+		  		<li className="list-group-item">{data.cod_curso}: {data.bloque}  Sala: {data.sala_clases} {data.descripcion}</li>
+		  )
+		);
 		return (
 			<div>
 				<div className="div_titulo">
-					<NavMenu />
+				<NavMenu rut={getRut()}/>
 					<h2 className="titulo">INICIO</h2>
 				</div>
 				<div className="content">
@@ -21,9 +51,7 @@ class Pam extends React.Component {
 							<div id="collapse1" className="panel-collapse collapse in">
 								<div className="panel-body">
 									<ul className="nav nav-pills nav-stacked">
-										<li className="list-group-item">Gestion Empresarial		09:40 -11:20	G202</li>
-										<li className="list-group-item">Matemáticas II			09:40 -11:20	U101</li>
-										<li className="list-group-item">Sistemas de Inf I		09:40 -11:20	U202</li>
+									{listClases}
 									</ul>
 								</div>
 							</div>
@@ -37,7 +65,6 @@ class Pam extends React.Component {
 									<div className="panel-body">
 										<ul className="nav nav-pills nav-stacked">
 											<li className="list-group-item">Entrega ppt de administracion</li>
-											<li className="list-group-item">Enviar trabajo al profesor de matematicas</li>
 										</ul>
 									</div>
 								</div>
@@ -51,7 +78,7 @@ class Pam extends React.Component {
 									<div id="collapse3" className="panel-collapse collapse">
 										<div className="panel-body">
 											<ul className="nav nav-pills nav-stacked">
-												<li className="list-group-item">Administracion: 14:30 hr Sala: R303</li>
+													{listQuest}
 											</ul>
 										</div>
 									</div>

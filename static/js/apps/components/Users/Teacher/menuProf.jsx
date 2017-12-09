@@ -52,7 +52,7 @@ const listQuest = filtroQuest.map((data,index)=>
 						<div className="panel panel-info">
 							<div className="panel-heading">
 								<h4 className="panel-title">
-									<a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Clases de hoy</a>
+									<a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Clases</a>
 								</h4>
 							</div>
 							<div id="collapse1" className="panel-collapse collapse in">
@@ -66,7 +66,7 @@ const listQuest = filtroQuest.map((data,index)=>
 								<div className="panel panel-warning">
 									<div className="panel-heading">
 										<h4 className="panel-title">
-											<a data-toggle="collapse" data-parent="#accordion" href="#collapse3">Pruebas de hoy</a>
+											<a data-toggle="collapse" data-parent="#accordion" href="#collapse3">Pruebas </a>
 										</h4>
 									</div>
 									<div id="collapse3" className="panel-collapse collapse">

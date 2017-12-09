@@ -148,7 +148,7 @@ label {
 }
 
 #remember:checked ~ label[htmlFor=remember] {
-	background: #b5cd6
+	background: #b5cd60;
 }
 
 input[type="submit"] {
@@ -203,7 +203,7 @@ footer{
 	border-radius: 1px 1px 15px 15px;
 	background-color: rgb(15, 199, 27);
 	bottom: 0;
-	
+
 	width: 100%;
 	height: max-content;
 	text-align: center;
@@ -220,7 +220,7 @@ footer{
 	margin:auto;
 	width: 100%;
 }
-.menu-admin{    
+.menu-admin{
 	text-align: center;
 	background-color: #00a4ff;
 	margin-top: 1em;

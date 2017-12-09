@@ -18,8 +18,8 @@ class MenuAdmin extends React.Component {
                 <div className="div_titulo">
                     <h2  className="titulo">MENU</h2>
 
-                      <button type="button" className="btn btn-danger" data-dismiss="modal">Cerrar Sesión</button>
-                    
+                      <button  type="button" className="btn btn-danger" data-dismiss="modal"><a href = '/'>Cerrar Sesión</a></button>
+
                 </div>
                 <div className="panel-heading menu-admin">
                     <h4 className="panel-title">

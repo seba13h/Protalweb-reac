@@ -83,7 +83,10 @@ class Login2 extends Component {
         if(isCorrectPassword(pw, pws, rut)[0].tipo_usuario === 2){
           window.location.href = `/sesion?rut=${isCorrectPassword(pw, pws, rut)[0].rut}`;
         }
+      }else{
+        alert ('Usuario Incorreco');
       }
+
     }
 
   }
