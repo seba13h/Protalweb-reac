@@ -42,7 +42,8 @@ class Login2 extends Component {
   }
 
   validarRut(evt){
-    const rut = evt.target.value;
+    const rut2 = evt.target.value;
+    const rut = rut2.split('.').join("");
     const { availableRut } = this.state;
     let newClass = NONE_CLASS;
 
@@ -73,7 +74,6 @@ class Login2 extends Component {
         if(isCorrectPassword(pw, pws, rut)[0].tipo_usuario === 0){
           window.location.href = `/Admin?rut=${isCorrectPassword(pw, pws, rut)[0].rut}`;
         }
-
         // PROFESOR
         if(isCorrectPassword(pw, pws, rut)[0].tipo_usuario === 1){
 

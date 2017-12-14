@@ -32,18 +32,52 @@ app.post('/data-insert-user', function(req, res){
       console.error(error);
   });
 });
-
-app.post('/data-update-user', function(req, res){
+app.post('/data-insert-teacher', function(req, res){
   const data = req.body;
-  const { rut, name, email, phone, pw, cod_curso, tipo_usuario} = req.body;
-  const query = `update  alumno set  nom_alu = '${name}', email= '${email}', telefono =  '${phone}', contraseña = '${pw}' , cod_curso = '${cod_curso}' , tipo_usuario = ${tipo_usuario} where rut_alu=== '${rut}')`;
+  const { rut, name, email, phone, pw, tipo_usuario} = req.body;
+  const query = `insert into profesor(rut_prof, nom_prof, email, telefono, contraseña, tipo_usuario) values('${rut}', '${name}', '${email}', '${phone}', '${pw}', ${tipo_usuario})`;
   connection.query(query, (error, results, fields) => {
       console.error(error);
   });
 });
 
+app.post('/data-update-user', function(req, res){
+  const data = req.body;
+  const { rut, name, email, phone, pw, cod_curso, tipo_usuario} = req.body;
+  const query = `update  alumno set  nom_alu = '${name}', email= '${email}', telefono =  '${phone}', contraseña = '${pw}' , cod_curso = '${cod_curso}' , tipo_usuario = ${tipo_usuario} where rut_alu= '${rut}'`;
+  connection.query(query, (error, results, fields) => {
+      console.error(error);
+  });
+});
+app.post('/data-update-teacherr', function(req, res){
+  const data = req.body;
+  const { rut, name, email, phone, pw, tipo_usuario} = req.body;
+  const query = `update  profesor set  nom_prof = '${name}', email= '${email}', telefono =  '${phone}', contraseña = '${pw}' , tipo_usuario = ${tipo_usuario} where rut_prof= '${rut}'`;
+  connection.query(query, (error, results, fields) => {
+      console.error(error);
+  });
+});
 
-
+app.post('/data-delete-user', function(req, res){
+  const data = req.body;
+  const rut = data.rut_alu;
+  console.error(rut);
+  const query = `delete from alumno where rut_alu= '${rut}'`;
+  connection.query(query, (error, results, fields) => {
+      console.error(error);
+  });
+  console.error("eliminado....");
+});
+app.post('/data-delete-teacher', function(req, res){
+  const data = req.body;
+  const rut = data.rut_prof;
+  console.error(rut);
+  const query = `delete from profesor where rut_prof= '${rut}'`;
+  connection.query(query, (error, results, fields) => {
+      console.error(error);
+  });
+  console.error("eliminado....");
+});
 
 
 ////// GET
@@ -51,6 +85,9 @@ app.get('/data-get-all-rut-user', function(req, res){
   connection.query('SELECT rut_alu as rut, nom_alu,email,telefono, contraseña, tipo_usuario,cod_curso FROM alumno', (error, results, fields) => {
     res.json(results);
   });
+
+
+
 });
 app.get('/data-get-all-rut-teacher', function(req, res){
   connection.query('SELECT rut_prof as rut,nom_prof,email,telefono, contraseña,tipo_usuario FROM profesor', (error, results, fields) => {

@@ -10,33 +10,36 @@ super(props);
 this.state= {
 nombre:{newClass : "none"},
 rut: {newClass : "none"},
-pass:{newClass : "none"},
-email: {newClass : "none"},
-telefono: {newClass : "none"},
-contraseña: {newClass : "none"},
+codRamo: {newClass : "none"},
+codCurso: {newClass : "none"},
 ramosClass: [],
+rutProf:[]
 }
-this.validarAlumno= this.validarAlumno.bind(this);
+this.validarRamo= this.validarRamo.bind(this);
 }
 
 componentWillMount() {
     $.getJSON('/data-get-all-ramo').then(data => this.setState({ ramosClass: data}));
+    $.getJSON('/data-get-all-rut-teacher').then(rutTeacher =>  this.setState({ rutProf:  rutTeacher }))
   };
+  profExist(rut){
+      const newRut = this.state.rutProf.filter( data => data.rut_prof === rut);
+      console.log(newRut);
+      if (newRut =! ""){
+      return true} else{
+        return false
+      }
+  }
 
-validarAlumno(){
+validarRamo(){
 const rut = this.refs.inputRut.value;
 const name = this.refs.inputNombre.value;
-const pw = this.refs.inputpw.value;
-const email = this.refs.inputemail.value;
-const phone = this.refs.inputTel.value;
-
+const ramo = this.refs.inputpw.value;
+const curso = this.refs.inputemail.value;
 const validateRut = /^(\d{1,2}(\.?\d{3}){2})\-([\dkK])$/;
-const validateEmail = /(^[0-9a-zA-Z]+(?:[._][0-9a-zA-Z]+)*)@([0-9a-zA-Z]+(?:[._-][0-9a-zA-Z]+)*\.[0-9a-zA-Z]{2,3})$/;
-const validateName = /^[a-zA-Z\-]{2,30}$/;
 
 if(rut != ""){
-if(validateRut.test(rut)){
-var newRut = rut.split('.').join("");
+if((validateRut.test(rut)) && (this.profExist(rut)) ){
 this.setState({ rut : {newClass : "dataCorrect"} });
 }else{
 this.setState({ rut : {newClass : "dataIncorrect"} });
@@ -58,32 +61,14 @@ alert("nombre incorrecto")
 this.setState({ name : {newClass : "none"} });
 alert("nombre vacio");
 }
+if(ramo != ""){
+  this.setState({ codRamo : {newClass : "dataCorrect"} });
+  }
+   else{
+  this.setState({ codRamo : {newClass : "none"} });
+  alert("codigo del ramo vacio");
+  }
 
-
-if(email != ""){
-if(validateEmail.test(email)){
-this.setState({ email : {newClass : "dataCorrect"} });
-}else{
-this.setState({ email : {newClass : "dataIncorrect"} });
-alert("email incorrecto");
-}
-}else{
-this.setState({ email : {newClass : "none"} });
-alert("email vacio");
-}
-
-if(pw != ""){
-this.setState({ pass : {newClass : "dataCorrect"} });
-}else{
-this.setState({ pass : {newClass : "none"} });
-alert("pw vacia");
-}
-if(phone != ""){
-this.setState({ phone : {newClass : "dataCorrect"} });
-}else{
-this.setState({ phone : {newClass : "none"} });
-alert("telefono vacio");
-}
 }
 render() {
   const rutaMenu=`/Admin?rut=${getRut()}`;
@@ -100,13 +85,13 @@ render() {
 
 return (
 <div>
-  
+
     <div className="div_titulo">
       <a href={rutaMenu}> <button id="tc1" className="glyphicon glyphicon-menu-left return"></button></a>
       <h2 className="titulo">MANTENEDOR RAMOS</h2>
     </div>
   <div className="content">
-    
+
     <h1>Listado de ramos</h1>
     <div className="tc11">
       <button id ="tc12" className="btn btn-primary " data-toggle="modal" data-target="#myModal" >
@@ -134,7 +119,7 @@ return (
         {lista}
       </thead>
     </table>
-  
+
   </div>
 
   <div className="modal fade" id="myModal" role="dialog">
@@ -147,22 +132,30 @@ return (
         <div className="modal-body">
 
           <form>
+          <div className="form-group">
+              Codigo Ramo
+              <input ref="inputRut" className="form-control" id="cod_ramo" />
+            </div>
             <div className="form-group">
               Nombre Ramo
               <input ref = "inputemail" className="form-control" id="nom_ramo" />
             </div>
-            <div className="form-group">
-              Codigo Ramo
-              <input ref="inputRut" className="form-control" id="cod_ramo" />
-            </div>
+
             <div className="form-group">
               Rut Profesor
               <input ref = "inputNombre" type="" className="form-control" id="rut_prof" />
             </div>
             <div className="form-group">
-              Codigo Curso
-              <input ref = "inputemail" className="form-control" id="cod_curso" />
-            </div>
+                    Curso
+                    <select className="form-control" ref="inputCurso" >
+                      <option>192-A</option>
+                      <option>192-B</option>
+                      <option>292-A</option>
+                      <option>292-B</option>
+                      <option>329-A</option>
+                      <option>329-B</option>
+                    </select>
+                  </div>
             <button type="submit" className="btn btn-primary" onClick={this.validarAlumno}>Aceptar</button>
           </form>
 
@@ -185,22 +178,29 @@ return (
         <div className="modal-body">
 
           <form>
+          <div className="form-group">
+              Codigo Ramo
+              <input ref="inputRut" className="form-control" id="cod_ramo" />
+            </div>
             <div className="form-group">
               Nombre Ramo
               <input ref = "inputemail" className="form-control" id="nom_ramo" />
-            </div>
-            <div className="form-group">
-              Codigo Ramo
-              <input ref="inputRut" className="form-control" id="cod_ramo" />
             </div>
             <div className="form-group">
               Rut Profesor
               <input ref = "inputNombre" type="" className="form-control" id="rut_prof" />
             </div>
             <div className="form-group">
-              Codigo Curso
-              <input ref = "inputemail" className="form-control" id="cod_curso" />
-            </div>
+            Curso
+            <select className="form-control" ref="inputCurso" >
+              <option>192-A</option>
+              <option>192-B</option>
+              <option>292-A</option>
+              <option>292-B</option>
+              <option>329-A</option>
+              <option>329-B</option>
+            </select>
+          </div>
             <button type="submit" className="btn btn-primary" onClick={this.validarAlumno}>Aceptar</button>
           </form>
 
@@ -235,7 +235,7 @@ return (
 
 
 
-  
+
 
 </div>
 )
