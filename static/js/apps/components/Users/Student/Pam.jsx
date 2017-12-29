@@ -4,11 +4,6 @@ import Footer from './../../Footer';
 function getRut() {
 	return window.location.search.split('?rut=')[1];
 }
-function getDate(){
-	console.log(new Date().toJSON().slice(0,10).replace(/-/g,'/'));
-return new Date().toJSON().slice(0,10).replace(/-/g,'/');
-}
-
 
 class Pam extends React.Component {
 	constructor(props){
@@ -16,24 +11,62 @@ class Pam extends React.Component {
 		this.state= {
 		  userQuest: [],
 		  userClass: [],
-		  userEvent:[]
-		}
-	  }
+		  userEvent:[],
+		  user:[],
 
+		}
+		this.obtenerDia=this.obtenerDia.bind(this);
+	  }
+	  obtenerDia(){
+		let dia = "";
+		let hoy = new Date();
+		let dd = hoy.getDay();
+		if (dd === 1){
+			dia = "LUNES"
+		}
+		if (dd === 2){
+			dia = "MARTES"
+		}
+		if (dd === 3){
+			dia = "MIERCOLES"
+		}
+		if (dd === 4){
+			dia = "JUEVES"
+		}
+		if (dd === 5){
+			dia = "VIERNES"
+		}
+		if (dd === 6){
+			dia = "SABADO"
+		}
+		if (dd === 7){
+			dia = "DOMINGO"
+		}
+		return dia;
+	}
 	  componentWillMount() {
 				$.getJSON('/data-get-all-menu-User').then(data => this.setState({ userClass: data}));
 				$.getJSON('/data-get-all-menu-User2').then(data => this.setState({ userQuest: data}));
+				$.getJSON('/data-get-all-user').then(data => this.setState({user: data}));
+				const usuario = this.state.user.filter(data => data.rut_alu === getRut() ) ;
+				this.setState({user : usuario});
 			};
 
 	render() {
-		const listClases = this.state.userClass.map((data,index)=>
+		console.log(this.state.user)
+
+		let listClases = this.state.userClass.filter(data => data.dia === this.obtenerDia()).map((data,index)=>
 		<li className="list-group-item">{data.cod_ramo}		{data.hora}	{data.sala_clases}</li>
 		  );
-		  const filtroQuest=this.state.userQuest.filter(data => data.fecha == getDate());
-		  const listQuest = filtroQuest.map((data,index)=>(
-		  		<li className="list-group-item">{data.cod_curso}: {data.bloque}  Sala: {data.sala_clases} {data.descripcion}</li>
-		  )
-		);
+		  console.log(listClases)
+		  if (listClases.length === 0){
+			listClases = <li className="list-group-item"> Hoy no tiene Clases </li>
+		  }
+		//   const filtroQuest=this.state.userQuest.filter(data => data.fecha == ;
+		//    const listQuest = filtroQuest.map((data,index)=>(
+		//   		<li className="list-group-item">{data.cod_curso}: {data.bloque}  Sala: {data.sala_clases} {data.descripcion}</li>
+		//    )
+		//  );
 		return (
 			<div>
 				<div className="div_titulo">
@@ -45,7 +78,7 @@ class Pam extends React.Component {
 						<div className="panel panel-info">
 							<div className="panel-heading">
 								<h4 className="panel-title">
-									<a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Clases de hoy</a>
+									<a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Clases del dia : {this.obtenerDia()}</a>
 								</h4>
 							</div>
 							<div id="collapse1" className="panel-collapse collapse in">
@@ -78,7 +111,7 @@ class Pam extends React.Component {
 									<div id="collapse3" className="panel-collapse collapse">
 										<div className="panel-body">
 											<ul className="nav nav-pills nav-stacked">
-													{listQuest}
+													{/* {listQuest} */}
 											</ul>
 										</div>
 									</div>

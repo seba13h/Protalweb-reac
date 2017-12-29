@@ -23,7 +23,6 @@ function getRut() {
 					this.setState({ Alumno: [ ...Student ]});
 					const filtroProf=this.state.Alumno.filter(data => data.rut === getRut());
 				   this.setState({NomProf: filtroProf[0].nom_alu, email:filtroProf[0].email, telefono: filtroProf[0].telefono, Curso: filtroProf[0].cod_curso } );
-
 			})
 		}
 

@@ -14,33 +14,47 @@ class Eventos extends React.Component {
     this.state = {
       dataA:[]
 		}
+		this.obtenerDia=this.obtenerDia.bind(this);
 	}
-
+	obtenerDia(){
+		let dia = "";
+		let hoy = new Date();
+		let dd = hoy.getDay();
+		if (dd === 1){
+			dia = "LUNES"
+		}
+		if (dd === 2){
+			dia = "MARTES"
+		}
+		if (dd === 3){
+			dia = "MIERCOLES"
+		}
+		if (dd === 4){
+			dia = "JUEVES"
+		}
+		if (dd === 5){
+			dia = "VIERNES"
+		}
+		if (dd === 6){
+			dia = "SABADO"
+		}
+		if (dd === 7){
+			dia = "DOMINGO"
+		}
+		return dia;
+	}
 	componentWillMount() {
-		$.getJSON('/data-get-ramos-user').then(data => this.setState({ dataA: data }));
-		console.log(this.state.dataA)
-		const ramosA = this.state.dataA.filter(data => data.rut === rut);
-		this.setState({dataA: ramosA});
+
 	};
 
 	render() {
-		console.log(this.state.dataA);
-		const list = this.state.dataA.map(data =>(
-			<tr>
-			<td>
-				{data.nom_ramo}
-			</td>
-			<td>
-			<button type="button" className="btn btn-primary tc7" data-dismiss="modal">Evento</button>
-						<button type="button" className="btn btn-danger tc7" data-dismiss="modal">Certamen</button>
-			</td>
-			</tr>
-		));
+     this.obtenerDia();
 		return (
 			<div>
 				<div className="div_titulo">
 		               <NavMenu/>
 									 <h2 className="titulo">EVENTOS</h2>
+
 	           </div>
 			   <div className="content">
 
@@ -64,25 +78,6 @@ class Eventos extends React.Component {
 			    </div>
 			  </div>
 
-			<div className="panel panel-default">
-			  <div className="panel-heading"><h4>Cursos</h4></div>
-			  <div className="panel-body tc6">
-
-
-			  		<table className="tc3" >
-			  			<tbody>
-			  		  <tr>
-			  		    <th></th>
-			  		    <th>Agregar Evento</th>
-
-			  		  </tr>
-							{list}
-			  		  </tbody>
-			  		</table>
-
-
-			</div>
-		</div>
 		</div>
 
   </div>

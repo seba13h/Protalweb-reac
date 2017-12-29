@@ -180,7 +180,7 @@ app.get('/data-get-all-menu-teacher', function(req, res){
 });
 app.get('/data-get-all-menu-User', function(req, res){
   connection.query
-  ('SELECT  curso.cod_curso, horario.num_bloque, horario.hora, horario.sala_clases ,horario.cod_ramo  FROM alumno inner join curso on alumno.cod_curso = curso.cod_curso inner join horario on horario.cod_curso = curso.cod_curso',
+  ('SELECT  curso.cod_curso, horario.num_bloque, horario.hora, horario.sala_clases ,horario.cod_ramo,horario.dia  FROM alumno inner join curso on alumno.cod_curso = curso.cod_curso inner join horario on horario.cod_curso = curso.cod_curso  GROUP BY horario.cod_ramo',
   (error, results, fields) => {
     res.json(results);
   });
@@ -203,7 +203,7 @@ app.get('/data-get-all-menu-teacher2', function(req, res){
 });
 app.get('/data-get-ramos-user', function(req, res){
   connection.query
-  ('SELECT alumno.rut_alu as rut, alumno.cod_curso, ramo.nom_ramo, ramo.cod_ramo FROM alumno inner join ramo on alumno.cod_curso = ramo.cod_curso GROUP BY ramo.cod_ramo',
+  ('SELECT alumno.rut_alu as rut, alumno.cod_curso, ramo.nom_ramo, ramo.cod_ramo, profesor.nom_prof, profesor.email, profesor.telefono FROM alumno inner join ramo on alumno.cod_curso = ramo.cod_curso inner join profesor on profesor.rut_prof= ramo.rut_prof GROUP BY ramo.cod_ramo',
   (error, results, fields) => {
     res.json(results);
   });
