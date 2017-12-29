@@ -312,3 +312,12 @@ td:nth-child(5):hover{background-color: green;opacity: 0.5;}*/
 .titulo{
 	margin-right: 30%;
 }
+.Horario{
+	width: 200%;
+	margin-top: 2em;
+}
+.div_Dia{
+
+	width:10%;
+    float: left;
+}

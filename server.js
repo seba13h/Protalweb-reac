@@ -40,6 +40,22 @@ app.post('/data-insert-teacher', function(req, res){
       console.error(error);
   });
 });
+app.post('/data-insert-ramo', function(req, res){
+  const data = req.body;
+  const {rut, name, ramo, curso} = req.body;
+  const query = `insert into ramo(cod_ramo, rut_prof, nom_ramo, cod_curso) values('${ramo}', '${rut}', '${name}', '${curso}')`;
+  connection.query(query, (error, results, fields) => {
+      console.error(error);
+  });
+});
+app.post('/data-insert-Horario', function(req, res){
+  const data = req.body;
+  const {codCurso, dia, bloque, sala, hora, codRamo} = req.body;
+  const query = `insert into horario(cod_curso, dia, num_bloque, sala_clases, hora, cod_ramo) values('${codCurso}', '${dia}', '${bloque}', '${sala}','${hora}','${codRamo}')`;
+  connection.query(query, (error, results, fields) => {
+      console.error(error);
+  });
+});
 
 app.post('/data-update-user', function(req, res){
   const data = req.body;
@@ -78,15 +94,31 @@ app.post('/data-delete-teacher', function(req, res){
   });
   console.error("eliminado....");
 });
-
+app.post('/data-delete-ramo', function(req, res){
+  const data = req.body;
+  const codRamo = data.cod_ramo;
+  const query = `delete from ramo where cod_ramo= '${codRamo}'`;
+  connection.query(query, (error, results, fields) => {
+      console.error(error);
+  });
+  console.error("eliminado....");
+});
+  app.post('/data-delete-horario', function(req, res){
+     const data = req.body;
+     console.log(data);
+     const { cod_curso, dia, num_bloque, sala_clases, hora,cod_ramo} = req.body;
+          const query = `delete from horario where cod_curso= '${cod_curso}' and dia= '${dia}' and num_bloque= '${num_bloque}' and sala_clases= '${sala_clases}'and hora= '${hora}'`;
+  connection.query(query, (error, results, fields) => {
+        console.error(error);
+     });
+     console.error("eliminado....");
+   });
 
 ////// GET
 app.get('/data-get-all-rut-user', function(req, res){
   connection.query('SELECT rut_alu as rut, nom_alu,email,telefono, contraseña, tipo_usuario,cod_curso FROM alumno', (error, results, fields) => {
     res.json(results);
   });
-
-
 
 });
 app.get('/data-get-all-rut-teacher', function(req, res){
@@ -135,7 +167,7 @@ app.get('/data-get-all-notasUsers', function(req, res){
 });
 
 app.get('/data-get-all-rut-detallenota', function(req, res){
-  connection.query('SELECT rut_alu,cod_ramo,nota,numero_nota,ponderacion FROM detalle_nota group by cod_ramo ', (error, results, fields) => {
+  connection.query('SELECT rut_alu,cod_ramo,nota,numero_nota,ponderacion FROM detalle_nota order by cod_ramo ', (error, results, fields) => {
     res.json(results);
   });
 });
@@ -165,6 +197,13 @@ app.get('/data-get-all-menu-User2', function(req, res){
 app.get('/data-get-all-menu-teacher2', function(req, res){
   connection.query
   ('SELECT profesor.rut_prof as rut, prueba.fecha, prueba.bloque, prueba.descripcion,prueba.sala_clases ,ramo.nom_ramo,ramo.cod_ramo ,prueba.cod_curso FROM profesor inner join ramo on profesor.rut_prof = ramo.rut_prof inner join prueba on prueba.rut_prof= ramo.rut_prof AND prueba.cod_ramo = ramo.cod_ramo',
+  (error, results, fields) => {
+    res.json(results);
+  });
+});
+app.get('/data-get-ramos-user', function(req, res){
+  connection.query
+  ('SELECT alumno.rut_alu as rut, alumno.cod_curso, ramo.nom_ramo, ramo.cod_ramo FROM alumno inner join ramo on alumno.cod_curso = ramo.cod_curso GROUP BY ramo.cod_ramo',
   (error, results, fields) => {
     res.json(results);
   });
