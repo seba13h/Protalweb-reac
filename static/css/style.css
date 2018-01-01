@@ -299,7 +299,13 @@ td:nth-child(5):hover{background-color: green;opacity: 0.5;}*/
 	}
 }
 
-
+.item2{
+	padding: 2px 25px !important;
+}
+.item1{
+	padding: 2px 25px !important;
+	background-color: orange !important;
+}
 
 .correct {
 	color: green !important;
@@ -312,12 +318,15 @@ td:nth-child(5):hover{background-color: green;opacity: 0.5;}*/
 .titulo{
 	margin-right: 30%;
 }
-.Horario{
-	width: 200%;
-	margin-top: 2em;
+.horario{
+
+    display: inline-flex;
+    margin: 2em auto;
 }
 .div_Dia{
-
-	width:10%;
-    float: left;
+    width: 17%;
+}
+.contenido{
+	text-align: center;
+    display: block;
 }
