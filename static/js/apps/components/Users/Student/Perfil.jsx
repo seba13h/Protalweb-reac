@@ -49,7 +49,7 @@ function getRut() {
 						<div  className ="panel-footer">
 							<span>Telefono: {this.state.telefono}	</span>
 						</div>
-						<div  className ="panel-footer">
+						<div  className ="panel-body">
 							<span>Curso: {this.state.Curso}	</span>
 						</div>
 

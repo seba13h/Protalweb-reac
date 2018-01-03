@@ -119,7 +119,6 @@ app.get('/data-get-all-rut-user', function(req, res){
   connection.query('SELECT rut_alu as rut, nom_alu,email,telefono, contraseña, tipo_usuario,cod_curso FROM alumno', (error, results, fields) => {
     res.json(results);
   });
-
 });
 app.get('/data-get-all-rut-teacher', function(req, res){
   connection.query('SELECT rut_prof as rut,nom_prof,email,telefono, contraseña,tipo_usuario FROM profesor', (error, results, fields) => {
@@ -205,6 +204,16 @@ app.get('/data-get-ramos-user', function(req, res){
   connection.query
   ('SELECT alumno.rut_alu as rut, alumno.cod_curso, ramo.nom_ramo, ramo.cod_ramo, profesor.nom_prof, profesor.email, profesor.telefono FROM alumno inner join ramo on alumno.cod_curso = ramo.cod_curso inner join profesor on profesor.rut_prof= ramo.rut_prof GROUP BY ramo.cod_ramo',
   (error, results, fields) => {
+    res.json(results);
+  });
+});
+app.get('/data-get-all-quest', function(req, res){
+  connection.query('SELECT * FROM prueba', (error, results, fields) => {
+    res.json(results);
+  });
+});
+app.get('/data-get-all-event', function(req, res){
+  connection.query('SELECT * FROM eventos', (error, results, fields) => {
     res.json(results);
   });
 });

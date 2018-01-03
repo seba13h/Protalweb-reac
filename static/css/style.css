@@ -330,3 +330,6 @@ td:nth-child(5):hover{background-color: green;opacity: 0.5;}*/
 	text-align: center;
     display: block;
 }
+.addevent{
+	margin-left: 85%;
+}

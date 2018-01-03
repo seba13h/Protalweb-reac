@@ -12,43 +12,58 @@ class Eventos extends React.Component {
 	constructor(props) {
     super(props);
     this.state = {
-      dataA:[]
+			dataA:[],
+			dataB:[],
+			dataC:[]
 		}
-		this.obtenerDia=this.obtenerDia.bind(this);
+		this.obtenerFecha=this.obtenerFecha.bind(this);
 	}
-	obtenerDia(){
-		let dia = "";
-		let hoy = new Date();
-		let dd = hoy.getDay();
-		if (dd === 1){
-			dia = "LUNES"
-		}
-		if (dd === 2){
-			dia = "MARTES"
-		}
-		if (dd === 3){
-			dia = "MIERCOLES"
-		}
-		if (dd === 4){
-			dia = "JUEVES"
-		}
-		if (dd === 5){
-			dia = "VIERNES"
-		}
-		if (dd === 6){
-			dia = "SABADO"
-		}
-		if (dd === 7){
-			dia = "DOMINGO"
-		}
-		return dia;
+	obtenerFecha(){
+		var dt = new Date();
+		// Display the month, day, and year. getMonth() returns a 0-based number.
+		var month = dt.getMonth()+ 1;
+		var day = dt.getDate() ;
+		var year = dt.getFullYear();
+		const fecha = (day+'-'+month+'-'+year);
+		return fecha;
 	}
 	componentWillMount() {
+		$.getJSON('/data-get-all-rut-user', (Student) => {
+			this.setState({ dataA: [ ...Student ]});
+			const filtroAlu=this.state.dataA.filter(data => data.rut === getRut());
+			this.setState({dataA : filtroAlu});
+			})
+			$.getJSON('/data-get-all-quest'	, (quest) => {this.setState({ dataB: quest});
+				const filtroquest=this.state.dataB.filter(data => data.cod_curso === this.state.dataA[0].cod_curso);
+				const filtroFecha = filtroquest.filter(data => (new Date(data.fecha).getTime() >=  new Date(this.obtenerFecha()).getTime()));
+				this.setState({dataB : filtroFecha});
+				})
+				$.getJSON('/data-get-all-event'	, (quest) => {this.setState({ dataC: quest});
+				const filtroevent=this.state.dataC.filter(data => data.rut_alu ===  getRut() );
+				const filtroFecha2 = filtroevent.filter(data => (new Date(data.fecha).getTime() >=  new Date(this.obtenerFecha()).getTime()));
+				this.setState({dataC : filtroFecha2});
+				})
+
 
 	};
 
 	render() {
-     this.obtenerDia();
+		console.log(this.state.dataC)
+			const lisQuest = this.state.dataB.map( data => (
+				<div>
+				<span className="label label-warning">{data.fecha}  {data.cod_ramo}</span> <a>  {data.descripcion} - Hora :{data.bloque} - Sala de Clases :{data.sala_clases} </a>
+				<hr/>
+				</div>
+			)
+		)
+		const listEvent = this.state.dataC.map( (data,index) => (
+			<div>
+						  <span className="label label-info">{data.fecha}</span> <a> {data.descripcion} - Hora : {data.hora}</a>
+								<button className="glyphicon glyphicon-pencil" ></button>
+          			<button className="glyphicon glyphicon-trash"></button>
+			</div>
+		)
+	)
 		return (
 			<div>
 				<div className="div_titulo">
@@ -63,16 +78,28 @@ class Eventos extends React.Component {
 		<div className="panel panel-success">
 			    <div className="panel-heading">
 			      <h4 className="panel-title">
-			        <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">Eventos:</a>
+			        <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">Eventos</a>
+					<button type="button" className="btn btn-primary addevent">+</button>
 			      </h4>
 			    </div>
 			    <div id="collapse2" className="panel-collapse collapse">
 			      <div className="panel-body">
 			      <ul className="nav nav-pills nav-stacked">
-
-			      	  <span className="label label-info">Martes 23</span> Evento 1
-			      	  <hr/>
-			      	  <span className="label label-warning">Viernes 26 </span> Evento 2
+					{listEvent}
+			    </ul>
+			      	</div>
+			    </div>
+			  </div>
+			  <div className="panel panel-success">
+			    <div className="panel-heading">
+			      <h4 className="panel-title">
+			        <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">Pruebas</a>
+			      </h4>
+			    </div>
+			    <div id="collapse3" className="panel-collapse collapse">
+			      <div className="panel-body">
+			      <ul className="nav nav-pills nav-stacked">
+			      	  {lisQuest}
 			    </ul>
 			      	</div>
 			    </div>
