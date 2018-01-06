@@ -19,6 +19,7 @@ class mAlumno extends React.Component {
       curso: { newClass: "none" },
       usuario:{newClass:"none"},
       studentClass: [],
+      search: '',
       dataA:{},
     }
     this.validarAlumno = this.validarAlumno.bind(this);
@@ -28,7 +29,9 @@ class mAlumno extends React.Component {
     this.addComponentModal = this.addComponentModal.bind(this);
     this.DeleteData = this.DeleteData.bind(this);
     this.eliminar = this.eliminar.bind(this);
-    this.changeText = this.changeText.bind(this);
+   
+    this.Buscar = this.Buscar.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
   componentWillMount() {
@@ -44,30 +47,21 @@ class mAlumno extends React.Component {
     window.location.reload();
    }
 
-changeText(e){
-  let newText = this.state.nombre;
-      if (e.nativeEvent.keyCode === 8) {
-        newText = newText.slice(0,-1);
-      } else if(e.nativeEvent.keyCode === 20) {
-        newText = newText.toLocaleUpperCase(-1);
-                }else{
-              newText += e.nativeEvent.key;
-  }
-    this.setState({nombre: newText});
-};
+
 
  addComponentModal(index){
    this.setState({
+      rut: this.state.studentClass[index].rut_alu,
       curso: this.state.studentClass[index].cod_curso,
       pass: this.state.studentClass[index].contraseña,
       email: this.state.studentClass[index].email,
       nombre: this.state.studentClass[index].nom_alu,
-      rut: this.state.studentClass[index].rut_alu,
       telefono: this.state.studentClass[index].telefono
   });
  }
 
   actualizarData() {
+    alert(this.refs.inputNombre.value);
     const rut = this.refs.inputRut.value;
     const name = this.refs.inputNombre.value;
     const pw = this.refs.inputpw.value;
@@ -96,11 +90,11 @@ changeText(e){
   validarAlumno2() {
     const rut = this.refs.inputRut.value;
     const name = this.refs.inputNombre.value;
-    const pw = this.refs.inputpw.value;
     const email = this.refs.inputemail.value;
+    const curso = this.refs.inputCurso.value;
+    const pw = this.refs.inputpw.value;
     const phone = this.refs.inputTel.value;
     const pw2 = this.refs.inputpw2.value;
-    const curso = this.refs.inputCurso.value;
 
     const validateRut = /^(\d{1,2}(\.?\d{3}){2})\-([\dkK])$/;
     const validateEmail = /(^[0-9a-zA-Z]+(?:[._][0-9a-zA-Z]+)*)@([0-9a-zA-Z]+(?:[._-][0-9a-zA-Z]+)*\.[0-9a-zA-Z]{2,3})$/;
@@ -249,9 +243,31 @@ changeText(e){
     this.insertarData();
   }
 
+  Buscar(event) {
+    event.preventDefault();
+    this.setState({search: this.refs.inputSearch.value});
+  }
+
+  alumnosFiltrados() {
+    let search = this.state.search.toLowerCase();
+    return this.state.studentClass.filter((alumno) => {
+      if(this.state.search === '') {
+        return true;
+      } else { 
+        return alumno.rut_alu.toLowerCase().indexOf(search) >= 0 || alumno.nom_alu.toLowerCase().indexOf(search) >= 0;
+      }
+    });
+  }
+  handleInputChange(event){
+    console.log(event)
+    var inputName = event.target.name;
+    var inputValue = event.target.value;
+    this.setState({[inputName]:inputValue});
+  }
+
   render() {
     const rutaMenu = `/Admin?rut=${getRut()}`;
-    const lista = this.state.studentClass.map((data, index) =>(
+    const lista = this.alumnosFiltrados().map((data, index) =>(
       <tr>
         <td>{data.rut_alu}</td>
         <td>{data.nom_alu}</td>
@@ -261,7 +277,7 @@ changeText(e){
         <td hidden>{data.contraseña}</td>
         <td className="zelect_rut">
           <button className="glyphicon glyphicon-pencil" data-toggle="modal" data-target="#myModal2"  onClick={() => this.addComponentModal(index) } ></button>
-          <button className="glyphicon glyphicon-trash" data-toggle="modal" data-target="#myModal3" onClick={() => this.DeleteData(index) }></button>
+          <button className="glyphicon glyphicon-trash" data-toggle="modal" data-target="#myModal3" onClick={() => this.DeleteData(index)}></button>
         </td>
       </tr>
     )
@@ -281,9 +297,9 @@ changeText(e){
             <button id="tc12" className="btn btn-primary " data-toggle="modal" data-target="#myModal" >
               Agregar Alumno
       </button>
-            <form>
+            <form onSubmit={this.Buscar}>
               <div className="input-group">
-                <input id="tc19" type="text" className="form-control" placeholder="Buscar" onChange={this.Buscar}/>
+                <input id="tc19" type="text" className="form-control" placeholder="Buscar" ref="inputSearch"/>
                 <div className="input-group-btn">
                   <button className="btn btn-default" type="submit">
                     <i className="glyphicon glyphicon-search"></i>
@@ -372,19 +388,19 @@ changeText(e){
                 <form>
                   <div className="form-group">
                     Rut
-              <input ref="inputRut" className="form-control" id="rut" disabled  value={this.state.rut}  />
+              <input ref="inputRut"  className="form-control" id="rut" disabled  value={this.state.rut}  />
                   </div>
                   <div className="form-group">
                     Nombre
-              <input ref="inputNombre" type="" className="form-control" id="nombre" value={nombreA} onKeyDown={this.changeText} />
+              <input ref="inputNombre"  name="nombre"  className="form-control" id="nombre" value={this.state.nombre} onChange={this.handleInputChange} />
                   </div>
                   <div className="form-group">
                     Email
-              <input ref="inputemail" className="form-control" id="email"  value={this.state.email} />
+              <input ref="inputemail"  name="email" className="form-control" id="email"  value={this.state.email} onChange={this.handleInputChange} />
                   </div>
                   <div className="form-group">
                     Telefono
-              <input ref="inputTel" className="form-control" id="telefono"  value={this.state.telefono} />
+              <input ref="inputTel" name="telefono" className="form-control" id="telefono"  value={this.state.telefono} onChange={this.handleInputChange} />
                   </div>
                   <div className="form-group">
                     Curso

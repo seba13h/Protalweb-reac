@@ -14,7 +14,7 @@ function closeNav() {
 }
 class NavMenu extends React.Component {
     openNav() {
-	    document.getElementById("mySidenav").style.width = "45%";
+        document.getElementById("mySidenav").style.width = "45%";
 	}
 
 	closeNav() {

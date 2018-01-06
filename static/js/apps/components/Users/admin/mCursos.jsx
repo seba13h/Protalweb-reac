@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 function getRut() {
     return window.location.search.split('?rut=')[1];
 }
@@ -9,80 +10,77 @@ super(props);
 this.state= {
 nombre:{newClass : "none"},
 rut: {newClass : "none"},
-pass:{newClass : "none"},
-email: {newClass : "none"},
-telefono: {newClass : "none"},
-contraseña: {newClass : "none"},
+cod_curso:{newClass : "none"},
+carrera: {newClass : "none"},
 cursoClass: [],
+search: '',
+dataA:{},
 }
-this.validarAlumno= this.validarAlumno.bind(this);
+
+this.validarAlumno = this.validarAlumno.bind(this);
+  
+    this.insertarData = this.insertarData.bind(this);
+
+    
+    this.DeleteData = this.DeleteData.bind(this);
+    this.eliminar = this.eliminar.bind(this);
+   
+    this.Buscar = this.Buscar.bind(this);
+
 }
+
 
 componentWillMount() {
     $.getJSON('/data-get-all-curso').then(data => this.setState({ cursoClass: data}));
   };
 
-validarAlumno(){
-const rut = this.refs.inputRut.value;
-const name = this.refs.inputNombre.value;
-const pw = this.refs.inputpw.value;
-const email = this.refs.inputemail.value;
-const phone = this.refs.inputTel.value;
+  DeleteData(index){
+      this.setState( {dataA : this.state.cursoClass[index]});
+    };
+  eliminar(){
+    axios.post("/data-delete-curso", this.state.dataA);
+    window.location.reload();
+   }
 
-const validateRut = /^(\d{1,2}(\.?\d{3}){2})\-([\dkK])$/;
-const validateEmail = /(^[0-9a-zA-Z]+(?:[._][0-9a-zA-Z]+)*)@([0-9a-zA-Z]+(?:[._-][0-9a-zA-Z]+)*\.[0-9a-zA-Z]{2,3})$/;
-const validateName = /^[a-zA-Z\-]{2,30}$/;
+
+insertarData() {
+    console.log("entre");
+    const cod_curso = this.refs.inputCurso.value;
+    const carrera = this.refs.inputCarrera.value;
+    const dataCurso = { cod_curso, carrera };
+    alert(cod_curso+" "+carrera);
+    axios.post('/data-insert-curso', dataCurso);
+    window.location.reload();
+  }  
+
+validarAlumno(){
+const rut = this.refs.inputCurso.value;
+const name = this.refs.inputCarrera.value;
+
 
 if(rut != ""){
-if(validateRut.test(rut)){
-var newRut = rut.split('.').join("");
-this.setState({ rut : {newClass : "dataCorrect"} });
+  this.setState({ rut : {newClass : "dataCorrect"} });
 }else{
-this.setState({ rut : {newClass : "dataIncorrect"} });
-alert("rut incorrecto");
-}
-}else{
-this.setState({ rut : {newClass : "none"} });
-alert("rut vacio");
+  this.setState({ rut : {newClass : "none"} });
+  alert(rut);
+  alert("cod curso vacio");
+  return false;
 }
 
 if(name != ""){
-if(validateName.test(name)){
+
 this.setState({ name : {newClass : "dataCorrect"} });
-}else{
-this.setState({ name : {newClass : "dataIncorrect"} });
-alert("nombre incorrecto")
-}
+
+
 }else{
 this.setState({ name : {newClass : "none"} });
-alert("nombre vacio");
+alert("carrera vacia");
+return false;
 }
 
+alert('Insertando curso');
+this.insertarData();
 
-if(email != ""){
-if(validateEmail.test(email)){
-this.setState({ email : {newClass : "dataCorrect"} });
-}else{
-this.setState({ email : {newClass : "dataIncorrect"} });
-alert("email incorrecto");
-}
-}else{
-this.setState({ email : {newClass : "none"} });
-alert("email vacio");
-}
-
-if(pw != ""){
-this.setState({ pass : {newClass : "dataCorrect"} });
-}else{
-this.setState({ pass : {newClass : "none"} });
-alert("pw vacia");
-}
-if(phone != ""){
-this.setState({ phone : {newClass : "dataCorrect"} });
-}else{
-this.setState({ phone : {newClass : "none"} });
-alert("telefono vacio");
-}
 }
 
 indice(){
@@ -94,17 +92,33 @@ $("tr").each(function() {
 });
 }
 
+Buscar(event) {
+    event.preventDefault();
+    this.setState({search: this.refs.inputSearch.value});
+  }
+
+  cursosFiltrados() {
+    let search = this.state.search.toLowerCase();
+    return this.state.cursoClass.filter((curso) => {
+      if(this.state.search === '') {
+        return true;
+      } else { 
+        return curso.cod_curso.toLowerCase().indexOf(search) >= 0 || curso.carrera.toLowerCase().indexOf(search) >= 0;
+      }
+    });
+  }
+
 
 render() {
 
 const rutaMenu=`/Admin?rut=${getRut()}`;
-const lista = this.state.cursoClass.map((data,index)=>
+const lista = this.cursosFiltrados().map((data,index)=>
     <tr className="indicex">
       <td>{data.cod_curso}</td>
       <td>{data.carrera}</td>
       <td className="zelect_rut">
         <button className="glyphicon glyphicon-pencil" data-toggle="modal" data-target="#myModal2"></button>
-        <button className="glyphicon glyphicon-trash"  data-toggle="modal" data-target="#myModal3"></button>
+        <button className="glyphicon glyphicon-trash"  data-toggle="modal" data-target="#myModal3" onClick={() => this.DeleteData(index)}></button>
       </td>
     </tr> );
 
@@ -116,15 +130,15 @@ return (
       <h2 className="titulo">MANTENEDOR CURSOS</h2>
     </div>
   <div className="content">
-    <button type="submit" className="btn btn-primary" onClick={this.indice()}>Aceptar</button>
+    {/*// <button type="submit" className="btn btn-primary" onClick={this.indice()}>Aceptar</button> */}
     <h1>Listado de cursos</h1>
     <div className="tc11">
       <button id ="tc12" className="btn btn-primary " data-toggle="modal" data-target="#myModal" >
         Agregar Curso
       </button>
-      <form>
+      <form onSubmit={this.Buscar}>
         <div className="input-group">
-          <input id="tc19" type="text" className="form-control" placeholder="Buscar"/>
+          <input id="tc19" type="text" className="form-control" placeholder="Buscar" ref="inputSearch"/>
           <div className="input-group-btn">
             <button className="btn btn-default" type="submit">
               <i className="glyphicon glyphicon-search"></i>
@@ -158,11 +172,11 @@ return (
           <form>
             <div className="form-group">
               Codigo Curso
-              <input ref="inputRut" className="form-control" id="cod_curso" />
+              <input ref="inputCurso" className="form-control" id="cod_curso" />
             </div>
             <div className="form-group">
               Carrera
-              <input ref = "inputNombre" type="" className="form-control" id="carrera" />
+              <input ref = "inputCarrera" type="" className="form-control" id="carrera" />
             </div>
             <button type="submit" className="btn btn-primary" onClick={this.validarAlumno}>Aceptar</button>
           </form>
@@ -188,11 +202,11 @@ return (
           <form>
             <div className="form-group">
               Codigo Curso
-              <input ref="inputRut" className="form-control" id="cod_curso" />
+              <input ref="inputCurso2" className="form-control" id="cod_curso" />
             </div>
             <div className="form-group">
               Carrera
-              <input ref = "inputNombre" type="" className="form-control" id="carrera" />
+              <input ref = "inputCarrera2" type="" className="form-control" id="carrera" />
             </div>
             <button type="submit" className="btn btn-primary" onClick={this.validarAlumno}>Aceptar</button>
           </form>
@@ -216,7 +230,7 @@ return (
         <div className="modal-body">
 
           <p>Seguro que desea eliminar el registro?</p>
-          <button type="submit" className="btn btn-primary" onClick={this.validarAlumno}>Aceptar</button>
+          <button type="submit" className="btn btn-primary" onClick={this.eliminar}>Aceptar</button>
         </div>
         <div className="modal-footer">
           <button type="button" className="btn btn-danger" data-dismiss="modal">Cerrar</button>

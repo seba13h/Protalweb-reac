@@ -16,6 +16,7 @@ class mProfesor extends React.Component {
       telefono: { newClass: "none" },
       contraseña: { newClass: "none" },
       teacherClass: [],
+      search: '',
       dataA:{}
     }
     this.insertarData = this.insertarData.bind(this);
@@ -25,6 +26,9 @@ class mProfesor extends React.Component {
     this.actualizarData = this.actualizarData.bind(this);
     this.addComponentModal = this.addComponentModal.bind(this);
     this.validarAlumno2 = this.validarAlumno2.bind(this);
+    this.Buscar = this.Buscar.bind(this);
+
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
   componentWillMount() {
@@ -38,30 +42,21 @@ class mProfesor extends React.Component {
   axios.post("/data-delete-teacher", this.state.dataA);
   window.location.reload();
  }
- changeText(e){
-  let newText = this.state.nombre;
-      if (e.nativeEvent.keyCode === 8) {
-        newText = newText.slice(0,-1);
-      } else if(e.nativeEvent.keyCode === 20) {
-        newText = newText.toLocaleUpperCase(-1);
-                }else{
-              newText += e.nativeEvent.key;
-  }
-    this.setState({nombre: newText});
-};
+ 
 
  addComponentModal(index){
    console.log()
    this.setState({
+      rut: this.state.teacherClass[index].rut_prof,
+      nombre: this.state.teacherClass[index].nom_prof,
       pass: this.state.teacherClass[index].contraseña,
       email: this.state.teacherClass[index].email,
-      nombre: this.state.teacherClass[index].nom_prof,
-      rut: this.state.teacherClass[index].rut_prof,
       telefono: this.state.teacherClass[index].telefono
   });
  }
  actualizarData() {
-   alert("entre");
+  alert(this.refs.inputnombre.value);
+
   const rut = this.refs.inputrut.value;
   const name = this.refs.inputnombre.value;
   const pw = this.refs.inputpw.value;
@@ -69,13 +64,13 @@ class mProfesor extends React.Component {
   const phone = this.refs.inputtel.value;
   const tipo_usuario = 1;
   const dataAlumno = { rut, name, email, phone, pw, tipo_usuario };
-  axios.post("/data-update-teacherr", dataAlumno);
+  axios.post("/data-update-teacher", dataAlumno);
   window.location.reload();
 }
 validarAlumno2() {
-  alert("valdiando");
+  alert("validiando");
    const rut = this.refs.inputrut.value;
- const name = this.refs.inputnombre.value;
+  const name = this.refs.inputnombre.value;
    const pw = this.refs.inputpw.value;
    const email = this.refs.inputemail.value;
    const phone = this.refs.inputtel.value;
@@ -153,11 +148,11 @@ validarAlumno2() {
     const tipo_usuario = 1;
     const dataAlumno = { rut, name, email, phone, pw, tipo_usuario };
     axios.post('/data-insert-teacher', dataAlumno);
-    window.location.reload();
+    windowlocation.reload();
   }
 
   validarProfesor() {
-    alert ("entre");
+    
      const rut = this.refs.inputRut2.value;
     const name = this.refs.inputNombre2.value;
     const pw = this.refs.inputpw4.value;
@@ -228,9 +223,31 @@ validarAlumno2() {
     this.insertarData();
   };
 
+  Buscar(event) {
+    event.preventDefault();
+    this.setState({search: this.refs.inputSearch.value});
+  }
+
+  profesoresFiltrados() {
+    let search = this.state.search.toLowerCase();
+    return this.state.teacherClass.filter((profesor) => {
+      if(this.state.search === '') {
+        return true;
+      } else { 
+        return profesor.rut_prof.toLowerCase().indexOf(search) >= 0 || profesor.nom_prof.toLowerCase().indexOf(search) >= 0;
+      }
+    });
+  }
+  handleInputChange(event){
+    console.log(event)
+    var inputName = event.target.name;
+    var inputValue = event.target.value;
+    this.setState({[inputName]:inputValue});
+  }
+
   render() {
     const rutaMenu = `/Admin?rut=${getRut()}`;
-    const lista = this.state.teacherClass.map((data, index) =>
+    const lista = this.profesoresFiltrados().map((data, index) =>
       <tr>
         <td>{data.rut_prof}</td>
         <td>{data.nom_prof}</td>
@@ -257,9 +274,9 @@ validarAlumno2() {
             <button id="tc12" className="btn btn-primary " data-toggle="modal" data-target="#myModal" >
               Agregar Profesor
       </button>
-            <form>
+            <form onSubmit={this.Buscar}>
               <div className="input-group">
-                <input id="tc19" type="text" className="form-control" placeholder="Buscar" />
+                <input id="tc19" type="text" className="form-control" placeholder="Buscar" ref="inputSearch"/>
                 <div className="input-group-btn">
                   <button className="btn btn-default" type="submit">
                     <i className="glyphicon glyphicon-search"></i>
@@ -345,15 +362,15 @@ validarAlumno2() {
                   </div>
                   <div className="form-group">
                     Nombre
-              <input ref="inputnombre"  className="form-control"  value={this.state.nombre} />
+              <input ref="inputnombre" name="nombre" className="form-control"  value={this.state.nombre} onChange={this.handleInputChange} />
                   </div>
                   <div className="form-group">
                     Email
-              <input ref="inputemail" className="form-control"  value={this.state.email} />
+              <input ref="inputemail" name="email" className="form-control"  value={this.state.email} onChange={this.handleInputChange} />
                   </div>
                   <div className="form-group">
                     Telefono
-              <input ref="inputtel" className="form-control"  value={this.state.telefono}  />
+              <input ref="inputtel" name="telefono" className="form-control"  value={this.state.telefono} onChange={this.handleInputChange}  />
                   </div>
                   <div className="form-group">
                     Contraseña:

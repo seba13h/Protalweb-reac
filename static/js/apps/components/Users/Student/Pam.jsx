@@ -4,7 +4,15 @@ import Footer from './../../Footer';
 function getRut() {
 	return window.location.search.split('?rut=')[1];
 }
-
+function indate(fecha){
+	const day = fecha.slice(0, 2);
+	const mont = fecha.slice(3, 5);
+	const year = fecha.slice(6, 10);
+	const newfecha = (year + '-' + mont + '-' + day);
+	console.log(new Date(newfecha).getTime());
+	console.log(newfecha , "fecha 2")
+	return newfecha;
+}
 class Pam extends React.Component {
 	constructor(props){
 		super(props);
@@ -16,6 +24,7 @@ class Pam extends React.Component {
 
 		}
 		this.obtenerDia=this.obtenerDia.bind(this);
+		this.obtenerFecha=this.obtenerFecha.bind(this);
 	  }
 	  obtenerDia(){
 		let dia = "";
@@ -44,29 +53,59 @@ class Pam extends React.Component {
 		}
 		return dia;
 	}
+	obtenerFecha(){
+		var dt = new Date();
+		// Display the month, day, and year. getMonth() returns a 0-based number.
+		var month = dt.getMonth() + 1;
+		if (month < 10){
+			  month = ('0'+(dt.getMonth()+1));
+		}
+		var day = dt.getDate();
+		if (day < 10){
+			day = ('0'+dt.getDate());
+		}
+		var year = dt.getFullYear();
+		const fecha = (year+ '-' + month + '-' + day);
+		return fecha;
+	}
 	  componentWillMount() {
 				$.getJSON('/data-get-all-menu-User').then(data => this.setState({ userClass: data}));
 				$.getJSON('/data-get-all-menu-User2').then(data => this.setState({ userQuest: data}));
 				$.getJSON('/data-get-all-user').then(data => this.setState({user: data}));
 				const usuario = this.state.user.filter(data => data.rut_alu === getRut() ) ;
 				this.setState({user : usuario});
+				$.getJSON('/data-get-all-event').then(data => this.setState({userEvent: data}));
+				const filtroEventos = this.state.userEvent.filter(data => data.rut_alu === getRut());
+				this.setState({userEvent : filtroEventos});
+
 			};
 
 	render() {
-		console.log(this.state.user)
+		console.log(this.state.userEvent)
 
 		let listClases = this.state.userClass.filter(data => data.dia === this.obtenerDia()).map((data,index)=>
 		<li className="list-group-item">{data.cod_ramo}		{data.hora}	{data.sala_clases}</li>
 		  );
-		  console.log(listClases)
+
 		  if (listClases.length === 0){
 			listClases = <li className="list-group-item"> Hoy no tiene Clases </li>
 		  }
-		//   const filtroQuest=this.state.userQuest.filter(data => data.fecha == ;
-		//    const listQuest = filtroQuest.map((data,index)=>(
-		//   		<li className="list-group-item">{data.cod_curso}: {data.bloque}  Sala: {data.sala_clases} {data.descripcion}</li>
-		//    )
-		//  );
+		  let listEvent=this.state.userEvent.filter(data =>new Date(indate(data.fecha)).getTime() ==  new Date(this.obtenerFecha()).getTime() ).map(data => (
+			<div>
+			<li className="list-group-item">{data.descripcion} => {data.hora.slice(0,5)} Hrs</li>
+			</div>
+		  ));
+		  if (listEvent.length === 0){
+			listEvent = <li className="list-group-item">  Hoy no tiene Eventos </li>
+		  }
+		let listQuest = this.state.userQuest.filter(data => new Date(indate(data.fecha)).getTime() ==  new Date(this.obtenerFecha()).getTime() ).map((data,index)=>(
+				<li className="list-group-item">Ramo:{data.cod_ramo} {data.hora}  Sala: {data.sala_clases} {data.descripcion}</li>
+		 )
+		 );
+
+		 if (listQuest.length === 0){
+			listQuest = <li className="list-group-item">  Hoy no tiene Prueba </li>
+		  }
 		return (
 			<div>
 				<div className="div_titulo">
@@ -97,7 +136,8 @@ class Pam extends React.Component {
 								<div id="collapse2" className="panel-collapse collapse">
 									<div className="panel-body">
 										<ul className="nav nav-pills nav-stacked">
-											<li className="list-group-item">Entrega ppt de administracion</li>
+										{listEvent}
+
 										</ul>
 									</div>
 								</div>
@@ -111,7 +151,7 @@ class Pam extends React.Component {
 									<div id="collapse3" className="panel-collapse collapse">
 										<div className="panel-body">
 											<ul className="nav nav-pills nav-stacked">
-													{/* {listQuest} */}
+													 {listQuest}
 											</ul>
 										</div>
 									</div>

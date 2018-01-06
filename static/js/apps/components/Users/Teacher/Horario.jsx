@@ -5,92 +5,105 @@ function getRut() {
 	const rut= (window.location.search.split('?rut=')[1]);
 	return rut;
 }
+function ajustedArr(arr){
+	let newArr = new Array(18).fill("-");
+	if (arr.length){
+		for(let i = 0; i < arr.length;i++ ){
+			newArr[arr[i].num_bloque-1] = arr[i];
+		}
+	}
+	return newArr;
+}
+const Item = data => {
+	if (data.length ){
+		data.map((data, index) => {
+			if(num_bloque === index + 1){
+				return <li className="list-group-item item2">{cod_ramo}</li>
+			}
+		})
+	}
+        return <li className="list-group-item item2">-</li>
+}
 class Horario extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			horarioClass: [],
+		}
+	}
 
+	componentWillMount() {
+		$.getJSON('/data-get-ramos-teacher').then(data => this.setState({ horarioClass: data }));
+	};
 	render() {
+
+		const horarioA = this.state.horarioClass.filter(data => data.rut_prof ===  getRut());
+
+		const horarioLunes = horarioA.filter(data => data.dia === "LUNES");
+		const horarioMartes = horarioA.filter(data => data.dia === "MARTES");
+		const horarioMiercoles = horarioA.filter(data => data.dia === "MIERCOLES");
+		const horarioJueves = horarioA.filter(data => data.dia === "JUEVES");
+		const horarioViernes = horarioA.filter(data => data.dia === "VIERNES");
+		const horarioSabado = horarioA.filter(data => data.dia === "SABADO");
+
+
+		const information = [{ day: "lunes", info: ajustedArr(horarioLunes) }, { day: "Martes", info:  ajustedArr(horarioMartes) }, { day: "Miercoles", info:  ajustedArr(horarioMiercoles) },
+		{ day: "Jueves", info:  ajustedArr(horarioJueves) }, { day: "Viernes", info:  ajustedArr(horarioViernes) }, { day: "Sabado", info:  ajustedArr(horarioSabado) }]
+
+		const days = information.map((data, index ) => {
+			const items = data.info.length ? data.info.map((item, index) => {
+
+				if(item.num_bloque === index + 1){
+					return <li className="list-group-item item1">{item.cod_ramo}</li>
+				}
+				return  <li className="list-group-item item2 ">-</li>
+			}) : <li className="list-group-item item2">-</li>;
+
+			return(
+				<div className="div_Dia">
+					<ul className="list-group">
+					<li className="list-group-item active">	{data.day}</li>
+						 {items}
+					</ul>
+				</div>
+			)
+		})
+
 		return (
 			<div>
 				<div className="div_titulo">
 										<NavMenu rut={getRut()}/>
 									 <h2 className="titulo">HORARIO</h2>
 	           </div>
-			   <div className="content">
+						 <div className="content contenido">
+					<div className="content_2 horario">
+					<ul className="list-group bloque">
+								<li className="list-group-item active">	Bloque</li>
+								<li className="list-group-item item2">8:00</li>
+								<li className="list-group-item item2">8:45</li>
+								<li className="list-group-item item2">9:30</li>
+								<li className="list-group-item item2">10:15</li>
+								<li className="list-group-item item2">11:00</li>
+								<li className="list-group-item item2">11:45</li>
+								<li className="list-group-item item2">12:30</li>
+								<li className="list-group-item item2">13:15</li>
+								<li className="list-group-item item2">14:00</li>
+								<li className="list-group-item item2">14:45</li>
+								<li className="list-group-item item2">15:30</li>
+								<li className="list-group-item item2">16:15</li>
+								<li className="list-group-item item2">17:00</li>
+								<li className="list-group-item item2">17:45</li>
+								<li className="list-group-item item2">18:30</li>
+								<li className="list-group-item item2">19:15</li>
+								<li className="list-group-item item2">20:00</li>
+								<li className="list-group-item item2">20:45</li>
+						</ul>
+								{days}
+						</div>
 
-		<div className="content_2">
+					</div>
 
-			<div className="panel panel-default" border= "1px solid black" >
-			    <div className="list-group-item list-group-item-danger" ALIGN="center" >Detalles de la clase: </div>
-			    <div className="list-group-item list-group-item-info">
-			    	<span >Nombre de asignatura: Matematicas</span>
-			    </div>
-			    <div className="list-group-item list-group-item-info">
-			    	<span>Horas: 09:40 - 11:20</span>
-			    </div>
-			    <div className="list-group-item list-group-item-info">
-			    	<span>Sala: G202</span>
-			    </div>
-			    <div className="list-group-item list-group-item-info">
-			    	<span>Profesor: José Rojas</span>
-			    </div>
 
-			</div>
-			<table className="table table-inverse" width="137px" height ="39px">
-			  <thead>
-			    <tr>
-			      <th >Lunes</th>
-			      <th >Martes</th>
-			      <th >Miercoles</th>
-			      <th >Jueves</th>
-			      <th >Viernes</th>
-			    </tr>
-			  </thead>
-			  <tbody >
-			    <tr >
-			      <td>Mat</td>
-			      <td>--</td>
-			      <td>--</td>
-			      <td>--</td>
-			      <td>Mat</td>
-			    </tr>
-			    <tr height ="39px">
-			      <td>Ing</td>
-			      <td>Dai</td>
-			      <td>--</td>
-			      <td>AE</td>
-			      <td>Mat</td>
-			    </tr>
-			    <tr>
-			      <td>Ingles</td>
-			      <td>Dai </td>
-			      <td>Dai</td>
-			      <td>--</td>
-			      <td>Mat</td>
-			    </tr>
-			    <tr>
-			      <td> -- </td>
-			      <td>--</td>
-			      <td>--</td>
-			      <td>--</td>
-			      <td>--</td>
-			    </tr>
-			    <tr>
-			      <td> -- </td>
-			      <td>--</td>
-			      <td>--</td>
-			      <td>--</td>
-			      <td>For</td>
-			    </tr>
-			    <tr>
-			      <td>AE</td>
-			      <td>--</td>
-			      <td>--</td>
-			      <td>--</td>
-			      <td>For</td>
-			    </tr>
-			  </tbody>
-			</table>
-		</div>
-	</div>
 	<div className="div_Footer">
 		               <Footer/>
 	           </div>

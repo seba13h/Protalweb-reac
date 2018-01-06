@@ -333,3 +333,8 @@ td:nth-child(5):hover{background-color: green;opacity: 0.5;}*/
 .addevent{
 	margin-left: 85%;
 }
+.showpw{
+width: 2em;
+border-left: 0;
+cursor: pointer;
+}

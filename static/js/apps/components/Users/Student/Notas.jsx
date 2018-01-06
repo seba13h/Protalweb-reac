@@ -8,7 +8,6 @@ function getRut() {
 }
 
 class Notas extends React.Component {
-
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -46,7 +45,9 @@ class Notas extends React.Component {
 	}
 
 	render() {
+		console.log(this.state.dataA);
 		const ramosA = this.state.dataA.filter(data => data.rut ===  getRut());
+		console.log(getRut())
 		const filtroNota = this.state.studentClass.filter(data => data.rut_alu === getRut());
 		const list = ramosA.map((data, index) => (
 			<div className="panel panel-default">

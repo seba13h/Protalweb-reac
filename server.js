@@ -48,6 +48,22 @@ app.post('/data-insert-ramo', function(req, res){
       console.error(error);
   });
 });
+app.post('/data-insert-evento', function(req, res){
+  const data = req.body;
+  const {rut, newfecha, hora, descripcion} = req.body;
+  const query = `insert into eventos(rut_alu, fecha, hora, descripcion) values('${rut}', '${newfecha}', '${hora}', '${descripcion}')`;
+  connection.query(query, (error, results, fields) => {
+      console.error(error);
+  });
+});
+app.post('/data-insert-quest', function(req, res){
+  const data = req.body;
+  const {codRamo,curso, rut, newfecha, hora,sala, descripcion} = req.body;
+  const query = `insert into prueba(cod_ramo,cod_curso,rut_prof, fecha, hora,sala_clases, descripcion) values('${codRamo}','${curso}','${rut}', '${newfecha}', '${hora}', '${sala}','${descripcion}')`;
+  connection.query(query, (error, results, fields) => {
+      console.error(error);
+  });
+});
 app.post('/data-insert-Horario', function(req, res){
   const data = req.body;
   const {codCurso, dia, bloque, sala, hora, codRamo} = req.body;
@@ -61,6 +77,22 @@ app.post('/data-update-user', function(req, res){
   const data = req.body;
   const { rut, name, email, phone, pw, cod_curso, tipo_usuario} = req.body;
   const query = `update  alumno set  nom_alu = '${name}', email= '${email}', telefono =  '${phone}', contraseña = '${pw}' , cod_curso = '${cod_curso}' , tipo_usuario = ${tipo_usuario} where rut_alu= '${rut}'`;
+  connection.query(query, (error, results, fields) => {
+      console.error(error);
+  });
+});
+app.post('/data-update-user-password', function(req, res){
+  const data = req.body;
+  const { rut ,pw} = req.body;
+  const query = `update  alumno set  contraseña = '${pw}'  where rut_alu= '${rut}'`;
+  connection.query(query, (error, results, fields) => {
+      console.error(error);
+  });
+});
+app.post('/data-update-teacher-password', function(req, res){
+  const data = req.body;
+  const { rut ,pw} = req.body;
+  const query = `update  profesor set  contraseña = '${pw}'  where rut_prof= '${rut}'`;
   connection.query(query, (error, results, fields) => {
       console.error(error);
   });
@@ -113,6 +145,28 @@ app.post('/data-delete-ramo', function(req, res){
      });
      console.error("eliminado....");
    });
+
+   app.post('/data-delete-event', function(req, res){
+    const data = req.body;
+    console.log(data);
+    const { rut_alu, fecha, hora, descripcion} = req.body;
+         const query = `delete from eventos where rut_alu= '${rut_alu}' and fecha= '${fecha}' and hora= '${hora}'`;
+ connection.query(query, (error, results, fields) => {
+       console.error(error);
+    });
+    console.error("eliminado....");
+  });
+  app.post('/data-delete-quest', function(req, res){
+    const data = req.body;
+    console.log(data);
+    const { rut,fecha,hora,descripcion,sala_clases,nom_ramo,cod_ramo,cod_curso} = req.body;
+         const query = `delete from prueba where cod_ramo= '${cod_ramo}' and cod_curso= '${cod_curso}' and rut_prof= '${rut}'and fecha= '${fecha}'`;
+ connection.query(query, (error, results, fields) => {
+       console.error(error);
+    });
+    console.error("eliminado....");
+  });
+
 
 ////// GET
 app.get('/data-get-all-rut-user', function(req, res){
@@ -187,7 +241,7 @@ app.get('/data-get-all-menu-User', function(req, res){
 app.get('/data-get-all-menu-User2', function(req, res){
   const utc = new Date().toJSON().slice(0,10).replace(/-/g,'/');
   connection.query
-  ('SELECT  alumno.cod_curso,prueba.descripcion ,prueba.fecha, prueba.bloque, prueba.sala_clases ,prueba.cod_ramo  FROM alumno inner join prueba on alumno.cod_curso = prueba.cod_curso',
+  ('SELECT  alumno.cod_curso,prueba.descripcion ,prueba.fecha, prueba.bloque, prueba.sala_clases ,prueba.cod_ramo  FROM alumno inner join prueba on alumno.cod_curso = prueba.cod_curso group by descripcion',
   (error, results, fields) => {
     res.json(results);
   });
@@ -195,14 +249,21 @@ app.get('/data-get-all-menu-User2', function(req, res){
 
 app.get('/data-get-all-menu-teacher2', function(req, res){
   connection.query
-  ('SELECT profesor.rut_prof as rut, prueba.fecha, prueba.bloque, prueba.descripcion,prueba.sala_clases ,ramo.nom_ramo,ramo.cod_ramo ,prueba.cod_curso FROM profesor inner join ramo on profesor.rut_prof = ramo.rut_prof inner join prueba on prueba.rut_prof= ramo.rut_prof AND prueba.cod_ramo = ramo.cod_ramo',
+  ('SELECT profesor.rut_prof as rut, prueba.fecha, prueba.hora, prueba.descripcion,prueba.sala_clases ,ramo.nom_ramo,ramo.cod_ramo ,prueba.cod_curso FROM profesor inner join ramo on profesor.rut_prof = ramo.rut_prof inner join prueba on prueba.rut_prof= ramo.rut_prof AND prueba.cod_ramo = ramo.cod_ramo',
   (error, results, fields) => {
     res.json(results);
   });
 });
 app.get('/data-get-ramos-user', function(req, res){
   connection.query
-  ('SELECT alumno.rut_alu as rut, alumno.cod_curso, ramo.nom_ramo, ramo.cod_ramo, profesor.nom_prof, profesor.email, profesor.telefono FROM alumno inner join ramo on alumno.cod_curso = ramo.cod_curso inner join profesor on profesor.rut_prof= ramo.rut_prof GROUP BY ramo.cod_ramo',
+  ('SELECT alumno.rut_alu as rut, alumno.cod_curso, ramo.nom_ramo, ramo.cod_ramo, profesor.nom_prof, profesor.email, profesor.telefono FROM alumno inner join ramo on alumno.cod_curso = ramo.cod_curso inner join profesor on profesor.rut_prof= ramo.rut_prof',
+  (error, results, fields) => {
+    res.json(results);
+  });
+});
+app.get('/data-get-ramos-teacher', function(req, res){
+  connection.query
+  ('SELECT ramo.rut_prof,ramo.nom_ramo, ramo.cod_ramo, horario.dia, horario.num_bloque, horario.hora FROM ramo inner join horario on ramo.cod_ramo = horario.cod_ramo',
   (error, results, fields) => {
     res.json(results);
   });

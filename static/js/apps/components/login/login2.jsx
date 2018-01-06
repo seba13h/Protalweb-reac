@@ -8,7 +8,6 @@ const NONE_CLASS = 'none';
 
 function isExistRut(rut, availableRut) {
   let newRut = rut.split('.').join("");
-
   const match = availableRut.filter(data => data.rut === newRut);
   return match.length;
 }

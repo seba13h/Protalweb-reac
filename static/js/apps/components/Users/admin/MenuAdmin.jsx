@@ -14,15 +14,14 @@ class MenuAdmin extends React.Component {
         const rutaHorario=`/Admin/mHorario?rut=${getRut()}`;
         const rutaCursos=`/Admin/mCursos?rut=${getRut()}`;
         return (
-            <div>
+            <div className="content">
                 <div className="div_titulo">
-                    <h2  className="titulo">MENU</h2>
+                    <h2 className="titulo">Menu de Administrador</h2>
 
-                      <button  type="button" className="btn btn-danger" data-dismiss="modal"><a href = '/'>Cerrar Sesión</a></button>
 
                 </div>
-                <div className="panel-heading menu-admin">
-                    <h4 className="panel-title">
+                <div className=" panel-heading menu-admin">
+                    <h4 className="panel-title ">
                         <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">MANTENEDORES</a>
                         <span className="oi oi-arrow-thick-left" href="/Admin "></span>
                     </h4>
@@ -35,10 +34,10 @@ class MenuAdmin extends React.Component {
                             <a href={rutaRamos} className="list-group-item list-group-item-action">Ramos</a>
                             <a href={rutaHorario} className="list-group-item list-group-item-action">Horario</a>
                             <a href={rutaCursos} className="list-group-item list-group-item-action">Cursos</a>
-
                         </ul>
                     </div>
                 </div>
+                <button id="logoff" type="button" className="btn btn-danger" data-dismiss="modal"><a href = '/'>Cerrar Sesión</a></button>
             </div>
 
         )

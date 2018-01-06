@@ -15,15 +15,20 @@ class mRamos extends React.Component {
       codCurso: { newClass: "none" },
       ramosClass: [],
       rutProf: [],
+      search: '',
       dataA:[]
     }
     this.validarRamo = this.validarRamo.bind(this);
     this.profExist = this.profExist.bind(this);
-    this. insertarData = this. insertarData.bind(this);
+    this.insertarData = this.insertarData.bind(this);
     this.DeleteData = this.DeleteData.bind(this);
     this.eliminar = this.eliminar.bind(this);
     this.addComponentModal = this.addComponentModal.bind(this);
+    this.Buscar = this.Buscar.bind(this);
+    this.actualizarData = this.actualizarData.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
+ 
 
   componentWillMount() {
     $.getJSON('/data-get-all-ramo').then(data => this.setState({ ramosClass: data }));
@@ -46,8 +51,19 @@ class mRamos extends React.Component {
      nombre: this.state.ramosClass[index].nom_ramo,
  });
 }
+  
+   actualizarData() {
+    alert(this.refs.inputNombre.value);
+    const rut = this.refs.inputRut.value;
+    const name = this.refs.inputNombre.value;
+    const ramo = this.refs.inputRamo.value;
+    const curso = this.refs.inputCurso.value;
+    const dataRamo = { rut, name, ramo, curso };
+    axios.post("/data-update-user", dataAlumno);
+    window.location.reload();
+  }
 
-
+  
   profExist(rut) {
     const newRut = this.state.rutProf.filter(data => data.rut === rut);
     if (newRut != "") {
@@ -109,9 +125,75 @@ class mRamos extends React.Component {
     alert('Insertando Ramo');
     this.insertarData();
   }
+
+  validarRamo2() {
+    const rut = this.refs.inputRut.value;
+    const name = this.refs.inputNombre.value;
+    const ramo = this.refs.inputRamo.value;
+    const curso = this.refs.inputCurso.value;
+    const validateRut = /^(\d{1,2}(\.?\d{3}){2})\-([\dkK])$/;
+
+    if (rut != "") {
+      if ((validateRut.test(rut)) && (this.profExist(rut))) {
+        this.setState({ rut: { newClass: "dataCorrect" } });
+      } else {
+        this.setState({ rut: { newClass: "dataIncorrect" } });
+        alert("rut incorrecto");
+        return false;
+      }
+    } else {
+      this.setState({ rut: { newClass: "none" } });
+      alert("rut vacio");
+      return false;
+    }
+
+    if (name != "") {
+
+      this.setState({ name: { newClass: "dataCorrect" } });
+    }
+    else {
+      this.setState({ name: { newClass: "none" } });
+      alert("nombre vacio");
+      return false;
+    }
+    if (ramo != "") {
+      this.setState({ codRamo: { newClass: "dataCorrect" } });
+    }
+    else {
+      this.setState({ codRamo: { newClass: "none" } });
+      alert("codigo del ramo vacio");
+      return false;
+    }
+    alert('Modificando Ramo');
+    this.actualizarData();
+  }
+
+ handleInputChange(event){
+    console.log(event)
+    var inputName = event.target.name;
+    var inputValue = event.target.value;
+    this.setState({[inputName]:inputValue});
+  }
+
+  Buscar(event) {
+    event.preventDefault();
+    this.setState({search: this.refs.inputSearch.value});
+  }
+
+  ramosFiltrados() {
+    let search = this.state.search.toLowerCase();
+    return this.state.ramosClass.filter((ramo) => {
+      if(this.state.search === '') {
+        return true;
+      } else { 
+        return ramo.cod_ramo.toLowerCase().indexOf(search) >= 0 || ramo.nom_ramo.toLowerCase().indexOf(search) >= 0;
+      }
+    });
+  }
+
   render() {
     const rutaMenu = `/Admin?rut=${getRut()}`;
-    const lista = this.state.ramosClass.map((data, index) =>
+    const lista = this.ramosFiltrados().map((data, index) =>
       <tr>
         <td>{data.cod_ramo}</td>
         <td>{data.nom_ramo}</td>
@@ -137,9 +219,9 @@ class mRamos extends React.Component {
             <button id="tc12" className="btn btn-primary " data-toggle="modal" data-target="#myModal" >
               Agregar Ramo
       </button>
-            <form>
+            <form onSubmit={this.Buscar}>
               <div className="input-group">
-                <input id="tc19" type="text" className="form-control" placeholder="Buscar" />
+                <input id="tc19" type="text" className="form-control" placeholder="Buscar" ref="inputSearch" />
                 <div className="input-group-btn">
                   <button className="btn btn-default" type="submit">
                     <i className="glyphicon glyphicon-search"></i>
@@ -225,11 +307,11 @@ class mRamos extends React.Component {
                   </div>
                   <div className="form-group">
                     Nombre Ramo
-              <input ref="inputNombre" className="form-control" id="nom_ramo" value = {this.state.nombre} />
+              <input ref="inputNombre" name="nombre" className="form-control" id="nom_ramo" value = {this.state.nombre} onChange={this.handleInputChange} />
                   </div>
                   <div className="form-group">
                     Rut Profesor
-              <input ref="inputProfesor" type="" className="form-control" id="rut_prof" value = {this.state.rut} />
+              <input ref="inputProfesor" name="rut" type="" className="form-control" id="rut_prof" value = {this.state.rut} onChange={this.handleInputChange} />
                   </div>
                   <div className="form-group">
                     Curso
@@ -242,7 +324,7 @@ class mRamos extends React.Component {
                       <option>329-B</option>
                     </select>
                   </div>
-                  <button type="submit" className="btn btn-primary" onClick={this.validarAlumno}>Aceptar</button>
+                  <button type="submit" className="btn btn-primary" onClick={this.validarRamo2}>Aceptar</button>
                 </form>
 
               </div>

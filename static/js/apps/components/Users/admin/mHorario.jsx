@@ -17,6 +17,7 @@ class mProfesor extends React.Component {
       Hora: { newClass: "none" },
       horarioClass: [],
       ramosClass:[],
+      search: '',
       dataA:[]
     }
     this.validarAlumno = this.validarAlumno.bind(this);
@@ -24,6 +25,7 @@ class mProfesor extends React.Component {
     this.insertarData = this.insertarData.bind(this);
     this.DeleteData = this.DeleteData.bind(this);
     this.eliminar = this.eliminar.bind(this);
+     this.Buscar = this.Buscar.bind(this);
   }
 
   componentWillMount() {
@@ -94,9 +96,27 @@ class mProfesor extends React.Component {
   alert('Insertando Bloque de Horario');
   this.insertarData();
 }
+
+  Buscar(event) {
+    event.preventDefault();
+    this.setState({search: this.refs.inputSearch.value});
+  }
+
+  horariosFiltrados() {
+    let search = this.state.search.toLowerCase();
+    return this.state.horarioClass.filter((horario) => {
+      if(this.state.search === '') {
+        return true;
+      } else { 
+        return horario.cod_curso.toLowerCase().indexOf(search) >= 0 || horario.cod_ramo.toLowerCase().indexOf(search) >= 0;
+      }
+    });
+  }
+
+
   render() {
     const rutaMenu = `/Admin?rut=${getRut()}`;
-    const lista = this.state.horarioClass.map((data, index) =>
+    const lista = this.horariosFiltrados().map((data, index) =>
       <tr>
         <td>{data.cod_curso}</td>
         <td>{data.cod_ramo}</td>
@@ -122,9 +142,9 @@ class mProfesor extends React.Component {
             <button id="tc12" className="btn btn-primary " data-toggle="modal" data-target="#myModal" >
               Agregar Horario
       </button>
-            <form>
+             <form onSubmit={this.Buscar}>
               <div className="input-group">
-                <input id="tc19" type="text" className="form-control" placeholder="Buscar" />
+                <input id="tc19" type="text" className="form-control" placeholder="Buscar" ref="inputSearch" />
                 <div className="input-group-btn">
                   <button className="btn btn-default" type="submit">
                     <i className="glyphicon glyphicon-search"></i>

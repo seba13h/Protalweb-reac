@@ -22,8 +22,6 @@ class NavMenuProf extends React.Component {
         const rutaNotas=`/Profesor/Notas?rut=${this.props.rut}`;
         const rutaHorario=`/Profesor/Horario?rut=${this.props.rut}`;
         const rutaEventos=`/Profesor/Eventos?rut=${this.props.rut}`;
-
-        console.log(this.props.rut);
         return (
             <div className="display">
                 <div id="mySidenav" className="sidenav">
