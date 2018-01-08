@@ -59,7 +59,6 @@ class mAlumno extends React.Component {
     };
 
    eliminar(){
-
      console.log (this.state.dataA.rut_alu);
      const rut = this.state.dataA.rut_alu;
      const notas =this.state.Notas.filter(data => data.rut_alu === rut );

@@ -16,14 +16,28 @@ class Notas extends Component {
 				dataNota:[],
 				ramo:'',
 				rutAlu:'',
-				Nnota:''
+				Nnota:'',
+				dataC:[]
 			}
 			this.listAlu = this.listAlu.bind(this);
 			this.listNotas = this.listNotas.bind(this);
 			this.addcomponent = this.addcomponent.bind(this);
 			this.validarNota = this.validarNota.bind(this);
 			this.insertarData = this.insertarData.bind(this);
+			this.DeleteData = this.DeleteData.bind(this);
+			this.eliminar = this.eliminar.bind(this);
 		}
+			eliminar() {
+
+				axios.post("/data-delete-detalleNota", this.state.dataC);
+				 window.location.reload();
+
+		};
+		DeleteData(index){
+
+			this.setState( {dataC: this.state.dataNota.filter(data => data.rut_alu === index)});
+
+    };
 		insertarData() {
 			console.log("entre");
 			const rut = this.state.rutAlu;
@@ -69,8 +83,16 @@ class Notas extends Component {
 
 	}
 	listNotas(rut,ramo){
-		let filtroNota = this.state.dataNota.filter(data => data.rut_alu === rut && data.cod_ramo === ramo).map(data => (
-				<td>{data.nota}</td>
+		let filtroNota = this.state.dataNota.filter(data => data.rut_alu === rut && data.cod_ramo === ramo).map((data,index) => (
+			<td>
+			<div className="btn-group" role="group">
+     <a data-toggle="dropdown"aria-haspopup="true" aria-expanded="false">{data.nota}</a>
+    <div className="dropdown-menu dropNotas" aria-labelledby="btnGroupDrop1">
+		<button className="glyphicon glyphicon-pencil"  ></button>
+		<button className="glyphicon glyphicon-trash" data-toggle="modal" data-target="#myModal2" onClick={() => this.DeleteData(rut)}></button>
+    </div>
+		</div>
+		</td>
 		));
 		if (filtroNota.length === 0){
 			filtroNota = <td>..</td>
@@ -103,7 +125,7 @@ class Notas extends Component {
 		<div className="panel panel-default">
 		<div className="panel-heading">
 		<h4 className="panel-title">
-		<a data-toggle="collapse" data-parent="#accordion" href="#collapse1">{data.nom_ramo}                                 - Curso : {data.cod_curso}</a>
+		<a data-toggle="collapse" data-parent="#accordion" href="#collapse1">{data.nom_ramo}                           - Curso : {data.cod_curso}</a>
 		</h4>
 		</div>
 		<div id="collapse1" className="panel-collapse collapse in">
@@ -168,11 +190,29 @@ class Notas extends Component {
               <div className="modal-footer">
                 <button type="button" className="btn btn-danger" data-dismiss="modal">Cerrar</button>
               </div>
-            </div> {/* Modal Agregar */}
+						</div> {/* Modal Agregar */}
+
 
           </div>
         </div>
+				<div className="modal fade" id="myModal2" role="dialog">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <button type="button" className="close" data-dismiss="modal">&times;</button>
+                <h4 className="modal-title">Eliminar Registro</h4>
+              </div>
+              <div className="modal-body">
 
+                <p>Seguro que desea eliminar el registro?</p>
+                <button type="button" className="btn btn-primary" onClick={this.eliminar}>Aceptar</button>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-danger" data-dismiss="modal">Cerrar</button>
+              </div>
+            </div>
+          </div>
+        </div>
 				</div>
 				)
     }

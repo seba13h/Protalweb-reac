@@ -229,7 +229,17 @@ app.post('/data-delete-ramo', function(req, res){
     });
     console.error("eliminado....");
   });
-
+  app.post('/data-delete-detalleNota', function(req, res){
+    const data = req.body;
+    console.log( req.body);
+    const { cod_ramo,nota,numero_nota, ponderacion,rut_alu} = data;
+    console.log (rut_alu, cod_ramo, numero_nota);
+         const query = `delete from detalle_nota where cod_ramo= '${cod_ramo}' and rut_alu= '${rut_alu}' and numero_nota= '${numero_nota}'`;
+ connection.query(query, (error, results, fields) => {
+       console.error(error);
+    });
+    console.error("eliminado....");
+  });
 
 ////// GET
 app.get('/data-get-all-rut-user', function(req, res){
