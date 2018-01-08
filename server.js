@@ -123,6 +123,14 @@ app.post('/data-update-teacher-password', function(req, res){
       console.error(error);
   });
 });
+app.post('/data-update-admin-password', function(req, res){
+  const data = req.body;
+  const { rut ,pw} = req.body;
+  const query = `update  administrador set  contraseña = '${pw}'  where rut_admin= '${rut}'`;
+  connection.query(query, (error, results, fields) => {
+      console.error(error);
+  });
+});
 app.post('/data-update-teacherr', function(req, res){
   const data = req.body;
   const { rut, name, email, phone, pw, tipo_usuario} = req.body;
@@ -330,6 +338,11 @@ app.get('/data-get-all-quest', function(req, res){
 });
 app.get('/data-get-all-event', function(req, res){
   connection.query('SELECT * FROM eventos', (error, results, fields) => {
+    res.json(results);
+  });
+});
+app.get('/data-get-all-notas', function(req, res){
+  connection.query('SELECT * FROM nota', (error, results, fields) => {
     res.json(results);
   });
 });

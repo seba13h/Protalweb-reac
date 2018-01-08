@@ -17,7 +17,9 @@ class mProfesor extends React.Component {
       contraseña: { newClass: "none" },
       teacherClass: [],
       search: '',
-      dataA:{}
+      dataA:[],
+      ramo:'',
+      prueba:''
     }
     this.insertarData = this.insertarData.bind(this);
     this.validarProfesor = this.validarProfesor.bind(this);
@@ -27,22 +29,53 @@ class mProfesor extends React.Component {
     this.addComponentModal = this.addComponentModal.bind(this);
     this.validarAlumno2 = this.validarAlumno2.bind(this);
     this.Buscar = this.Buscar.bind(this);
-
+    this.profExist = this.profExist.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
   }
+  profExist(rut){
+    const prof = this.state.teacherClass.filter(data => data.rut_prof === rut);
 
+    if (prof != ""){
+      alert("Rut ya existe");
+      return false;
+    }else{
+      return true;
+    }
+
+}
   componentWillMount() {
     $.getJSON('/data-get-all-teacher').then(data => this.setState({ teacherClass: data }));
+    $.getJSON('/data-get-all-ramo').then(data => this.setState({ ramo: data }));
+    $.getJSON('/data-get-all-quest').then(data => this.setState({ prueba: data }));
+
   };
   DeleteData(index){
     this.setState( {dataA : this.state.teacherClass[index]});
   };
 
  eliminar(){
+  console.log (this.state.dataA.rut_prof);
+  const rut = this.state.dataA.rut_prof;
+  const ramos =this.state.ramo.filter(data => data.rut_prof === rut );
+  const pruebas =this.state.prueba.filter(data => data.rut_prof === rut);
+
+  let aviso = '';
+
+  if (ramos !=''){
+    aviso = (aviso + '   ramos')
+  }
+  if (pruebas !=''){
+   aviso = (aviso+' - '+'  pruebas'+' ');
+ }
+
+ if (aviso != ''){
+       alert('El Profesor no puede eliminarse por que tiene'+ aviso +'registrados');
+ }else{
   axios.post("/data-delete-teacher", this.state.dataA);
   window.location.reload();
  }
- 
+ }
+
 
  addComponentModal(index){
    console.log()
@@ -56,7 +89,7 @@ class mProfesor extends React.Component {
  }
  actualizarData() {
 
-  
+
   const rut = this.refs.inputrut.value;
   const name = this.refs.inputnombre.value;
   const pw = this.refs.inputpw.value;
@@ -68,7 +101,7 @@ class mProfesor extends React.Component {
   window.location.reload();
 }
 validarAlumno2() {
-  
+
    const rut = this.refs.inputrut.value;
   const name = this.refs.inputnombre.value;
    const pw = this.refs.inputpw.value;
@@ -80,8 +113,8 @@ validarAlumno2() {
 
   if (rut != "") {
     if (validateRut.test(rut)) {
-      var newRut = rut.split('.').join("");  
-    } else { 
+      var newRut = rut.split('.').join("");
+    } else {
       alert("rut incorrecto");
       return false;
     }
@@ -105,19 +138,19 @@ validarAlumno2() {
     alert("email vacio");
     return false;
   }
-  if (phone != "") {   
+  if (phone != "") {
   } else {
     alert("telefono vacio");
     return false;
   }
   if (pw != "" && pw2 != "") {
-    if (pw === pw2) { 
+    if (pw === pw2) {
     } else {
       alert('No coinciden las claves');
       return false;
     }
    } else {
-    
+
     alert('Ingrese ambas contraseñas');
     return false;
   }
@@ -140,7 +173,7 @@ validarAlumno2() {
   }
 
   validarProfesor() {
-    
+
      const rut = this.refs.inputRut2.value;
     const name = this.refs.inputNombre2.value;
     const pw = this.refs.inputpw4.value;
@@ -151,7 +184,7 @@ validarAlumno2() {
     const validateRut = /^(\d{1,2}(\.?\d{3}){2})\-([\dkK])$/;
     const validateEmail = /(^[0-9a-zA-Z]+(?:[._][0-9a-zA-Z]+)*)@([0-9a-zA-Z]+(?:[._-][0-9a-zA-Z]+)*\.[0-9a-zA-Z]{2,3})$/;
 
-    if (rut != "") {
+    if (rut != "" && this.profExist(rut)) {
       if (validateRut.test(rut)) {
         var newRut = rut.split('.').join("");
         this.setState({ rut: { newClass: "dataCorrect" } });
@@ -221,7 +254,7 @@ validarAlumno2() {
     return this.state.teacherClass.filter((profesor) => {
       if(this.state.search === '') {
         return true;
-      } else { 
+      } else {
         return profesor.rut_prof.toLowerCase().indexOf(search) >= 0 || profesor.nom_prof.toLowerCase().indexOf(search) >= 0;
       }
     });

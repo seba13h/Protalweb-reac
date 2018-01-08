@@ -30,7 +30,7 @@ class Notas extends Component {
 			const ramo = this.state.ramo;
 			const numeroNota = this.state.Nnota;
 			const Nota = this.refs.inputNota.value;
-			const Ponderacion = this.refs.inputPonderacion.value;
+			const Ponderacion = this.refs.inputPonderacion.value+'%';
 			const semestre = this.refs.inputSemestre.value;
 			var dt = new Date();
 			const año =  dt.getFullYear();
@@ -66,9 +66,7 @@ class Notas extends Component {
 			rutAlu: this.state.dataA[index].rut_alu,
 			Nnota:  this.state.dataNota.filter(data => data.rut_alu === this.state.dataA[index].rut_alu && data.cod_ramo === this.state.dataRamo[item].cod_ramo).length + 1
 		});
-		// const ramo = this.state.dataRamo[item].cod_ramo;
-		// const rutAlu = this.state.dataA[index].rut_alu;
-		// const nota = this.state.dataNota.filter(data => data.rut_alu === this.state.dataA[index].rut_alu && data.cod_ramo === this.state.dataRamo[item].cod_ramo).length + 1;
+
 	}
 	listNotas(rut,ramo){
 		let filtroNota = this.state.dataNota.filter(data => data.rut_alu === rut && data.cod_ramo === ramo).map(data => (
@@ -83,7 +81,7 @@ class Notas extends Component {
 	listAlu(curso,cod_ramo,item){
 		const listaAlumno = this.state.dataA.filter((data,index) => data.cod_curso === curso).map((data,index)=>(
 			<div>
-				<td className = "nombreTab">	{data.nom_alu} </td>
+				<td className="nombree">	{data.nom_alu} </td>
 				<td>{this.listNotas(data.rut_alu,cod_ramo)}</td>
 				<td>	<button type="button" className="btn btn-primary"  data-toggle="modal" data-target="#myModal" onClick = {()=>this.addcomponent(index,item)}>+</button></td>
 			</div>
@@ -110,13 +108,9 @@ class Notas extends Component {
 		</div>
 		<div id="collapse1" className="panel-collapse collapse in">
 			<div className="panel-body">
-				<table className="tc3" >
+				<table className="tc3 table" >
 					<tbody>
-					<tr>
-						<th>Nombre Alumno</th>
-						<th>Notas </th>
-						<th>Agregar Nota</th>
-					</tr>
+
 					{this.listAlu(data.cod_curso,data.cod_ramo,index)}
 					</tbody>
 				</table>
@@ -178,9 +172,7 @@ class Notas extends Component {
 
           </div>
         </div>
-					<div className="div_Footer">
-						<Footer />
-					</div>
+
 				</div>
 				)
     }

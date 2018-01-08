@@ -20,7 +20,10 @@ class mAlumno extends React.Component {
       usuario:{newClass:"none"},
       studentClass: [],
       search: '',
-      dataA:{},
+      dataA:[],
+      Notas:'',
+      Eventos:'',
+      detalleNota:''
     }
     this.validarAlumno = this.validarAlumno.bind(this);
     this.validarAlumno2 = this.validarAlumno2.bind(this);
@@ -29,13 +32,26 @@ class mAlumno extends React.Component {
     this.addComponentModal = this.addComponentModal.bind(this);
     this.DeleteData = this.DeleteData.bind(this);
     this.eliminar = this.eliminar.bind(this);
-   
+    this.aluExist = this.aluExist.bind(this);
     this.Buscar = this.Buscar.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
   }
+   aluExist(rut){
+        const alu = this.state.studentClass.filter(data => data.rut_alu === rut);
+        console.log("entre",alu);
+        if (alu != ""){
+          alert("Rut ya existe");
+          return false;
+        }else{
+          return true;
+        }
 
+   }
   componentWillMount() {
     $.getJSON('/data-get-all-user').then(data => this.setState({ studentClass: data }));
+    $.getJSON('/data-get-all-rut-detallenota').then(data => this.setState({ detalleNota: data }));
+    $.getJSON('/data-get-all-event').then(data => this.setState({ Eventos: data }));
+    $.getJSON('/data-get-all-notas').then(data => this.setState({ Notas: data }));
   };
 
     DeleteData(index){
@@ -43,11 +59,29 @@ class mAlumno extends React.Component {
     };
 
    eliminar(){
+
+     console.log (this.state.dataA.rut_alu);
+     const rut = this.state.dataA.rut_alu;
+     const notas =this.state.Notas.filter(data => data.rut_alu === rut );
+     const Evento=this.state.Eventos.filter(data => data.rut_alu === rut);
+     const Detalle_nota = this.state.detalleNota.filter(data => data.rut_alu === rut);
+     let aviso = '';
+
+     if (notas !=''){
+       aviso = (aviso + 'notas')
+     }
+     if (Evento !=''){
+      aviso = (aviso+' - '+'  Eventos'+' ');
+    }
+    if(Detalle_nota != ''){
+      aviso = (aviso +'- '+ ' detalle de notas'+' ');
+    }
+    if (aviso != ''){
+          alert('El alumno no puede eliminarse por que tiene'+ aviso +'registrados');
+    }else{
     axios.post("/data-delete-user", this.state.dataA);
-    window.location.reload();
+    window.location.reload();}
    }
-
-
 
  addComponentModal(index){
 
@@ -63,7 +97,7 @@ class mAlumno extends React.Component {
  }
 
   actualizarData() {
-    
+
     const rut = this.refs.inputRut.value;
     const name = this.refs.inputNombre.value;
     const pw = this.refs.inputpw.value;
@@ -104,61 +138,61 @@ class mAlumno extends React.Component {
     if (rut != "") {
       if (validateRut.test(rut)) {
         var newRut = rut.split('.').join("");
-        
+
       } else {
-        
+
         alert("rut incorrecto");
         return false;
       }
     } else {
-      
+
       alert("rut vacio");
       return false;
     }
 
     if (name != "") {
-      
+
     }
     else {
-      this.setState({ name: { newClass: "none" } });
+
       alert("nombre vacio");
       return false;
     }
     if (email != "") {
       if (validateEmail.test(email)) {
-        
+
       } else {
-        
+
         alert("email incorrecto");
         return false;
       }
     } else {
-      
+
       alert("email vacio");
       return false;
     }
     if (phone != "") {
-      
+
     } else {
-      
+
       alert("telefono vacio");
       return false;
     }
     if (pw != "" && pw2 != "") {
       if (pw === pw2) {
-        
+
       } else {
-        
+
         alert('No coinciden las claves');
         return false;
       }
      } else {
-      
+
       alert('Ingrese ambas contraseñas');
       return false;
     }
     if (curso != "") {
-      
+
     } else {
       return false;
     }
@@ -175,68 +209,67 @@ class mAlumno extends React.Component {
     const phone = this.refs.inputTel2.value;
     const pw2 = this.refs.inputpw5.value;
     const curso = this.refs.inputCurso2.value;
-
     const validateRut = /^(\d{1,2}(\.?\d{3}){2})\-([\dkK])$/;
     const validateEmail = /(^[0-9a-zA-Z]+(?:[._][0-9a-zA-Z]+)*)@([0-9a-zA-Z]+(?:[._-][0-9a-zA-Z]+)*\.[0-9a-zA-Z]{2,3})$/;
 
-    if (rut != "") {
+    if (rut != "" && this.aluExist(rut)) {
       if (validateRut.test(rut)) {
         var newRut = rut.split('.').join("");
-        this.setState({ rut: { newClass: "dataCorrect" } });
+
       } else {
-        this.setState({ rut: { newClass: "none" } });
+
         alert("rut incorrecto");
         return false;
       }
     } else {
-      this.setState({ rut: { newClass: "none" } });
-      alert("rut vacio");
+
+      alert("Ingrese rut");
       return false;
     }
 
     if (name != "") {
-      this.setState({ name: { newClass: "dataCorrect" } });
+
     }
     else {
-      this.setState({ name: { newClass: "none" } });
+
       alert("nombre vacio");
       return false;
     }
     if (email != "") {
       if (validateEmail.test(email)) {
-        this.setState({ email: { newClass: "dataCorrect" } });
+
       } else {
-        this.setState({ email: { newClass: "none" } });
+
         alert("email incorrecto");
         return false;
       }
     } else {
-      this.setState({ email: { newClass: "none" } });
+      t
       alert("email vacio");
       return false;
     }
     if (phone != "") {
-      this.setState({ phone: { newClass: "dataCorrect" } });
+
     } else {
-      this.setState({ phone: { newClass: "none" } });
+
       alert("telefono vacio");
       return false;
     }
     if (pw != "" && pw2 != "") {
       if (pw === pw2) {
-        this.setState({ pasword: { newClass: "dataCorrect" } });
+
       } else {
-        this.setState({ pasword: { newClass: "dataIncorrect" } });
+
         alert('No coinciden las claves');
         return false;
       }
      } else {
-      this.setState({ pasword: { newClass: "none" } });
+
       alert('Ingrese ambas contraseñas');
       return false;
     }
     if (curso != "") {
-      this.setState({ curso: { newClass: "dataCorrect" } })
+
     } else {
       return false;
     }
@@ -255,12 +288,12 @@ class mAlumno extends React.Component {
     return this.state.studentClass.filter((alumno) => {
       if(this.state.search === '') {
         return true;
-      } else { 
+      } else {
         return alumno.rut_alu.toLowerCase().indexOf(search) >= 0 || alumno.nom_alu.toLowerCase().indexOf(search) >= 0;
       }
     });
   }
-  
+
   handleInputChange(event){
     console.log(event)
     var inputName = event.target.name;

@@ -16,11 +16,15 @@ class mRamos extends React.Component {
       ramosClass: [],
       rutProf: [],
       search: '',
-      dataA:[]
+      dataA:[],
+      detalleNota:'',
+      nota:'',
+      horario:''
     }
     this.validarRamo = this.validarRamo.bind(this);
     this.validarRamo2 = this.validarRamo2.bind(this);
     this.profExist = this.profExist.bind(this);
+    this.ramoExist = this.ramoExist.bind(this);
     this.insertarData = this.insertarData.bind(this);
     this.DeleteData = this.DeleteData.bind(this);
     this.eliminar = this.eliminar.bind(this);
@@ -29,19 +33,42 @@ class mRamos extends React.Component {
     this.actualizarData = this.actualizarData.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
   }
- 
+
 
   componentWillMount() {
     $.getJSON('/data-get-all-ramo').then(data => this.setState({ ramosClass: data }));
     $.getJSON('/data-get-all-rut-teacher').then(data => this.setState({ rutProf: data }));
+    $.getJSON('/data-get-all-rut-detallenota').then(data => this.setState({ detalleNota: data }));
+    $.getJSON('/data-get-all-notas').then(data => this.setState({ nota: data }));
+    $.getJSON('/data-get-all-horario').then(data => this.setState({ horario: data }));
   };
   DeleteData(index){
     this.setState( {dataA : this.state.ramosClass[index]});
   };
 
  eliminar(){
+  const cod = this.state.dataA.cod_ramo;
+  const detallenota =this.state.detalleNota.filter(data => data.cod_ramo === cod );
+  const notas =this.state.nota.filter(data => data.cod_ramo === cod);
+  const horarios =this.state.horario.filter(data => data.cod_ramo === cod);
+
+  let aviso = '';
+
+  if (detallenota !=''){
+    aviso = (aviso + '   detalle de notas')
+  }
+  if (notas !=''){
+   aviso = (aviso+' - '+'  notas '+' ');
+ }
+ if (horarios !=''){
+  aviso = (aviso+' - '+'  bloque de horario '+' ');
+}
+ if (aviso != ''){
+       alert('El Ramo no puede eliminarse por que tiene'+ aviso +'registrados');
+ }else{
   axios.post("/data-delete-ramo", this.state.dataA);
   window.location.reload();
+ }
  }
  addComponentModal(index){
   console.log(this.state.ramosClass[index]);
@@ -52,10 +79,8 @@ class mRamos extends React.Component {
      nombre: this.state.ramosClass[index].nom_ramo,
  });
 }
-  
-   actualizarData() {
-    
 
+   actualizarData() {
     const rut = this.refs.inputRut.value;
     const name = this.refs.inputNombre.value;
     const ramo = this.refs.inputRamo.value;
@@ -64,8 +89,15 @@ class mRamos extends React.Component {
     axios.post("/data-update-ramo", dataRamo);
     window.location.reload();
   }
-
-  
+  ramoExist(cod){
+    const ramo = this.state.ramosClass.filter(data => data.cod_ramo === cod);
+    if (ramo != ""){
+      alert("El codigo del ramo ya existe");
+      return false;
+    }else{
+      return true;
+    }
+  }
   profExist(rut) {
     const newRut = this.state.rutProf.filter(data => data.rut === rut);
     if (newRut != "") {
@@ -92,7 +124,7 @@ class mRamos extends React.Component {
     const ramo = this.refs.inputRamo2.value;
     const curso = this.refs.inputCurso2.value;
     const validateRut = /^(\d{1,2}(\.?\d{3}){2})\-([\dkK])$/;
-    
+
     if (rut != "") {
       if ((validateRut.test(rut)) && (this.profExist(rut))) {
         this.setState({ rut: { newClass: "dataCorrect" } });
@@ -106,22 +138,17 @@ class mRamos extends React.Component {
       alert("rut vacio");
       return false;
     }
-
     if (name != "") {
-
       this.setState({ name: { newClass: "dataCorrect" } });
     }
     else {
-      this.setState({ name: { newClass: "none" } });
       alert("nombre vacio");
       return false;
     }
-    if (ramo != "") {
-      this.setState({ codRamo: { newClass: "dataCorrect" } });
+    if (ramo != ""  && (this.ramoExist(ramo))) {
     }
     else {
-      this.setState({ codRamo: { newClass: "none" } });
-      alert("codigo del ramo vacio");
+      alert("ingrese un codigo del ramo valido");
       return false;
     }
     alert('Insertando Ramo');
@@ -134,7 +161,7 @@ class mRamos extends React.Component {
     const ramo = this.refs.inputRamo.value;
     const curso = this.refs.inputCurso.value;
     const validateRut = /^(\d{1,2}(\.?\d{3}){2})\-([\dkK])$/;
-    
+
     if (rut != "") {
       if ((validateRut.test(rut)) && (this.profExist(rut))) {
       } else {
@@ -142,18 +169,18 @@ class mRamos extends React.Component {
         return false;
       }
     } else {
-      
+
       alert("rut vacio");
       return false;
     }
 
-    if (name != "") {   
+    if (name != "") {
     }
-    else {     
+    else {
       alert("nombre vacio");
       return false;
     }
-    if (ramo != "") {    
+    if (ramo != "") {
     }
     else {
       alert("codigo del ramo vacio");
@@ -181,7 +208,7 @@ class mRamos extends React.Component {
     return this.state.ramosClass.filter((ramo) => {
       if(this.state.search === '') {
         return true;
-      } else { 
+      } else {
         return ramo.cod_ramo.toLowerCase().indexOf(search) >= 0 || ramo.nom_ramo.toLowerCase().indexOf(search) >= 0;
       }
     });

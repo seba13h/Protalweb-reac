@@ -25,7 +25,7 @@ class mProfesor extends React.Component {
      this.validarHorario2 = this.validarHorario2.bind(this);
     this.ramoExist = this.ramoExist.bind(this);
     this.insertarData = this.insertarData.bind(this);
-    this.DeleteData = this.DeleteData.bind(this); 
+    this.DeleteData = this.DeleteData.bind(this);
     this.eliminar = this.eliminar.bind(this);
      this.Buscar = this.Buscar.bind(this);
      this.actualizarData = this.actualizarData.bind(this);
@@ -34,7 +34,7 @@ class mProfesor extends React.Component {
 
   }
  addComponentModal(index){
-   
+
    this.setState({
       CodCurso: this.state.horarioClass[index].cod_curso,
       CodRamo: this.state.horarioClass[index].cod_ramo,
@@ -42,7 +42,7 @@ class mProfesor extends React.Component {
       Dia: this.state.horarioClass[index].dia,
       Bloque: this.state.horarioClass[index].num_bloque,
       Hora: this.state.horarioClass[index].hora,
-      
+
   });
 
  }
@@ -62,21 +62,21 @@ class mProfesor extends React.Component {
     const bloque = this.refs.inputbloque.value;
     const hora = this.refs.inputhora.value;
     if ((codRamo != "") && (this.ramoExist(codRamo))) {
-      
+
     } else {
-      
+
       return false;
     }
     if (sala != "") {
-      
+
     } else {
- 
+
       alert("Sala de clases vacia");
       return false;
     }
 
   if (hora != "") {
-    
+
   } else {
     alert("Hora vacia");
     return false;
@@ -124,7 +124,6 @@ class mProfesor extends React.Component {
     window.location.reload();
   }
   actualizarData() {
-    
     const cod_curso = this.refs.inputcurso.value;
     const dia = this.refs.inputdia.value;
     const bloque = this.refs.inputbloque.value;
@@ -178,7 +177,7 @@ class mProfesor extends React.Component {
     return this.state.horarioClass.filter((horario) => {
       if(this.state.search === '') {
         return true;
-      } else { 
+      } else {
         return horario.cod_curso.toLowerCase().indexOf(search) >= 0 || horario.cod_ramo.toLowerCase().indexOf(search) >= 0;
       }
     });
@@ -276,7 +275,7 @@ class mProfesor extends React.Component {
                   <div className="form-group">
                     Num Bloque
                     <input className="form-control" ref="inputbloque2" type="number" min="1" max="18">
-                      
+
 
                     </input>
                   </div>
@@ -335,9 +334,9 @@ class mProfesor extends React.Component {
                   </div>
                   <div className="form-group">
                     Num Bloque
-                   
+
                     <input disabled className="form-control" type="number"  min="1" max="18" name="Bloque" ref="inputbloque" value={this.state.Bloque} onChange={this.handleInputChange} >
-                    
+
                     </input>
                   </div>
                   <div className="form-group">

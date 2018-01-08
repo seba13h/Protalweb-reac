@@ -105,7 +105,7 @@ class Login2 extends Component {
 
           <a className="forgot" href="#">Olvido su contraseña?</a>
         </div>
-        <Footer />
+
       </div>
     )
 
