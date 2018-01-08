@@ -17,11 +17,12 @@ search: '',
 dataA:{},
 }
 
-this.validarAlumno = this.validarAlumno.bind(this);
-  
+this.validarCurso = this.validarCurso.bind(this);
+this.validarCurso2 = this.validarCurso2.bind(this);
+    this.addComponentModal = this.addComponentModal.bind(this);
     this.insertarData = this.insertarData.bind(this);
-
-    
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.actualizarData = this.actualizarData.bind(this);
     this.DeleteData = this.DeleteData.bind(this);
     this.eliminar = this.eliminar.bind(this);
    
@@ -41,47 +42,71 @@ componentWillMount() {
     axios.post("/data-delete-curso", this.state.dataA);
     window.location.reload();
    }
+actualizarData() {
 
+  
+  const cod_curso = this.refs.inputCurso2.value;
+    const carrera = this.refs.inputCarrera2.value;
+  const dataCurso = { cod_curso,carrera};
+  axios.post("/data-update-curso", dataCurso);
+  window.location.reload();
+}
 
 insertarData() {
-    console.log("entre");
+    
     const cod_curso = this.refs.inputCurso.value;
     const carrera = this.refs.inputCarrera.value;
     const dataCurso = { cod_curso, carrera };
-    alert(cod_curso+" "+carrera);
+    
     axios.post('/data-insert-curso', dataCurso);
     window.location.reload();
   }  
 
-validarAlumno(){
+validarCurso(){
 const rut = this.refs.inputCurso.value;
 const name = this.refs.inputCarrera.value;
 
 
 if(rut != ""){
-  this.setState({ rut : {newClass : "dataCorrect"} });
 }else{
-  this.setState({ rut : {newClass : "none"} });
+  alert("cod curso vacio");
+  return false;
+}
+if(name != ""){
+}else{
+  alert("carrera vacia");
+  return false;
+}
+  alert('Insertando curso');
+  this.insertarData();
+}
+
+validarCurso2(){
+const rut = this.refs.inputCurso2.value;
+const name = this.refs.inputCarrera2.value;
+
+
+if(rut != ""){
+}else{
   alert(rut);
   alert("cod curso vacio");
   return false;
 }
-
 if(name != ""){
-
-this.setState({ name : {newClass : "dataCorrect"} });
-
-
 }else{
-this.setState({ name : {newClass : "none"} });
-alert("carrera vacia");
-return false;
+  alert("carrera vacia");
+  return false;
+}
+  alert('Actualizando Curso');
+  this.actualizarData();
 }
 
-alert('Insertando curso');
-this.insertarData();
-
-}
+handleInputChange(event){
+    console.log(event)
+    var inputName = event.target.name;
+    var inputValue = event.target.value;
+    this.setState({[inputName]:inputValue});
+  }
 
 indice(){
 $("tr").each(function() {
@@ -91,6 +116,15 @@ $("tr").each(function() {
  });
 });
 }
+
+ addComponentModal(index){
+   console.log()
+   this.setState({
+      cod_curso: this.state.cursoClass[index].cod_curso,
+      carrera: this.state.cursoClass[index].carrera
+  });
+ }
+
 
 Buscar(event) {
     event.preventDefault();
@@ -117,7 +151,7 @@ const lista = this.cursosFiltrados().map((data,index)=>
       <td>{data.cod_curso}</td>
       <td>{data.carrera}</td>
       <td className="zelect_rut">
-        <button className="glyphicon glyphicon-pencil" data-toggle="modal" data-target="#myModal2"></button>
+        <button className="glyphicon glyphicon-pencil" data-toggle="modal" data-target="#myModal2" onClick={() => this.addComponentModal(index) }></button>
         <button className="glyphicon glyphicon-trash"  data-toggle="modal" data-target="#myModal3" onClick={() => this.DeleteData(index)}></button>
       </td>
     </tr> );
@@ -178,7 +212,7 @@ return (
               Carrera
               <input ref = "inputCarrera" type="" className="form-control" id="carrera" />
             </div>
-            <button type="submit" className="btn btn-primary" onClick={this.validarAlumno}>Aceptar</button>
+            <button type="button" className="btn btn-primary" onClick={this.validarCurso}>Aceptar</button>
           </form>
 
         </div>
@@ -202,13 +236,13 @@ return (
           <form>
             <div className="form-group">
               Codigo Curso
-              <input ref="inputCurso2" className="form-control" id="cod_curso" />
+              <input ref="inputCurso2" name="cod_curso" disabled className="form-control" id="cod_curso" value={this.state.cod_curso}/>
             </div>
             <div className="form-group">
               Carrera
-              <input ref = "inputCarrera2" type="" className="form-control" id="carrera" />
+              <input ref = "inputCarrera2" name="carrera" className="form-control" id="carrera" value={this.state.carrera} onChange={this.handleInputChange} />
             </div>
-            <button type="submit" className="btn btn-primary" onClick={this.validarAlumno}>Aceptar</button>
+            <button type="button" className="btn btn-primary" onClick={this.validarCurso2}>Aceptar</button>
           </form>
 
         </div>

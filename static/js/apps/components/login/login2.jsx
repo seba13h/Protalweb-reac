@@ -93,7 +93,8 @@ class Login2 extends Component {
     return (
       <div>
         <div className="HeadImg head">
-          <img src="http://lh-memor.inf.utfsm.cl/wp-content/uploads/2016/01/logo-blog.png" />
+        <img src="http://www.inf.jmc.utfsm.cl/wp-content/themes/infjmc-mk2/assets/dist/img/utfsm-pluma-blanca.png" />
+          <img src="http://www.inf.jmc.utfsm.cl/wp-content/themes/infjmc-mk2/assets/dist/img/informatica-logo-temp.png" />
         </div>
         <div className="login">
           <h2>Iniciar sesion</h2>

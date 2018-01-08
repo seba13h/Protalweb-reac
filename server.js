@@ -73,6 +73,32 @@ app.post('/data-insert-Horario', function(req, res){
   });
 });
 
+app.post('/data-insert-Nota', function(req, res){
+  const data = req.body;
+  const { rut ,ramo,numeroNota,año,semestre,Ponderacion,Nota} = req.body;
+  const query = `insert into detalle_nota(cod_ramo,rut_alu, numero_nota, año, semestre,ponderacion,nota) values('${ramo}','${rut}', '${numeroNota}', '${año}', '${semestre}', '${Ponderacion}', '${Nota}')`;
+  connection.query(query, (error, results, fields) => {
+      console.error(error);
+  });
+});
+app.post('/data-insert-curso', function(req, res){
+  const data = req.body;
+  const {cod_curso,carrera} = req.body;
+  const query = `insert into curso(cod_curso,carrera) values('${cod_curso}', '${carrera}')`;
+  connection.query(query, (error, results, fields) => {
+      console.error(error);
+  });
+});
+///////////////////////////////////////
+app.post('/data-update-curso', function(req, res){
+  const data = req.body;
+  console.log(data);
+  const { cod_curso, carrera} = req.body;
+  const query = `update  curso set  carrera= '${carrera}' where cod_curso= '${cod_curso}'`;
+  connection.query(query, (error, results, fields) => {
+      console.error(error);
+  });
+});
 app.post('/data-update-user', function(req, res){
   const data = req.body;
   const { rut, name, email, phone, pw, cod_curso, tipo_usuario} = req.body;
@@ -105,7 +131,36 @@ app.post('/data-update-teacherr', function(req, res){
       console.error(error);
   });
 });
+app.post('/data-update-ramo', function(req, res){
+  const data = req.body;
+  console.log(data);
+  const { rut,name,ramo ,curso} = req.body;
+  const query = `update  ramo set rut_prof= '${rut}', nom_ramo =  '${name}', cod_curso = '${curso}' where cod_ramo= '${ramo}'`;
+  connection.query(query, (error, results, fields) => {
+      console.error(error);
+  });
+});
 
+app.post('/data-update-horario', function(req, res){
+  const data = req.body;
+  console.log(data);
+  const { cod_curso, dia, bloque, sala_clases,hora,cod_ramo} = req.body;
+  const query = `update  horario set  dia= '${dia}', num_bloque =  '${bloque}', sala_clases = '${sala_clases}', hora = '${hora}', cod_ramo = '${cod_ramo}' where cod_curso= '${cod_curso}' and dia= '${dia}' and num_bloque= '${bloque}' and sala_clases= '${sala_clases}' and hora= '${hora}' `;
+  connection.query(query, (error, results, fields) => {
+      console.error(error);
+  });
+});
+//////////
+app.post('/data-delete-curso', function(req, res){
+  const data = req.body;
+  console.log(data);
+  const { cod_curso, carrera} = req.body;
+       const query = `delete from curso where cod_curso= '${cod_curso}'`;
+connection.query(query, (error, results, fields) => {
+     console.error(error);
+  });
+  console.error("eliminado....");
+});
 app.post('/data-delete-user', function(req, res){
   const data = req.body;
   const rut = data.rut_alu;

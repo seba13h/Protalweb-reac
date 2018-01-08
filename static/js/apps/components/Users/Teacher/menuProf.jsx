@@ -111,14 +111,13 @@ if (listQuest.length === 0){
 						<div className="panel panel-info">
 							<div className="panel-heading">
 								<h4 className="panel-title">
-									<a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Clases</a>
+									<a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Clases del dia : {this.obtenerDia()}</a>
 								</h4>
 							</div>
 							<div id="collapse1" className="panel-collapse collapse in">
 								<div className="panel-body">
 									<ul className="nav nav-pills nav-stacked">
 										{listClases}
-
 									</ul>
 								</div>
 							</div>

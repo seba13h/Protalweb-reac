@@ -16,7 +16,7 @@ class MenuAdmin extends React.Component {
         return (
             <div className="content">
                 <div className="div_titulo">
-                    <h2 className="titulo">Menu de Administrador</h2>
+                    <h3 className="titulo">Menu de Administracion</h3>
 
 
                 </div>

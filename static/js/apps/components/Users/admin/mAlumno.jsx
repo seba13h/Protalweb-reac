@@ -50,6 +50,7 @@ class mAlumno extends React.Component {
 
 
  addComponentModal(index){
+
    this.setState({
       rut: this.state.studentClass[index].rut_alu,
       curso: this.state.studentClass[index].cod_curso,
@@ -58,10 +59,11 @@ class mAlumno extends React.Component {
       nombre: this.state.studentClass[index].nom_alu,
       telefono: this.state.studentClass[index].telefono
   });
+
  }
 
   actualizarData() {
-    alert(this.refs.inputNombre.value);
+    
     const rut = this.refs.inputRut.value;
     const name = this.refs.inputNombre.value;
     const pw = this.refs.inputpw.value;
@@ -102,20 +104,20 @@ class mAlumno extends React.Component {
     if (rut != "") {
       if (validateRut.test(rut)) {
         var newRut = rut.split('.').join("");
-        this.setState({ rut: { newClass: "dataCorrect" } });
+        
       } else {
-        this.setState({ rut: { newClass: "dataIncorrect" } });
+        
         alert("rut incorrecto");
         return false;
       }
     } else {
-      this.setState({ rut: { newClass: "none" } });
+      
       alert("rut vacio");
       return false;
     }
 
     if (name != "") {
-      this.setState({ name: { newClass: "dataCorrect" } });
+      
     }
     else {
       this.setState({ name: { newClass: "none" } });
@@ -124,39 +126,39 @@ class mAlumno extends React.Component {
     }
     if (email != "") {
       if (validateEmail.test(email)) {
-        this.setState({ email: { newClass: "dataCorrect" } });
+        
       } else {
-        this.setState({ email: { newClass: "dataIncorrect" } });
+        
         alert("email incorrecto");
         return false;
       }
     } else {
-      this.setState({ email: { newClass: "none" } });
+      
       alert("email vacio");
       return false;
     }
     if (phone != "") {
-      this.setState({ phone: { newClass: "dataCorrect" } });
+      
     } else {
-      this.setState({ phone: { newClass: "none" } });
+      
       alert("telefono vacio");
       return false;
     }
     if (pw != "" && pw2 != "") {
       if (pw === pw2) {
-        this.setState({ pasword: { newClass: "dataCorrect" } });
+        
       } else {
-        this.setState({ pasword: { newClass: "dataIncorrect" } });
+        
         alert('No coinciden las claves');
         return false;
       }
      } else {
-      this.setState({ pasword: { newClass: "none" } });
+      
       alert('Ingrese ambas contraseñas');
       return false;
     }
     if (curso != "") {
-      this.setState({ curso: { newClass: "dataCorrect" } })
+      
     } else {
       return false;
     }
@@ -182,7 +184,7 @@ class mAlumno extends React.Component {
         var newRut = rut.split('.').join("");
         this.setState({ rut: { newClass: "dataCorrect" } });
       } else {
-        this.setState({ rut: { newClass: "dataIncorrect" } });
+        this.setState({ rut: { newClass: "none" } });
         alert("rut incorrecto");
         return false;
       }
@@ -204,7 +206,7 @@ class mAlumno extends React.Component {
       if (validateEmail.test(email)) {
         this.setState({ email: { newClass: "dataCorrect" } });
       } else {
-        this.setState({ email: { newClass: "dataIncorrect" } });
+        this.setState({ email: { newClass: "none" } });
         alert("email incorrecto");
         return false;
       }
@@ -258,6 +260,7 @@ class mAlumno extends React.Component {
       }
     });
   }
+  
   handleInputChange(event){
     console.log(event)
     var inputName = event.target.name;
@@ -381,7 +384,7 @@ class mAlumno extends React.Component {
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
-                <button type="button" className="close" data-dismiss="modal">&times;</button>
+                <button type="button" className="close" data-dismiss="modal" >&times;</button>
                 <h4 className="modal-title">Modificar Alumno</h4>
               </div>
               <div className="modal-body">
@@ -404,7 +407,7 @@ class mAlumno extends React.Component {
                   </div>
                   <div className="form-group">
                     Curso
-                    <select className="form-control" ref="inputCurso" >
+                    <select className="form-control" ref="inputCurso" value={this.state.curso} name="curso" onChange={this.handleInputChange} >
                       <option>192-A</option>
                       <option>192-B</option>
                       <option>292-A</option>
@@ -415,13 +418,14 @@ class mAlumno extends React.Component {
                   </div>
                   <div className="form-group">
                     Contraseña:
-              <input ref="inputpw" type="password" className="form-control" id="pwd"  value={this.state.pass} />
+              <input ref="inputpw"  name="pass" type="password" className="form-control" id="pwd"  value={this.state.pass} onChange={this.handleInputChange} />
                   </div>
                   <div className="form-group">
                     Repita Contraseña:
-              <input ref="inputpw2" type="password" className="form-control" id="pwd2"  value={this.state.pass} />
+              <input ref="inputpw2" type="password"  name="pw2" className="form-control" id="pwd2"  value={this.state.pass} onChange={this.handleInputChange} />
                   </div>
-                  <button type="submit" className="btn btn-primary" onClick={this.validarAlumno2}>Aceptar</button>
+
+                  <button type="button" className="btn btn-primary" onClick={this.validarAlumno2}>Aceptar</button>
                 </form>
               </div>
               <div className="modal-footer">

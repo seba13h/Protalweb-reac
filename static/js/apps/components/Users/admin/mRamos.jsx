@@ -19,6 +19,7 @@ class mRamos extends React.Component {
       dataA:[]
     }
     this.validarRamo = this.validarRamo.bind(this);
+    this.validarRamo2 = this.validarRamo2.bind(this);
     this.profExist = this.profExist.bind(this);
     this.insertarData = this.insertarData.bind(this);
     this.DeleteData = this.DeleteData.bind(this);
@@ -53,13 +54,14 @@ class mRamos extends React.Component {
 }
   
    actualizarData() {
-    alert(this.refs.inputNombre.value);
+    
+
     const rut = this.refs.inputRut.value;
     const name = this.refs.inputNombre.value;
     const ramo = this.refs.inputRamo.value;
     const curso = this.refs.inputCurso.value;
     const dataRamo = { rut, name, ramo, curso };
-    axios.post("/data-update-user", dataAlumno);
+    axios.post("/data-update-ramo", dataRamo);
     window.location.reload();
   }
 
@@ -90,7 +92,7 @@ class mRamos extends React.Component {
     const ramo = this.refs.inputRamo2.value;
     const curso = this.refs.inputCurso2.value;
     const validateRut = /^(\d{1,2}(\.?\d{3}){2})\-([\dkK])$/;
-
+    
     if (rut != "") {
       if ((validateRut.test(rut)) && (this.profExist(rut))) {
         this.setState({ rut: { newClass: "dataCorrect" } });
@@ -132,35 +134,28 @@ class mRamos extends React.Component {
     const ramo = this.refs.inputRamo.value;
     const curso = this.refs.inputCurso.value;
     const validateRut = /^(\d{1,2}(\.?\d{3}){2})\-([\dkK])$/;
-
+    
     if (rut != "") {
       if ((validateRut.test(rut)) && (this.profExist(rut))) {
-        this.setState({ rut: { newClass: "dataCorrect" } });
       } else {
-        this.setState({ rut: { newClass: "dataIncorrect" } });
         alert("rut incorrecto");
         return false;
       }
     } else {
-      this.setState({ rut: { newClass: "none" } });
+      
       alert("rut vacio");
       return false;
     }
 
-    if (name != "") {
-
-      this.setState({ name: { newClass: "dataCorrect" } });
+    if (name != "") {   
     }
-    else {
-      this.setState({ name: { newClass: "none" } });
+    else {     
       alert("nombre vacio");
       return false;
     }
-    if (ramo != "") {
-      this.setState({ codRamo: { newClass: "dataCorrect" } });
+    if (ramo != "") {    
     }
     else {
-      this.setState({ codRamo: { newClass: "none" } });
       alert("codigo del ramo vacio");
       return false;
     }
@@ -169,10 +164,11 @@ class mRamos extends React.Component {
   }
 
  handleInputChange(event){
-    console.log(event)
+    console.log(this.state.rut);
     var inputName = event.target.name;
     var inputValue = event.target.value;
     this.setState({[inputName]:inputValue});
+    console.log(this.state.rut,"2");
   }
 
   Buscar(event) {
@@ -311,11 +307,11 @@ class mRamos extends React.Component {
                   </div>
                   <div className="form-group">
                     Rut Profesor
-              <input ref="inputProfesor" name="rut" type="" className="form-control" id="rut_prof" value = {this.state.rut} onChange={this.handleInputChange} />
+              <input ref="inputRut" name="rut" type="" className="form-control" id="rut_prof" value = {this.state.rut} onChange={this.handleInputChange} />
                   </div>
                   <div className="form-group">
                     Curso
-            <select className="form-control" ref="inputCurso" >
+            <select className="form-control" ref="inputCurso" name="codCurso" value={this.state.codCurso} onChange={this.handleInputChange} >
                       <option>192-A</option>
                       <option>192-B</option>
                       <option>292-A</option>
@@ -324,7 +320,7 @@ class mRamos extends React.Component {
                       <option>329-B</option>
                     </select>
                   </div>
-                  <button type="submit" className="btn btn-primary" onClick={this.validarRamo2}>Aceptar</button>
+                  <button type="button" className="btn btn-primary" onClick={this.validarRamo2}>Aceptar</button>
                 </form>
 
               </div>

@@ -20,13 +20,70 @@ class mProfesor extends React.Component {
       search: '',
       dataA:[]
     }
-    this.validarAlumno = this.validarAlumno.bind(this);
+
+    this.validarHorario = this.validarHorario.bind(this);
+     this.validarHorario2 = this.validarHorario2.bind(this);
     this.ramoExist = this.ramoExist.bind(this);
     this.insertarData = this.insertarData.bind(this);
-    this.DeleteData = this.DeleteData.bind(this);
+    this.DeleteData = this.DeleteData.bind(this); 
     this.eliminar = this.eliminar.bind(this);
      this.Buscar = this.Buscar.bind(this);
+     this.actualizarData = this.actualizarData.bind(this);
+    this.addComponentModal = this.addComponentModal.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+
   }
+ addComponentModal(index){
+   
+   this.setState({
+      CodCurso: this.state.horarioClass[index].cod_curso,
+      CodRamo: this.state.horarioClass[index].cod_ramo,
+      Sala: this.state.horarioClass[index].sala_clases,
+      Dia: this.state.horarioClass[index].dia,
+      Bloque: this.state.horarioClass[index].num_bloque,
+      Hora: this.state.horarioClass[index].hora,
+      
+  });
+
+ }
+
+ handleInputChange(event){
+    console.log(event);
+    var inputName = event.target.name;
+    var inputValue = event.target.value;
+    this.setState({[inputName]:inputValue});
+  }
+
+ validarHorario2() {
+    const codCurso = this.refs.inputcurso.value;
+    const codRamo = this.refs.inputramo.value;
+    const sala = this.refs.inputsala.value;
+    const dia = this.refs.inputdia.value;
+    const bloque = this.refs.inputbloque.value;
+    const hora = this.refs.inputhora.value;
+    if ((codRamo != "") && (this.ramoExist(codRamo))) {
+      
+    } else {
+      
+      return false;
+    }
+    if (sala != "") {
+      
+    } else {
+ 
+      alert("Sala de clases vacia");
+      return false;
+    }
+
+  if (hora != "") {
+    
+  } else {
+    alert("Hora vacia");
+    return false;
+  }
+  alert('Modificando Bloque de Horario');
+  this.actualizarData();
+}
 
   componentWillMount() {
     $.getJSON('/data-get-all-horario').then(data => this.setState({ horarioClass: data }));
@@ -41,9 +98,12 @@ class mProfesor extends React.Component {
   axios.post("/data-delete-horario", this.state.dataA);
   window.location.reload();
  }
+
+
   ramoExist(codRamo) {
-    console.log("entre");
+    console.log(codRamo);
     const newRamo = this.state.ramosClass.filter(data => data.cod_ramo === codRamo);
+    console.log(newRamo);
     if (newRamo != "") {
       return true;
     } else {
@@ -63,8 +123,20 @@ class mProfesor extends React.Component {
     axios.post('/data-insert-Horario', dataHorario);
     window.location.reload();
   }
+  actualizarData() {
+    
+    const cod_curso = this.refs.inputcurso.value;
+    const dia = this.refs.inputdia.value;
+    const bloque = this.refs.inputbloque.value;
+    const sala_clases = this.refs.inputsala.value;
+    const hora = this.refs.inputhora.value;
+    const cod_ramo = this.refs.inputramo.value;
+        const dataAlumno = { cod_curso,dia, bloque, sala_clases, hora, cod_ramo};
+    axios.post("/data-update-horario", dataAlumno);
+    window.location.reload();
+  }
 
-  validarAlumno() {
+  validarHorario() {
     const codCurso = this.refs.inputcurso2.value;
     const codRamo = this.refs.inputramo2.value;
     const sala = this.refs.inputsala2.value;
@@ -75,7 +147,6 @@ class mProfesor extends React.Component {
       this.setState({CodRamo : { newClass: "dataCorrect" } });
     } else {
       this.setState({ CodRamo: { newClass: "none" } });
-      alert("Codigo del ramo incorrecto");
       return false;
     }
     if (sala != "") {
@@ -125,7 +196,7 @@ class mProfesor extends React.Component {
         <td>{data.num_bloque}</td>
         <td>{data.hora}</td>
         <td className="zelect_rut">
-          <button className="glyphicon glyphicon-pencil" data-toggle="modal" data-target="#myModal2"></button>
+          <button className="glyphicon glyphicon-pencil" data-toggle="modal" data-target="#myModal2" onClick={() => this.addComponentModal(index) }></button>
           <button className="glyphicon glyphicon-trash" data-toggle="modal" data-target="#myModal3" onClick={() => this.DeleteData(index) }></button>
         </td>
       </tr>);
@@ -204,14 +275,10 @@ class mProfesor extends React.Component {
                   </div>
                   <div className="form-group">
                     Num Bloque
-                    <select className="form-control" ref="inputbloque2" >
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                      <option>5</option>
-                      <option>6</option>
-                    </select>
+                    <input className="form-control" ref="inputbloque2" type="number" min="1" max="18">
+                      
+
+                    </input>
                   </div>
                   <div className="form-group">
                     Sala de Clases
@@ -219,13 +286,13 @@ class mProfesor extends React.Component {
                   </div>
                   <div className="form-group">
                     Hora
-                       <input ref="inputhora2" className="form-control" id="hora" />
+                       <input ref="inputhora2" type="time" className="form-control" id="hora" />
                   </div>
                   <div className="form-group">
                     Codigo Ramo
               <input ref="inputramo2" className="form-control" id="cod_ramo" />
                   </div>
-                  <button type="button" className="btn btn-primary" onClick = {this.validarAlumno}>Aceptar</button>
+                  <button type="button" className="btn btn-primary" onClick = {this.validarHorario}>Aceptar</button>
                 </form>
               </div>
               <div className="modal-footer">
@@ -246,7 +313,7 @@ class mProfesor extends React.Component {
                 <form>
                 <div className="form-group">
                     Curso
-                    <select className="form-control" ref="inputcurso" >
+                    <select disabled className="form-control" name="CodCurso" ref="inputcurso" value={this.state.CodCurso} onChange={this.handleInputChange} >
                       <option>192-A</option>
                       <option>192-B</option>
                       <option>292-A</option>
@@ -257,7 +324,7 @@ class mProfesor extends React.Component {
                   </div>
                   <div className="form-group">
                     Dia
-                    <select className="form-control" ref="inputdia" >
+                    <select disabled className="form-control" name="Dia" ref="inputdia" value={this.state.Dia} onChange={this.handleInputChange} >
                       <option>LUNES</option>
                       <option>MARTES</option>
                       <option>MIERCOLES</option>
@@ -268,28 +335,25 @@ class mProfesor extends React.Component {
                   </div>
                   <div className="form-group">
                     Num Bloque
-                    <select className="form-control" ref="inputbloque" >
-                      <option>1-2</option>
-                      <option>3-4</option>
-                      <option>5-6</option>
-                      <option>7-8</option>
-                      <option>8-9</option>
-                      <option>9-10</option>
-                    </select>
+                   
+                    <input disabled className="form-control" type="number"  min="1" max="18" name="Bloque" ref="inputbloque" value={this.state.Bloque} onChange={this.handleInputChange} >
+                    
+                    </input>
                   </div>
                   <div className="form-group">
                     Sala de Clases
-              <input ref="inputsala" className="form-control" id="sala_clase" />
+              <input disabled ref="inputsala" className="form-control" name="Sala" id="sala_clase" value={this.state.Sala} onChange={this.handleInputChange} />
                   </div>
                   <div className="form-group">
                     Hora
-              <input ref="inputhora" className="form-control" id="hora" />
+
+              <input disabled ref="inputhora" className="form-control" name="Hora" type="time" id="hora" value={this.state.Hora} onChange={this.handleInputChange} />
                   </div>
                   <div className="form-group">
                     Codigo Ramo
-              <input ref="inputramo" className="form-control" id="cod_ramo" />
+              <input ref="inputramo"  className="form-control" name="CodRamo" id="cod_ramo" value={this.state.CodRamo} onChange={this.handleInputChange}  />
                   </div>
-                  <button type="submit" className="btn btn-primary" >Aceptar</button>
+                  <button type="button" className="btn btn-primary" onClick = {this.validarHorario2} >Aceptar</button>
                 </form>
 
               </div>

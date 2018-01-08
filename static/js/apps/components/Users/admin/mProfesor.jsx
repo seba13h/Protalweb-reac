@@ -55,8 +55,8 @@ class mProfesor extends React.Component {
   });
  }
  actualizarData() {
-  alert(this.refs.inputnombre.value);
 
+  
   const rut = this.refs.inputrut.value;
   const name = this.refs.inputnombre.value;
   const pw = this.refs.inputpw.value;
@@ -64,11 +64,11 @@ class mProfesor extends React.Component {
   const phone = this.refs.inputtel.value;
   const tipo_usuario = 1;
   const dataAlumno = { rut, name, email, phone, pw, tipo_usuario };
-  axios.post("/data-update-teacher", dataAlumno);
+  axios.post("/data-update-teacherr", dataAlumno);
   window.location.reload();
 }
 validarAlumno2() {
-  alert("validiando");
+  
    const rut = this.refs.inputrut.value;
   const name = this.refs.inputnombre.value;
    const pw = this.refs.inputpw.value;
@@ -80,62 +80,50 @@ validarAlumno2() {
 
   if (rut != "") {
     if (validateRut.test(rut)) {
-      var newRut = rut.split('.').join("");
-      this.setState({ rut: { newClass: "dataCorrect" } });
-    } else {
-      this.setState({ rut: { newClass: "dataIncorrect" } });
+      var newRut = rut.split('.').join("");  
+    } else { 
       alert("rut incorrecto");
       return false;
     }
   } else {
-    this.setState({ rut: { newClass: "none" } });
     alert("rut vacio");
     return false;
   }
-
   if (name != "") {
-    this.setState({ name: { newClass: "dataCorrect" } });
   }
   else {
-    this.setState({ name: { newClass: "none" } });
     alert("nombre vacio");
     return false;
   }
   if (email != "") {
     if (validateEmail.test(email)) {
-      this.setState({ email: { newClass: "dataCorrect" } });
     } else {
-      this.setState({ email: { newClass: "dataIncorrect" } });
       alert("email incorrecto");
       return false;
     }
   } else {
-    this.setState({ email: { newClass: "none" } });
     alert("email vacio");
     return false;
   }
-  if (phone != "") {
-    this.setState({ phone: { newClass: "dataCorrect" } });
+  if (phone != "") {   
   } else {
-    this.setState({ phone: { newClass: "none" } });
     alert("telefono vacio");
     return false;
   }
   if (pw != "" && pw2 != "") {
-    if (pw === pw2) {
-      this.setState({ pasword: { newClass: "dataCorrect" } });
+    if (pw === pw2) { 
     } else {
-      this.setState({ pasword: { newClass: "dataIncorrect" } });
       alert('No coinciden las claves');
       return false;
     }
    } else {
-    this.setState({ pasword: { newClass: "none" } });
+    
     alert('Ingrese ambas contraseñas');
     return false;
   }
   alert('Modificando Profesor');
   this.actualizarData();
+
 }
 
   insertarData() {
@@ -148,7 +136,7 @@ validarAlumno2() {
     const tipo_usuario = 1;
     const dataAlumno = { rut, name, email, phone, pw, tipo_usuario };
     axios.post('/data-insert-teacher', dataAlumno);
-    windowlocation.reload();
+    window.location.reload();
   }
 
   validarProfesor() {
@@ -374,7 +362,7 @@ validarAlumno2() {
                   </div>
                   <div className="form-group">
                     Contraseña:
-              <input ref="inputpw" type="password" className="form-control" value={this.state.pass}  />
+              <input ref="inputpw" name="pass" type="password" className="form-control" value={this.state.pass} onChange={this.handleInputChange}  />
                   </div>
                   <div className="form-group">
                     Repita Contraseña:
