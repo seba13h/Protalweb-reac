@@ -15,48 +15,41 @@ class Notas extends Component {
 			super(props);
 			this.state= {
 				dataRamo: [],
+				dataA:[],
 				dataNota:[]
 			}
+			this.listAlu = this.listAlu.bind(this);
+			this.listNotas = this.listNotas.bind(this);
 		}
+	listNotas(rut,ramo){
+		let filtroNota = this.state.dataNota.filter(data => data.rut_alu === rut && data.cod_ramo === ramo).map(data => (
+				<td>{data.nota}</td>
+		));
+		if (filtroNota.length === 0){
+			filtroNota = <td>..</td>
+		}
+		return filtroNota;
+
+	}
+	listAlu(curso,cod_ramo){
+		const listaAlumno = this.state.dataA.filter(data => data.cod_curso === curso).map(data=>(
+			<div>
+				<td className = "nombreTab">	{data.nom_alu} </td>
+				<td>{this.listNotas(data.rut_alu,cod_ramo)}</td>
+				<td>	<button type="button" className="btn btn-primary" >+</button></td>
+			</div>
+		)
+		);;
+		return listaAlumno;
+	}
 			componentDidMount() {
 
 						$.getJSON('/data-get-all-menu-teacher').then(data => this.setState({ dataRamo: data}));
-						$.getJSON('/data-get-all-notasUsers').then(data => this.setState({ dataNota: data}));
-						const filtroNota= this.state.dataNota.filter((data,index)=> data.rut === getRut());
-						const NotaA = filtroNota.map((data,index) => {
-							console.log(data.numero_nota);
-							if (data.numero_nota > 1)  {
-								appendNote(`${data.rut_alu}`, data.nota);
-							}
-
-					 });
+						$.getJSON('/data-get-all-user').then(data => this.setState({ dataA: data}));
+						$.getJSON('/data-get-all-rut-detallenota').then(data => this.setState({ dataNota: data}));
 					}
 	render() {
-		const filtroNota= this.state.dataNota.filter((data,index)=> data.rut === getRut());
-		const NotaA = filtroNota.map((data,index) => {
-				const note = data.numero_nota === 1 ? (
-						<tr>
-						<td>{data.nom_alu}</td>
-						<td>{data.nota}</td>
-						<td id={`${data.rut_alu}`}>{data.detalle_nota}</td>
-						<td className="tc5"><button
-							className="tc4">+</button></td>
-						</tr> ):null
-				return (
-					 note
-				 );
-		})
-
-	// 	 const NotaA= filtroNota.map((data,index)=>
-	// 	 (
-	// 	<tr>
-	//    <td>{data.nom_alu}</td>
-	// 	 <td>{data.nota}</td>
-	// 	 <td>{data.detalle_nota}</td>
-	// 	 <td className="tc5"><button className="tc4">+</button></td>
-	// 	 </tr>)
-
-
+		const listNotas=	<td></td>;
 		const filtroProf= this.state.dataRamo.filter((data,index)=> data.rut === getRut());
 		const RamoN = filtroProf.map((data,index)=>
 		(
@@ -72,11 +65,10 @@ class Notas extends Component {
 					<tbody>
 					<tr>
 						<th>Nombre Alumno</th>
-						<th>Nota </th>
+						<th>Notas </th>
 						<th>Agregar Nota</th>
-						<th>Detalle Nota</th>
 					</tr>
-			 			{NotaA}
+					{this.listAlu(data.cod_curso,data.cod_ramo)}
 					</tbody>
 				</table>
 			</div>

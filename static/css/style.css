@@ -338,3 +338,6 @@ width: 2em;
 border-left: 0;
 cursor: pointer;
 }
+.nombreTab{
+	width: 70%;
+}
