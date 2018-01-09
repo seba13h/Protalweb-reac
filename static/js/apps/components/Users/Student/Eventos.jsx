@@ -25,23 +25,72 @@ class Eventos extends React.Component {
 			dataA:[],
 			dataB:[],
 			dataC:[],
-			dataD:[]
+			dataD:[],
+			fecha: { newClass: "none" },
+			hora: { newClass: "none" },
+			descripcion: { newClass: "none" },
+			eventosClass: []
 		}
 		this.obtenerFecha=this.obtenerFecha.bind(this);
 		this.validar=this.validar.bind(this);
+		this.validar2=this.validar2.bind(this);
 		this.insertarData = this.insertarData.bind(this);
+		this.actualizarData = this.actualizarData.bind(this);
+
 		this.DeleteData = this.DeleteData.bind(this);
-    this.eliminar = this.eliminar.bind(this);
+    	this.eliminar = this.eliminar.bind(this);
+    	this.handleInputChange = this.handleInputChange.bind(this);
+    	this.addComponentModal = this.addComponentModal.bind(this);
 	}
 
 	DeleteData(index){
     this.setState( {dataD : this.state.dataC[index]});
   };
 
+  handleInputChange(event){
+    console.log(event)
+    var inputName = event.target.name;
+    var inputValue = event.target.value;
+    this.setState({[inputName]:inputValue});
+  }
+
  eliminar(){
   axios.post("/data-delete-event", this.state.dataD);
   window.location.reload();
  }
+
+
+addComponentModal(index){
+	const fecha = this.state.dataC[index].fecha;
+	const day = fecha.slice(8,10);
+		const mont = fecha.slice(5,7);
+		const year = fecha.slice(0,4);
+		const newfecha= (day+'-'+mont+'-'+year);
+   this.setState({
+      fecha: indate(this.state.dataC[index].fecha),
+      hora: this.state.dataC[index].hora,
+      descripcion: this.state.dataC[index].descripcion
+
+  });
+
+ }
+
+actualizarData() {
+    console.log("entre");
+		const rut = getRut();
+		const fecha = this.refs.inputfecha.value;
+		const hora = this.refs.inputhora.value;
+		const descripcion = this.refs.inputdescripcion.value;
+		const day = fecha.slice(8,10);
+		const mont = fecha.slice(5,7);
+		const year = fecha.slice(0,4);
+		const newfecha= (day+'-'+mont+'-'+year);
+		const dataevento = { rut,newfecha , hora, descripcion };
+    axios.post('/data-update-evento', dataevento);
+    window.location.reload();
+  }
+
+
 	insertarData() {
     console.log("entre");
 		const rut = getRut();
@@ -115,6 +164,34 @@ class Eventos extends React.Component {
     alert('Insertando evento');
     this.insertarData();
   }
+
+validar2() {
+    const fecha = this.refs.inputfecha.value;
+    const hora = this.refs.inputhora.value;
+		const descripcion = this.refs.inputdescripcion.value;
+		const day = fecha.slice(8,10);
+		const mont = fecha.slice(5,7);
+		const year = fecha.slice(0,4);
+		const newfecha= (day+'-'+mont+'-'+year);
+		if (fecha == ""){
+			alert("la fecha esta vacia");
+			return false;
+		}else if (new Date(newfecha).getTime() <  new Date(this.obtenerFecha()).getTime()){
+			alert("La fecha es inferior a la actual");
+			return false;
+		}
+		if (hora == "") {
+      alert("Hora vacia");
+      return false;
+    }
+    if (descripcion == "") {
+      alert("descripcion vacia");
+      return false;
+		}
+    alert('Insertando evento');
+    this.actualizarData();
+  }
+
 	render() {
 		console.log(this.obtenerFecha())
 			let lisQuest = this.state.dataB.map( data => (
@@ -130,7 +207,7 @@ class Eventos extends React.Component {
 		let listEvent = this.state.dataC.map( (data,index) => (
 			<div>
 						  <span className="label label-info">{data.fecha}</span> <a> {data.descripcion} - Hora:{data.hora}</a>
-								<button className="glyphicon glyphicon-pencil" ></button>
+								<button className="glyphicon glyphicon-pencil" data-toggle="modal" data-target="#myModal2"  onClick={() => this.addComponentModal(index) }></button>
           			<button className="glyphicon glyphicon-trash" data-toggle="modal" data-target="#myModal3" onClick={() => this.DeleteData(index) }></button>
 			</div>
 		)
@@ -177,6 +254,7 @@ class Eventos extends React.Component {
 			  </div>
 
 		</div>
+
 		<div className="modal fade" id="myModal" role="dialog">
           <div className="modal-dialog">
             <div className="modal-content">
@@ -205,6 +283,37 @@ class Eventos extends React.Component {
                 <button type="button" className="btn btn-danger" data-dismiss="modal">Cerrar</button>
               </div>
             </div> {/* Modal Agregar */}
+          </div>
+        </div>
+
+        <div className="modal fade" id="myModal2" role="dialog">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <button type="button" className="close" data-dismiss="modal">&times;</button>
+                <h4 className="modal-title">Modificar Eventos</h4>
+              </div>
+              <div className="modal-body">
+                <form  >
+                  	<div className="form-group">
+                    Fecha
+					<input className="form-control"  id="date" type="date"  ref="inputfecha" name="fecha" onChange={this.handleInputChange}  value={this.state.fecha}/>
+                	</div>
+					<div className="form-group">
+                    Hora
+              			<input ref="inputhora" className="form-control"  id="time" type="time" name="hora" onChange={this.handleInputChange}  value={this.state.hora}  />
+                  </div>
+                  <div className="form-group">
+                    Descripcion
+<	textarea className="form-control" id="exampleFormControlTextarea1" rows="3" ref="inputdescripcion" name="descripcion" onChange={this.handleInputChange}  value={this.state.descripcion}></textarea>
+                  </div>
+                  <button type="button" className="btn btn-primary" onClick={this.validar2}>Aceptar</button>
+                </form>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-danger" data-dismiss="modal">Cerrar</button>
+              </div>
+            </div> {/* Modal Modificar */}
           </div>
         </div>
 				<div className="modal fade" id="myModal3" role="dialog">

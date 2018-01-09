@@ -17,18 +17,25 @@ class Notas extends Component {
 				ramo:'',
 				rutAlu:'',
 				Nnota:'',
+				nota: '',
+				ponderacion:'',
+				semestre: '',
+
 				dataC:[]
 			}
 			this.listAlu = this.listAlu.bind(this);
 			this.listNotas = this.listNotas.bind(this);
 			this.addcomponent = this.addcomponent.bind(this);
+			this.actualizarData = this.actualizarData.bind(this);
 			this.validarNota = this.validarNota.bind(this);
+			this.validarNota2 = this.validarNota2.bind(this);
 			this.insertarData = this.insertarData.bind(this);
 			this.DeleteData = this.DeleteData.bind(this);
 			this.eliminar = this.eliminar.bind(this);
+			this.addComponentModal = this.addComponentModal.bind(this);
+			this.handleInputChange = this.handleInputChange.bind(this);
 		}
 			eliminar() {
-
 				axios.post("/data-delete-detalleNota", this.state.dataC);
 				 window.location.reload();
 
@@ -38,6 +45,13 @@ class Notas extends Component {
 			this.setState( {dataC: this.state.dataNota.filter(data => data.rut_alu === index)});
 
     };
+
+    handleInputChange(event){
+    console.log(event)
+    var inputName = event.target.name;
+    var inputValue = event.target.value;
+    this.setState({[inputName]:inputValue});
+  }
 		insertarData() {
 			console.log("entre");
 			const rut = this.state.rutAlu;
@@ -52,6 +66,22 @@ class Notas extends Component {
 			axios.post('/data-insert-Nota', dataNota);
 			window.location.reload();
 		  }
+		  actualizarData() {
+
+			console.log("entre");
+			const rut = this.state.rutAlu;
+			const cod_ramo = this.state.ramo;
+			const numero_nota = this.state.Nnota;
+			const nota = this.refs.inputNota2.value;
+			const ponderacio = this.refs.inputPonderacion2.value;
+			const semestre = this.refs.inputSemestre2.value;
+			var dt = new Date();
+			const año =  dt.getFullYear();
+			const dataNota = { cod_ramo ,rut,numero_nota,año,semestre,ponderacio,nota };
+			axios.post('/data-update-detalle-nota', dataNota);
+			window.location.reload();
+		  }
+
 		validarNota() {
 			const Nota = this.refs.inputNota.value;
 			const Ponderacion = this.refs.inputPonderacion.value;
@@ -74,6 +104,31 @@ class Notas extends Component {
 			alert('Insertando Nota');
 			this.insertarData();
 		  }
+
+
+		  validarNota2() {
+			const Nota = this.refs.inputNota2.value;
+			const Ponderacion = this.refs.inputPonderacion2.value;
+			console.log(Nota , Ponderacion);
+			if (Nota == "") {
+			  alert("Ingrese una Nota");
+			  return false;
+			}else if (Nota > 100){
+				alert("Ingrese una Nota entre 0-100");
+				return false;
+			}
+			if (Ponderacion == "") {
+			  alert ("Ponderacion Vacia");
+			  return false;
+			}
+			else if (Ponderacion > 100){
+			  alert("Ingrese una ponderacion entre 0-100 %");
+			  return false;
+			}
+			alert('Modificando Nota');
+			this.actualizarData();
+		  }
+
 	addcomponent(index,item){
 		this.setState({
 			ramo:  this.state.dataRamo[item].cod_ramo,
@@ -81,14 +136,31 @@ class Notas extends Component {
 			Nnota:  this.state.dataNota.filter(data => data.rut_alu === this.state.dataA[index].rut_alu && data.cod_ramo === this.state.dataRamo[item].cod_ramo).length + 1
 		});
 
+
 	}
+
+	addComponentModal(nota,rut,ramo,ponderacion,semestre,numero){
+	console.log( nota);
+	console.log(rut);
+   this.setState({
+      nota: nota,
+      ponderacion: ponderacion,
+      rutAlu: rut,
+      ramo: ramo,
+			semestre: semestre,
+			Nnota : numero
+  });
+
+ }
+
+
 	listNotas(rut,ramo){
 		let filtroNota = this.state.dataNota.filter(data => data.rut_alu === rut && data.cod_ramo === ramo).map((data,index) => (
 			<td>
 			<div className="btn-group" role="group">
      <a data-toggle="dropdown"aria-haspopup="true" aria-expanded="false">{data.nota}</a>
     <div className="dropdown-menu dropNotas" aria-labelledby="btnGroupDrop1">
-		<button className="glyphicon glyphicon-pencil"  ></button>
+		<button className="glyphicon glyphicon-pencil" data-toggle="modal" data-target="#myModal3" onClick={() => this.addComponentModal(data.nota,rut,ramo,data.ponderacion,data.semestre,data.numero_nota)}  ></button>
 		<button className="glyphicon glyphicon-trash" data-toggle="modal" data-target="#myModal2" onClick={() => this.DeleteData(rut)}></button>
     </div>
 		</div>
@@ -105,7 +177,7 @@ class Notas extends Component {
 			<div>
 				<td className="nombree">	{data.nom_alu} </td>
 				<td>{this.listNotas(data.rut_alu,cod_ramo)}</td>
-				<td>	<button type="button" className="btn btn-primary"  data-toggle="modal" data-target="#myModal" onClick = {()=>this.addcomponent(index,item)}>+</button></td>
+				<td>	<button type="button" className="btn btn-primary"  data-toggle="modal" data-target="#myModal" onClick = {()=>this.addcomponent(index,rut,ramo)}>+</button></td>
 			</div>
 		)
 		);;
@@ -153,8 +225,11 @@ class Notas extends Component {
 						</div>
 					</div>
 					</div>
-					<div className="modal fade" id="myModal" role="dialog">
-          <div className="modal-dialog">
+
+
+		<div className="modal fade" id="myModal" role="dialog">
+
+        <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
                 <button type="button" className="close" data-dismiss="modal">&times;</button>
@@ -190,11 +265,54 @@ class Notas extends Component {
               <div className="modal-footer">
                 <button type="button" className="btn btn-danger" data-dismiss="modal">Cerrar</button>
               </div>
-						</div> {/* Modal Agregar */}
-
-
+			</div> {/* Modal Agregar */}
           </div>
         </div>
+
+
+        <div className="modal fade" id="myModal3" role="dialog">
+
+        <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <button type="button" className="close" data-dismiss="modal">&times;</button>
+                <h4 className="modal-title">Agregar Nota</h4>
+              </div>
+              <div className="modal-body">
+
+                <form>
+
+                  <div className="form-group">
+                    Nota
+              <input maxLength="3" ref="inputNota2" name="nota" className="form-control" value={this.state.nota} onChange={this.handleInputChange} />
+                  </div>
+                  <div className="form-group">
+                    Ponderacion
+			  <input ref="inputPonderacion2" maxLength="3" name="ponderacion" placeholder="99" className="form-control" value={this.state.ponderacion} onChange={this.handleInputChange}/>
+                  </div>
+                  <div className="form-group">
+                    Semestre
+                    <select className="form-control" ref="inputSemestre2" name="semestre" value={this.state.semestre }  onChange={this.handleInputChange}>
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                      <option>4</option>
+                      <option>5</option>
+                      <option>6</option>
+                    </select>
+                  </div>
+                  <button type="button" className="btn btn-primary" onClick={this.validarNota2}>Aceptar</button>
+                </form>
+
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-danger" data-dismiss="modal">Cerrar</button>
+              </div>
+			</div> {/* Modal Modificar */}
+          </div>
+        </div>
+
+
 				<div className="modal fade" id="myModal2" role="dialog">
           <div className="modal-dialog">
             <div className="modal-content">

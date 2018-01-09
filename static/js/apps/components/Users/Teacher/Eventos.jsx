@@ -24,18 +24,53 @@ class Eventos extends React.Component {
 			teacherQuest: [],
 			curso:'',
 			ramo:'',
-			dataD:[]
+			dataD:[],
+			fecha: '',
+			hora: '',
+			descripcion: '',
+			sala_clases:'',
+			eventosClass: []
 		}
 		this.obtenerFecha = this.obtenerFecha.bind(this);
 		this.validar = this.validar.bind(this);
+		this.validar2 = this.validar2.bind(this);
 		this.insertarData = this.insertarData.bind(this);
 		this.DeleteData = this.DeleteData.bind(this);
 		this.eliminar = this.eliminar.bind(this);
 		this.asigData = this.asigData.bind(this);
+
+		this.actualizarData = this.actualizarData.bind(this);
+		this.insertarData = this.insertarData.bind(this);
+		this.handleInputChange = this.handleInputChange.bind(this);
+    	this.addComponentModal = this.addComponentModal.bind(this);
 	}
 	DeleteData(index) {
 		this.setState({ dataD: this.state.teacherQuest[index] });
 	};
+
+	addComponentModal(index){
+	const fecha = this.state.teacherQuest[index].fecha;
+	const day = fecha.slice(8,10);
+		const mont = fecha.slice(5,7);
+		const year = fecha.slice(0,4);
+		const newfecha= (day+'-'+mont+'-'+year);
+   	this.setState({
+      fecha: indate(this.state.teacherQuest[index].fecha),
+      hora: this.state.teacherQuest[index].hora,
+      descripcion: this.state.teacherQuest[index].descripcion,
+      sala_clases: this.state.teacherQuest[index].sala_clases,
+      curso:this.state.teacherQuest[index].cod_curso,
+      ramo:this.state.teacherQuest[index].cod_ramo
+  });
+
+ }
+
+	handleInputChange(event){
+    console.log(event)
+    var inputName = event.target.name;
+    var inputValue = event.target.value;
+    this.setState({[inputName]:inputValue});
+  }
 
 	eliminar() {
 		axios.post("/data-delete-quest", this.state.dataD);
@@ -83,6 +118,41 @@ class Eventos extends React.Component {
 		alert('Insertando Prueba');
 		this.insertarData();
 	  }
+
+	  validar2() {
+		const sala = this.refs.inputsala.value;
+		const fecha = this.refs.inputfecha.value;
+		const hora = this.refs.inputhora.value;
+			const descripcion = this.refs.inputdescripcion.value;
+			const day = fecha.slice(8,10);
+			const mont = fecha.slice(5,7);
+			const year = fecha.slice(0,4);
+			const newfecha= (day+'-'+mont+'-'+year);
+			console.log(hora)
+			if (fecha == ""){
+				alert("la fecha esta vacia");
+				return false;
+			}else if (new Date(newfecha).getTime() <  new Date(this.obtenerFecha()).getTime()){
+				alert("La fecha es inferior a la actual");
+				return false;
+			}
+			if (hora == "") {
+		  alert("Hora vacia");
+		  return false;
+		}
+		if (sala == "") {
+			alert("Sala de clases vacia");
+			return false;
+		  }
+		if (descripcion == "") {
+		  alert("descripcion vacia");
+		  return false;
+			}
+
+		alert('Modificando Prueba');
+		this.actualizarData();
+	  }
+
 	insertarData() {
 		console.log("entre");
 		const curso = this.state.curso;
@@ -100,6 +170,26 @@ class Eventos extends React.Component {
 		axios.post('/data-insert-quest', dataQuest);
 		window.location.reload();
 	}
+
+	actualizarData() {
+		console.log("entre");
+		const curso = this.state.curso;
+		const codRamo = this.state.ramo;
+		const rut = getRut();
+		const sala = this.refs.inputsala.value;
+		const fecha = this.refs.inputfecha.value;
+		const hora = this.refs.inputhora.value;
+		const descripcion = this.refs.inputdescripcion.value;
+		const day = fecha.slice(8, 10);
+		const mont = fecha.slice(5, 7);
+		const year = fecha.slice(0, 4);
+		const newfecha = (day + '-' + mont + '-' + year);
+		const dataQuest = { codRamo,curso,rut, newfecha, hora, sala,descripcion };
+		axios.post('/data-update-quest', dataQuest);
+		window.location.reload();
+	}
+
+
 	obtenerFecha(){
 		var dt = new Date();
 		// Display the month, day, and year. getMonth() returns a 0-based number.
@@ -137,8 +227,9 @@ class Eventos extends React.Component {
 		<ul className="nav nav-pills nav-stacked">
 				<span className="label label-info">{data.fecha}</span> Ramo: {data.nom_ramo}
 				<h5 className="event">{data.descripcion}</h5>
+
 				<h5 className="event">Curso: {data.cod_curso} Hora : {data.hora}</h5>
-				<button className="glyphicon glyphicon-pencil" ></button>
+				<button className="glyphicon glyphicon-pencil" data-toggle="modal" data-target="#myModal2"  onClick={() => this.addComponentModal(index) } ></button>
           		<button className="glyphicon glyphicon-trash" data-toggle="modal" data-target="#myModal3" onClick={() => this.DeleteData(index) }></button>
 				<hr />
 			</ul>
@@ -151,7 +242,7 @@ class Eventos extends React.Component {
 			<div>
 				<div className="div_titulo">
 					<NavMenu rut={getRut()} />
-					<h2 className="titulo">EVENTOS</h2>
+					<h2 className="titulo">PRUEBAS</h2>
 				</div>
 				<div className="content">
 					<div className="content_2">
@@ -184,7 +275,7 @@ class Eventos extends React.Component {
 					</div>
 
 				</div>
-				<div className="modal fade" id="myModal" role="dialog">
+		<div className="modal fade" id="myModal" role="dialog">
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
@@ -197,7 +288,7 @@ class Eventos extends React.Component {
                     Fecha
 										<input  className="form-control" id="date" type="date"  ref="inputfecha2"/>
                   </div>
-									<div className="form-group">
+					<div className="form-group">
                     Hora
               			<input ref="inputhora2" className="form-control"  id="time" type="time"  />
                   </div>
@@ -207,7 +298,7 @@ class Eventos extends React.Component {
                   </div>
                   <div className="form-group">
                     Descripcion
-									<	textarea className="form-control" id="exampleFormControlTextarea1" rows="3" ref="inputdescripcion2"></textarea>
+									<textarea className="form-control" id="exampleFormControlTextarea1" rows="3" ref="inputdescripcion2"></textarea>
                   </div>
                   <button type="button" className="btn btn-primary" onClick={this.validar}>Aceptar</button>
                 </form>
@@ -216,8 +307,46 @@ class Eventos extends React.Component {
                 <button type="button" className="btn btn-danger" data-dismiss="modal">Cerrar</button>
               </div>
             </div> {/* Modal Agregar */}
+
           </div>
         </div>
+
+        <div className="modal fade" id="myModal2" role="dialog">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <button type="button" className="close" data-dismiss="modal">&times;</button>
+                <h4 className="modal-title">Modificar Prueba</h4>
+              </div>
+              <div className="modal-body">
+                <form  >
+                  <div className="form-group">
+                    Fecha
+					<input  className="form-control" id="date" type="date"  ref="inputfecha" name="fecha" onChange={this.handleInputChange} value={this.state.fecha} />
+                  </div>
+					<div className="form-group">
+                    Hora
+              		<input ref="inputhora" className="form-control"  id="time" type="time" name="hora" onChange={this.handleInputChange} value={this.state.hora}  />
+                  </div>
+				  <div className="form-group">
+                    Sala de Clases
+              <input ref="inputsala" className="form-control" id="sala_clase" name="sala_clases" onChange={this.handleInputChange} value={this.state.sala_clases} />
+                  </div>
+                  <div className="form-group">
+                    Descripcion
+					<textarea className="form-control" id="exampleFormControlTextarea1" rows="3" ref="inputdescripcion" name="descripcion" onChange={this.handleInputChange} value={this.state.descripcion}></textarea>
+                  </div>
+                  <button type="button" className="btn btn-primary" onClick={this.validar2}>Aceptar</button>
+                </form>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-danger" data-dismiss="modal">Cerrar</button>
+              </div>
+            </div> {/* Modal Modificar */}
+
+          </div>
+        </div>
+
 		<div className="modal fade" id="myModal3" role="dialog">
           <div className="modal-dialog">
             <div className="modal-content">

@@ -158,6 +158,34 @@ app.post('/data-update-horario', function(req, res){
       console.error(error);
   });
 });
+app.post('/data-update-evento', function(req, res){
+  const data = req.body;
+  console.log(data);
+  const { rut,newfecha,hora ,descripcion} = req.body;
+  const query = `update  eventos set descripcion = '${descripcion}' where rut_alu= '${rut}' and fecha= '${newfecha}' and hora= '${hora}'`;
+  connection.query(query, (error, results, fields) => {
+      console.error(error);
+  });
+});
+app.post('/data-update-quest', function(req, res){
+  const data = req.body;
+  console.log(data);
+  const { codRamo,curso,rut, newfecha, hora, sala,descripcion } = req.body;
+  const query = `update  prueba set descripcion = '${descripcion}',sala_clases = '${sala}',hora = '${hora}' where cod_ramo= '${codRamo}' and fecha= '${newfecha}' and rut_prof= '${rut}' and cod_curso = '${curso}' `;
+  connection.query(query, (error, results, fields) => {
+      console.error(error);
+  });
+});
+app.post('/data-update-detalle-nota', function(req, res){
+  const data = req.body;
+  console.log(data);
+  const { cod_ramo,rut, numero_nota, año, semestre, ponderacio, nota} = req.body;
+  console.log(rut);
+  const query = `update  detalle_nota set nota = '${nota}',ponderacion = '${ponderacio}',semestre = '${semestre}'  where rut_alu= '${rut}' and numero_nota= '${numero_nota}' and cod_ramo= '${cod_ramo}'`;
+  connection.query(query, (error, results, fields) => {
+      console.error(error);
+  });
+});
 //////////
 app.post('/data-delete-curso', function(req, res){
   const data = req.body;
