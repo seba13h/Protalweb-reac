@@ -221,7 +221,7 @@ app.post('/data-delete-ramo', function(req, res){
   });
   app.post('/data-delete-quest', function(req, res){
     const data = req.body;
-    console.log(data);
+
     const { rut,fecha,hora,descripcion,sala_clases,nom_ramo,cod_ramo,cod_curso} = req.body;
          const query = `delete from prueba where cod_ramo= '${cod_ramo}' and cod_curso= '${cod_curso}' and rut_prof= '${rut}'and fecha= '${fecha}'`;
  connection.query(query, (error, results, fields) => {
@@ -231,8 +231,7 @@ app.post('/data-delete-ramo', function(req, res){
   });
   app.post('/data-delete-detalleNota', function(req, res){
     const data = req.body;
-    console.log( req.body);
-    const { cod_ramo,nota,numero_nota, ponderacion,rut_alu} = data;
+    const { rut_alu,cod_ramo,nota,numero_nota, ponderacion} = data[0];
     console.log (rut_alu, cod_ramo, numero_nota);
          const query = `delete from detalle_nota where cod_ramo= '${cod_ramo}' and rut_alu= '${rut_alu}' and numero_nota= '${numero_nota}'`;
  connection.query(query, (error, results, fields) => {
